@@ -11,6 +11,7 @@ public class Tst_Main_Class {
 	
 
 	public static void main(String[] args) {
+
 		// Vector
 		
 				Vector<String> textToWrite = new Vector<String>();
@@ -44,6 +45,9 @@ public class Tst_Main_Class {
 				frame.add(testField,BorderLayout.PAGE_END);
 				
 				frame.setVisible(true);
+
+	
+
 
 	}
 
