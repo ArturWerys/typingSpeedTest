@@ -18,8 +18,6 @@ public class Tst_Main_Class {
 				Vector<String> textToVector = new Vector<String>();
 				
 				
-				
-				
 				textToWrite.add("Test TEst TEst TEst ");
 				
 				String a = textToWrite.elementAt(0);
@@ -45,9 +43,6 @@ public class Tst_Main_Class {
 				frame.add(testField,BorderLayout.PAGE_END);
 				
 				frame.setVisible(true);
-
-	
-
 
 	}
 
