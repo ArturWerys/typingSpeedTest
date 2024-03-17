@@ -12,10 +12,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 public class TestWindowPanels extends JFrame{
 	
 	public TestWindowPanels() throws HeadlessException {
 		super();
+		
+		
+		
 		setSize(Constants.windowWidth, Constants.windowHeight);
         
         //
