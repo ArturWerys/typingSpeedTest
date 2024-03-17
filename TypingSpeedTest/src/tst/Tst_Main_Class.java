@@ -44,6 +44,7 @@ public class Tst_Main_Class {
 //		
 //		frame.add(testField,BorderLayout.PAGE_END);
 //		
+		frame.setResizable(false);
 		frame.setVisible(true);
 				
 

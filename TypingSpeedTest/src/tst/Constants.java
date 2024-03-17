@@ -1,6 +1,7 @@
 package tst;
 
 public class Constants {
-	static int windowHeight = 600; 
-	static int windowWidth = 800; 
+	public static final int windowWidth = 1000; 
+	public static final int windowHeight = 600; 
+	
 }
