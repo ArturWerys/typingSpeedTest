@@ -12,48 +12,49 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+
 
 public class TestWindowPanels extends JFrame{
 	
 	public TestWindowPanels() throws HeadlessException {
-		super();
+		super();		
 		
-		
-		
-		setSize(Constants.windowWidth, Constants.windowHeight);
+		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
+		SetWindowSize windowSize = new SetWindowSize();
+		int windowWidth = windowSize.getAutoWindowWidth();
+	    int windowHeight = windowSize.getAutoWindowHeigth();
+		setSize(windowWidth, windowHeight);
         
         //
         JPanel panelGorny = new JPanel();
         add(panelGorny, BorderLayout.PAGE_START);
-        panelGorny.setBackground(Color.RED);
+        panelGorny.setBackground(ThemeColors.BACKGROUND);
         
-        Dimension panelGornyDim = new Dimension(Constants.windowWidth, (int)(0.18 * Constants.windowHeight));
+        Dimension panelGornyDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
         panelGorny.setPreferredSize(panelGornyDim);
         
         //
         JPanel panelDolny = new JPanel();
         add(panelDolny, BorderLayout.PAGE_END);
-        panelDolny.setBackground(Color.BLUE);
+        panelDolny.setBackground(ThemeColors.BACKGROUND);
         
-        Dimension panelDolnyDim = new Dimension(Constants.windowWidth, (int)(0.2 * Constants.windowHeight));
+        Dimension panelDolnyDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
         panelDolny.setPreferredSize(panelDolnyDim);
         
         //
         JPanel panelLewy = new JPanel();
         add(panelLewy, BorderLayout.WEST);
-        panelLewy.setBackground(Color.YELLOW);
+        panelLewy.setBackground(ThemeColors.BACKGROUND);
         
-        Dimension panelLewyDim = new Dimension((int)(0.07 *Constants.windowWidth), Constants.windowHeight);
+        Dimension panelLewyDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
         panelLewy.setPreferredSize(panelLewyDim);
         
         //
         JPanel panelPrawy = new JPanel();
         add(panelPrawy, BorderLayout.EAST);
-        panelPrawy.setBackground(Color.GREEN);
+        panelPrawy.setBackground(ThemeColors.BACKGROUND);
         
-        Dimension panelPrawyDim = new Dimension((int)(0.07 *Constants.windowWidth), Constants.windowHeight);
+        Dimension panelPrawyDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
         panelPrawy.setPreferredSize(panelPrawyDim);
         
        
