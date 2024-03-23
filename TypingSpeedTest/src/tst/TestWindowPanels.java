@@ -66,7 +66,7 @@ public class TestWindowPanels extends JFrame{
         
 
         JPanel panelTekstuZbazyDanych = new JPanel();
-        panelTekstuZbazyDanych.setBackground(Color.CYAN);
+        panelTekstuZbazyDanych.setBackground(ThemeColors.TEXT_FIELD_BACKGROUND);
         gbc.weightx = 1;
         gbc.weighty = 4; // Ten panel zajmie 2/3 dostępnej przestrzeni
         panelSrodkowy.add(panelTekstuZbazyDanych, gbc);
