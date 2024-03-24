@@ -6,17 +6,22 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
 
-public class TestWindowPanels extends JFrame{
+public class Tryb30SlowPanels extends JFrame{
 	
-	public TestWindowPanels() throws HeadlessException {
+	public Tryb30SlowPanels() throws HeadlessException {
 		super();		
 		
 		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
@@ -71,7 +76,7 @@ public class TestWindowPanels extends JFrame{
         gbc.weighty = 4; // Ten panel zajmie 2/3 dostępnej przestrzeni
         panelSrodkowy.add(panelTekstuZbazyDanych, gbc);
         
-        JLabel tekst = new JLabel("Tekst Tekst Tekst");
+        JLabel tekst = new JLabel("Tryb 30 slow");
         panelTekstuZbazyDanych.add(tekst);
         
         
@@ -93,6 +98,48 @@ public class TestWindowPanels extends JFrame{
         
         add(panelSrodkowy);
 
+        // Menu - Artur
+        
+        JMenuBar menuBar;
+		JMenu menu;
+		
+		JMenuItem powrot;
+
+	    // Tworzenie paska menu
+		menuBar = new JMenuBar();
+	    
+		//Dodawanie menu:
+		menu = new JMenu("Menu");
+		menuBar.add(menu);
+
+	
+		powrot = new JMenuItem("Powrót do ekranu startowego");
+		menu.add(powrot);
+		powrot.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
+		        welcomeWindowPanel.setVisible(true);// Pokaż nowe okno
+				Tryb30SlowPanels.this.dispose();
+			}
+		});
+		
+		
+    	setJMenuBar(menuBar);
+    	
+    	menu.addSeparator();
+		JMenuItem exit = new JMenuItem("Exit");
+		exit.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);	
+			}
+			
+		});
+		menu.add(exit);
+        
+        
+        
         setVisible(true);
     
        	}
