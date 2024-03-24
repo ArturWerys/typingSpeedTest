@@ -42,7 +42,7 @@ public class WelcomeWindowPanels extends JFrame implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new TestWindowPanels();
+				new Tryb30SlowPanels();
 				WelcomeWindowPanels.this.dispose();
 				
 			}
@@ -56,7 +56,7 @@ public class WelcomeWindowPanels extends JFrame implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//new TestWindowPanels();
+				new Tryb30SekundPanels();
 				WelcomeWindowPanels.this.dispose();
 				
 			}
