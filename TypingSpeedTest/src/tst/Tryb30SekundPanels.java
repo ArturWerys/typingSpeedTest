@@ -18,12 +18,14 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import tst.CountdownTimer.CountdownTask;
+
 
 public class Tryb30SekundPanels extends JFrame {
 	
 	private static boolean isFirstCharacterEntered = false;
-	
+	public static long startTime;
+	private static long elapsedTime;
+
 	public Tryb30SekundPanels() {
 		super();		
 		
@@ -41,27 +43,7 @@ public class Tryb30SekundPanels extends JFrame {
         Dimension panelGornyDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
         panelGorny.setPreferredSize(panelGornyDim);
         
-        //Panel dolny i Timer - Mateusz i Artur
-        
-        JPanel panelDolny = new JPanel();
-        add(panelDolny, BorderLayout.PAGE_END);
-        panelDolny.setBackground(ThemeColors.BACKGROUND);
-        
-        Dimension panelDolnyDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
-        panelDolny.setPreferredSize(panelDolnyDim);
-        
-      
-        TimerSliderPanel slider = new TimerSliderPanel();
-        Dimension silderDim = new Dimension(windowWidth, (int)(0.1 * windowHeight));
-        slider.setPreferredSize(silderDim);
-        panelDolny.add(slider);
-        
-        TimerSliderPanel timerSliderPanel = new TimerSliderPanel();
-        CountdownTimer.CountdownTask countdownTask = new CountdownTimer.CountdownTask();
-        
-        
-        
-        
+
         
         //
         JPanel panelLewy = new JPanel();
@@ -97,6 +79,17 @@ public class Tryb30SekundPanels extends JFrame {
         panelTekstuZbazyDanych.add(tekst);
         
         
+        //Panel dolny i Timer - Mateusz i Artur
+        
+        JPanel panelDolny = new JPanel();
+        add(panelDolny, BorderLayout.PAGE_END);
+        panelDolny.setBackground(ThemeColors.BACKGROUND);
+        
+        Dimension panelDolnyDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
+        panelDolny.setPreferredSize(panelDolnyDim);
+        TimerSliderPanel slider = new TimerSliderPanel();
+        Dimension silderDim = new Dimension(windowWidth, (int)(0.1 * windowHeight));
+        slider.setPreferredSize(silderDim);
         
         /////
         
@@ -127,10 +120,16 @@ public class Tryb30SekundPanels extends JFrame {
                         isFirstCharacterEntered = true;
                         System.out.println("First character entered: " + text.charAt(0));
                         
+                        startTime = System.currentTimeMillis();
+                        elapsedTime = System.currentTimeMillis() - startTime;
+                        System.out.println("Czas z pentli: "+elapsedTime);
+                
+                        panelDolny.add(slider);
+
                         
-                        Timer timer = new Timer();
-                        timer.schedule(countdownTask, 0, 1000);
-                        timerSliderPanel.setSliderWidth(50);
+//                        Timer timer = new Timer();
+//                        timer.schedule(countdownTask, 0, 1000);
+//                        timerSliderPanel.setSliderWidth(50);
                         
 //                        while(countdownTask.getSecondsLeft()!=0){
 //                        	slider.repaint();
@@ -146,6 +145,16 @@ public class Tryb30SekundPanels extends JFrame {
 				
 			}
 		});
+        
+        
+        
+      
+        
+        
+//        TimerSliderPanel timerSliderPanel = new TimerSliderPanel();
+//        CountdownTimer.CountdownTask countdownTask = new CountdownTimer.CountdownTask();
+        
+        
         
         // Dodanie panelu głównego do ramki
         
@@ -193,7 +202,7 @@ public class Tryb30SekundPanels extends JFrame {
         
 		
 		
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     
 	}
