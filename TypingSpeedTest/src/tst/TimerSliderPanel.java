@@ -13,17 +13,6 @@ import java.awt.event.ActionListener;
 
 public class TimerSliderPanel extends JPanel {
 	
-//	public int getSliderWidth() {
-//		return sliderWidth;
-//	}
-//
-//
-//
-//	public void setSliderWidth(int sliderWidth) {
-//		this.sliderWidth = sliderWidth;
-//	}
-
-
 	int sliderWidth;
 	private int counter = 0;
 	SetWindowSize windowSize = new SetWindowSize();

@@ -3,11 +3,15 @@ package tst;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,6 +20,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 
 
@@ -69,16 +75,11 @@ public class Tryb30SlowPanels extends JFrame{
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH; // Wypełnienie komórek w obu kierunkach
         
-
-        JPanel panelTekstuZbazyDanych = new JPanel();
-        panelTekstuZbazyDanych.setBackground(ThemeColors.TEXT_FIELD_BACKGROUND);
+        
+        DrawTekstZBazyDanych panelTekstuZbazyDanych = new DrawTekstZBazyDanych();
         gbc.weightx = 1;
         gbc.weighty = 4; // Ten panel zajmie 2/3 dostępnej przestrzeni
         panelSrodkowy.add(panelTekstuZbazyDanych, gbc);
-        
-        JLabel tekst = new JLabel("Tryb 30 slow");
-        panelTekstuZbazyDanych.add(tekst);
-        
         
         
         /////
@@ -88,12 +89,43 @@ public class Tryb30SlowPanels extends JFrame{
         gbc.weighty = 1; // Ten panel zajmie 1/3 dostępnej przestrzeni
         panelSrodkowy.add(panelDoWprowadzaniaTekstu, gbc);
         
+        // Co to robi?
         
         JTextField tekstDoWprowadzenia = new JTextField(20);
         panelDoWprowadzaniaTekstu.add(tekstDoWprowadzenia);
         
-        
-        
+        tekstDoWprowadzenia.addKeyListener(new KeyAdapter() {
+            int currentWordIndex = 0;
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                
+                if (Character.isWhitespace(c) || c == KeyEvent.VK_ENTER) {
+                	
+                    String enteredWord = tekstDoWprowadzenia.getText().trim();
+         
+                    if (currentWordIndex < panelTekstuZbazyDanych.tablicaSlow.length) {
+                        if (enteredWord.equals(panelTekstuZbazyDanych.tablicaSlow[currentWordIndex])) {
+                            System.out.println("Słowa są takie same: " + currentWordIndex);
+                            panelTekstuZbazyDanych.ustawKolorSlowa(currentWordIndex, Color.green);
+                            
+                        } else {
+                            System.out.println("Słowa się różnią: " + currentWordIndex);
+                            panelTekstuZbazyDanych.ustawKolorSlowa(currentWordIndex, Color.red);
+
+                        }
+                        currentWordIndex++;
+                        tekstDoWprowadzenia.setText("");
+                    }
+                    if(currentWordIndex == panelTekstuZbazyDanych.tablicaSlow.length) {
+                        System.out.println("Koniec testu");
+                    }
+                }
+            }
+        });
+
+
         // Dodanie panelu głównego do ramki
         
         add(panelSrodkowy);
@@ -123,7 +155,6 @@ public class Tryb30SlowPanels extends JFrame{
 				Tryb30SlowPanels.this.dispose();
 			}
 		});
-		
 		
     	setJMenuBar(menuBar);
     	
