@@ -12,7 +12,7 @@ public class Tst_Main_Class {
 	public static void main(String[] args) {
 
 		WelcomeWindowPanels window1 = new WelcomeWindowPanels();
-		
+		window1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window1.setResizable(false);
 		window1.setVisible(true);
 		

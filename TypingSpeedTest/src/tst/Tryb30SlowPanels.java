@@ -139,7 +139,7 @@ public class Tryb30SlowPanels extends JFrame{
 		menu.add(exit);
         
         
-        
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     
        	}
