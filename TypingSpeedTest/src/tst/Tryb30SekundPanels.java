@@ -125,15 +125,8 @@ public class Tryb30SekundPanels extends JFrame {
                         System.out.println("Czas z pentli: "+elapsedTime);
                 
                         panelDolny.add(slider);
-
-                        
-//                        Timer timer = new Timer();
-//                        timer.schedule(countdownTask, 0, 1000);
-//                        timerSliderPanel.setSliderWidth(50);
-                        
-//                        while(countdownTask.getSecondsLeft()!=0){
-//                        	slider.repaint();
-//                        }
+                        repaint();
+           
                     }
                 }
 				
