@@ -22,7 +22,7 @@ import javax.swing.event.DocumentListener;
 
 public class Tryb30SekundPanels extends JFrame {
 	
-	private static boolean isFirstCharacterEntered = false;
+	public static boolean isFirstCharacterEntered = false;
 	public static long startTime;
 	private static long elapsedTime;
 
@@ -81,15 +81,16 @@ public class Tryb30SekundPanels extends JFrame {
         
         //Panel dolny i Timer - Mateusz i Artur
         
-        JPanel panelDolny = new JPanel();
+        JPanel panelDolny = new JPanel(new BorderLayout());
         add(panelDolny, BorderLayout.PAGE_END);
         panelDolny.setBackground(ThemeColors.BACKGROUND);
         
         Dimension panelDolnyDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
         panelDolny.setPreferredSize(panelDolnyDim);
         TimerSliderPanel slider = new TimerSliderPanel();
-        Dimension silderDim = new Dimension(windowWidth, (int)(0.1 * windowHeight));
-        slider.setPreferredSize(silderDim);
+//        Dimension silderDim = new Dimension(windowWidth, (int)(0.1 * windowHeight));
+//        slider.setPreferredSize(silderDim);
+        panelDolny.add(slider, BorderLayout.PAGE_END);
         
         /////
         
@@ -124,8 +125,7 @@ public class Tryb30SekundPanels extends JFrame {
                         elapsedTime = System.currentTimeMillis() - startTime;
                         System.out.println("Czas z pentli: "+elapsedTime);
                 
-                        panelDolny.add(slider);
-                        repaint();
+                        
            
                     }
                 }
@@ -176,6 +176,7 @@ public class Tryb30SekundPanels extends JFrame {
 		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
 		        welcomeWindowPanel.setVisible(true);// Pokaż nowe okno
 				Tryb30SekundPanels.this.dispose();
+				isFirstCharacterEntered = false;
 			}
 		});
 		
