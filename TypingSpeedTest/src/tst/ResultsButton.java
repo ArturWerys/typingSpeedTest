@@ -12,9 +12,8 @@ public class ResultsButton extends JButton{
     	super();
 		
 		setText("Wyniki");
-		setSize(new Dimension(300,100));
-		
-	
+		setPreferredSize(new Dimension(100,50));
+
 	}
 
 }
