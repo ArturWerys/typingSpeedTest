@@ -66,7 +66,8 @@ public class PreviousResultsPanels extends JFrame{
 		menu.add(exit);
         
         
-        
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 	

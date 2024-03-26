@@ -88,9 +88,13 @@ public class Seconds30Panels extends JFrame {
         TimerSliderPanel slider = new TimerSliderPanel();
         southPanel.add(slider, BorderLayout.PAGE_END);
         
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(ThemeColors.BACKGROUND);
+        southPanel.add(buttonPanel, BorderLayout.NORTH);
+        
         ResultsButton resultsButton = new ResultsButton();
         resultsButton.setVisible(true);
-        southPanel.add(resultsButton, BorderLayout.NORTH);
+        buttonPanel.add(resultsButton);
         
         resultsButton.addActionListener(new ActionListener() {
 			
@@ -217,7 +221,7 @@ public class Seconds30Panels extends JFrame {
 		});
 		menu.add(exit);
         
-	
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     
