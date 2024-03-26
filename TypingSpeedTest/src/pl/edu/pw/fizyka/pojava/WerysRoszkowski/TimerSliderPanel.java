@@ -1,4 +1,4 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
