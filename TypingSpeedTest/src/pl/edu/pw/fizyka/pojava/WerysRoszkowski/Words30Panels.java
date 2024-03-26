@@ -1,4 +1,4 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -99,12 +99,7 @@ public class Words30Panels extends JFrame{
 				
 			}
 		});
-        
-       
-
- 
-        // Co to robi?
-        
+         
         JTextField textField = new JTextField(20);
         inputPanel.add(textField);
         
@@ -169,7 +164,7 @@ public class Words30Panels extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
-		        welcomeWindowPanel.setVisible(true);// Pokaż nowe okno
+		        welcomeWindowPanel.setVisible(true);
 				Words30Panels.this.dispose();
 			}
 		});

@@ -1,8 +1,10 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -10,11 +12,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class PreviousResultsPanels extends JFrame{
-	
-	public PreviousResultsPanels() {
-		super();
-		SetWindowSize windowSize = new SetWindowSize();
+public class ResultsPanels extends JFrame {
+    
+    public ResultsPanels() {
+        super();
+        
+        SetWindowSize windowSize = new SetWindowSize();
         int windowWidth = windowSize.getAutoWindowWidth();
         int windowHeight = windowSize.getAutoWindowHeigth();
         setSize(windowWidth, windowHeight);
@@ -23,7 +26,7 @@ public class PreviousResultsPanels extends JFrame{
         
         add(panel);
         
-        JLabel label = new JLabel("Tutaj wyświetlą się wcześniejsze wyniki testów.");
+        JLabel label = new JLabel("Tutaj wyświetlą się wyniki testu.");
      
         panel.add(label);
         
@@ -64,12 +67,21 @@ public class PreviousResultsPanels extends JFrame{
 			
 		});
 		menu.add(exit);
+		
+		JButton previousResults = new JButton("Poprzednie wyniki");
+		panel.add(previousResults);
         
+		previousResults.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new PreviousResultsPanels();
+				dispose();
+			}
+		});
         
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
-	
-
 }

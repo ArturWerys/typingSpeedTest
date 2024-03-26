@@ -1,4 +1,4 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -38,7 +38,6 @@ public class Seconds30Panels extends JFrame {
         northPanel.setPreferredSize(northPanelDim);
         
 
-        
         //
         JPanel westPanel = new JPanel();
         add(westPanel, BorderLayout.WEST);
@@ -136,8 +135,6 @@ public class Seconds30Panels extends JFrame {
                     }
                     if(currentWordIndex == dataBaseTextPanel.wordsArray.length) {
                         System.out.println("Koniec testu");
-//                        resultsButton.setVisible(true);
-//                        southPanel.repaint();
                     }
                 }
             }
@@ -148,9 +145,7 @@ public class Seconds30Panels extends JFrame {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				String text = textField.getText();
-                System.out.println("Text removed: " + text);
-				
+				// TODO Auto-generated method stub		
 			}
 			
 			@Override
@@ -158,9 +153,7 @@ public class Seconds30Panels extends JFrame {
 				if (!isFirstCharacterEntered) {
                     String text = textField.getText();
                     if (!text.isEmpty()) {
-                        isFirstCharacterEntered = true;
-                        System.out.println("First character entered: " + text.charAt(0));
-                        
+                        isFirstCharacterEntered = true;            
                         startTime = System.currentTimeMillis();
                         elapsedTime = System.currentTimeMillis() - startTime;
                     }
@@ -171,7 +164,6 @@ public class Seconds30Panels extends JFrame {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 		});
         

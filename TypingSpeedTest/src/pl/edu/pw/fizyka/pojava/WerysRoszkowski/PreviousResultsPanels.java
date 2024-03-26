@@ -1,10 +1,8 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -12,12 +10,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class ResultsPanels extends JFrame {
-    
-    public ResultsPanels() {
-        super();
-        
-        SetWindowSize windowSize = new SetWindowSize();
+public class PreviousResultsPanels extends JFrame{
+	
+	public PreviousResultsPanels() {
+		super();
+		SetWindowSize windowSize = new SetWindowSize();
         int windowWidth = windowSize.getAutoWindowWidth();
         int windowHeight = windowSize.getAutoWindowHeigth();
         setSize(windowWidth, windowHeight);
@@ -26,7 +23,7 @@ public class ResultsPanels extends JFrame {
         
         add(panel);
         
-        JLabel label = new JLabel("Tutaj wyświetlą się wyniki testu.");
+        JLabel label = new JLabel("Tutaj wyświetlą się wcześniejsze wyniki testów.");
      
         panel.add(label);
         
@@ -50,7 +47,7 @@ public class ResultsPanels extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
-		        welcomeWindowPanel.setVisible(true);// Pokaż nowe okno
+		        welcomeWindowPanel.setVisible(true);
 				dispose();
 			}
 		});
@@ -67,21 +64,11 @@ public class ResultsPanels extends JFrame {
 			
 		});
 		menu.add(exit);
-		
-		JButton previousResults = new JButton("Poprzednie wyniki");
-		panel.add(previousResults);
-        
-		previousResults.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new PreviousResultsPanels();
-				dispose();
-			}
-		});
         
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
+	
+
 }

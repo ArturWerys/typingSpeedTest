@@ -1,4 +1,4 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,7 +23,6 @@ public class DrawDatabaseText extends JPanel {
 
 
     public DrawDatabaseText() {
-		// TODO Auto-generated constructor stub
     	JPanel databaseTextPanel = new JPanel();
     	Dimension TextDimension = new Dimension(10,10);
     	databaseTextPanel.setPreferredSize(TextDimension);;

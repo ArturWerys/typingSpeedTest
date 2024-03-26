@@ -1,4 +1,4 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,23 +26,23 @@ public class WelcomeWindowPanels extends JFrame{
         Dimension northPanelDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
         northPanel.setPreferredSize(northPanelDim);
         
-        
 		JPanel mainPanel = new JPanel(new GridBagLayout());
-		//mainPanel.setLayout(new GridLayout(5,1));
+
 		add(mainPanel, BorderLayout.CENTER);
 		mainPanel.setBackground(ThemeColors.BACKGROUND);
 		
 		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.insets = new Insets(7, 0, 7, 0); // Odstęp miezy przyciskami
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.CENTER;
 		
 		JLabel title = new JLabel("Typing Speed Test");
-		//title.setAlignmentX(Component.CENTER_ALIGNMENT);
+	
 		title.setFont(CustomFonts.TITLE);
 		
 		JButton words30Button = new JButton("30 słów");
-		//words30Button.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 		words30Button.setPreferredSize(buttDimenison);
 		words30Button.addActionListener(new ActionListener() {
 			
@@ -53,7 +53,6 @@ public class WelcomeWindowPanels extends JFrame{
 				
 			}
 		});
-		
 		
 		JButton seconds30Button = new JButton("30 sekund");
 		seconds30Button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -68,9 +67,7 @@ public class WelcomeWindowPanels extends JFrame{
 			}
 		});
 		
-		
 		JButton previousResultButton = new JButton("Poprzednie wyniki");
-		//previousResultButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		previousResultButton.setPreferredSize(buttDimenison);
 		previousResultButton.addActionListener(new ActionListener() {
 			
@@ -82,8 +79,7 @@ public class WelcomeWindowPanels extends JFrame{
 				
 			}
 		});
-		
-		
+			
 		mainPanel.add(title, constraints);
 		constraints.gridy++;
 		mainPanel.add(words30Button, constraints);
@@ -91,7 +87,6 @@ public class WelcomeWindowPanels extends JFrame{
 		mainPanel.add(seconds30Button, constraints);
 		constraints.gridy++;
 		mainPanel.add(previousResultButton, constraints);
-		
 		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

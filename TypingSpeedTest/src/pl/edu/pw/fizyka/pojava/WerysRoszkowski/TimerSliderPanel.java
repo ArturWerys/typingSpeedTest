@@ -1,4 +1,4 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,9 +55,7 @@ public class TimerSliderPanel extends JPanel {
 	public boolean timerSetter() {
         isTimerStopped = true;    
         return isTimerStopped;
-
 	}
-
 
 
 	@Override
