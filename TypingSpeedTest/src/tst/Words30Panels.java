@@ -132,11 +132,13 @@ public class Words30Panels extends JFrame{
                         currentWordIndex++;
                         textField.setText("");
                     }
-                    if(TimerSliderPanel.isTimerStopped == true) {
-                        System.out.println("Koniec testu");
+                    if(currentWordIndex == dataBaseTextPanel.wordsArray.length) {
+                    	System.out.println("Koniec testu");
                         resultsButton.setVisible(true);
                         southPanel.repaint();
                     }
+                    
+                      
                 }
             }
         });
@@ -190,11 +192,5 @@ public class Words30Panels extends JFrame{
         setVisible(true);
     
        	}
-	// Klasa, która nasłuchuje zdarzenia zakończenia czasu
-	public class AnotherClass implements TimerListener {
-	    @Override
-	    public void onTimerFinished() {
-	        System.out.println("Timer finished in AnotherClass!");
-	    }
-	}
+	
 }

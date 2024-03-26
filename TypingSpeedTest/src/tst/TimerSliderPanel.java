@@ -4,11 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//Interfejs do obsługi zdarzenia zakończenia czasu
-interface TimerListener {
-	void onTimerFinished();
-}
-
 public class TimerSliderPanel extends JPanel {
 
     SetWindowSize windowSize = new SetWindowSize();
@@ -42,17 +37,26 @@ public class TimerSliderPanel extends JPanel {
                 if (elapsedTime >= testDurationMilis) {
                     timer.stop();
                     System.out.println("Timer stopped");
-                    isTimerStopped = true;
-//                    timerListener.onTimerFinished(); // Wywołanie metody interfejsu
-
-                    
-                }
+                    isTimerStopped = timerSetter();
+                 }
             }
         });
         timer.start();
 
         this.setBackground(ThemeColors.BACKGROUND);
     }
+
+
+
+	public static boolean isTimerStoppedGetter() {
+		return isTimerStopped;
+	}
+	
+	public boolean timerSetter() {
+        isTimerStopped = true;    
+        return isTimerStopped;
+
+	}
 
 
 
