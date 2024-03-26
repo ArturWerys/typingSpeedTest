@@ -83,13 +83,13 @@ public class Seconds30Panels extends JFrame {
         add(southPanel, BorderLayout.PAGE_END);
         southPanel.setBackground(ThemeColors.BACKGROUND);
         
-        Dimension panelDolnyDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
-        southPanel.setPreferredSize(panelDolnyDim);
+        Dimension SouthPanelDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
+        southPanel.setPreferredSize(SouthPanelDim);
         TimerSliderPanel slider = new TimerSliderPanel();
         southPanel.add(slider, BorderLayout.PAGE_END);
         
         ResultsButton resultsButton = new ResultsButton();
-        resultsButton.setVisible(false);
+        resultsButton.setVisible(true);
         southPanel.add(resultsButton, BorderLayout.NORTH);
         
         resultsButton.addActionListener(new ActionListener() {
@@ -132,8 +132,8 @@ public class Seconds30Panels extends JFrame {
                     }
                     if(currentWordIndex == dataBaseTextPanel.wordsArray.length) {
                         System.out.println("Koniec testu");
-                        resultsButton.setVisible(true);
-                        southPanel.repaint();
+//                        resultsButton.setVisible(true);
+//                        southPanel.repaint();
                     }
                 }
             }
@@ -217,8 +217,7 @@ public class Seconds30Panels extends JFrame {
 		});
 		menu.add(exit);
         
-		
-		
+	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     
