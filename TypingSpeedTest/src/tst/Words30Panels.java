@@ -3,7 +3,6 @@ package tst;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
@@ -11,23 +10,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 
 
-public class Tryb30SlowPanels extends JFrame{
+
+public class Words30Panels extends JFrame{
 	
-	public Tryb30SlowPanels() throws HeadlessException {
+	public Words30Panels() throws HeadlessException {
 		super();		
 		
 		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
@@ -37,64 +32,83 @@ public class Tryb30SlowPanels extends JFrame{
 		setSize(windowWidth, windowHeight);
         
         //
-        JPanel panelGorny = new JPanel();
-        add(panelGorny, BorderLayout.PAGE_START);
-        panelGorny.setBackground(ThemeColors.BACKGROUND);
+        JPanel northPanel = new JPanel();
+        add(northPanel, BorderLayout.PAGE_START);
+        northPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension panelGornyDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
-        panelGorny.setPreferredSize(panelGornyDim);
+        northPanel.setPreferredSize(panelGornyDim);
         
         //
-        JPanel panelDolny = new JPanel();
-        add(panelDolny, BorderLayout.PAGE_END);
-        panelDolny.setBackground(ThemeColors.BACKGROUND);
+        JPanel southPanel = new JPanel();
+        add(southPanel, BorderLayout.PAGE_END);
+        southPanel.setBackground(ThemeColors.BACKGROUND);
         
-        Dimension panelDolnyDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
-        panelDolny.setPreferredSize(panelDolnyDim);
-        
-        //
-        JPanel panelLewy = new JPanel();
-        add(panelLewy, BorderLayout.WEST);
-        panelLewy.setBackground(ThemeColors.BACKGROUND);
-        
-        Dimension panelLewyDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
-        panelLewy.setPreferredSize(panelLewyDim);
+        Dimension southPanelDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
+        southPanel.setPreferredSize(southPanelDim);
         
         //
-        JPanel panelPrawy = new JPanel();
-        add(panelPrawy, BorderLayout.EAST);
-        panelPrawy.setBackground(ThemeColors.BACKGROUND);
+        JPanel westPanel = new JPanel();
+        add(westPanel, BorderLayout.WEST);
+        westPanel.setBackground(ThemeColors.BACKGROUND);
         
-        Dimension panelPrawyDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
-        panelPrawy.setPreferredSize(panelPrawyDim);
+        Dimension westPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
+        westPanel.setPreferredSize(westPanelDim);
+        
+        //
+        JPanel eastPanel = new JPanel();
+        add(eastPanel, BorderLayout.EAST);
+        eastPanel.setBackground(ThemeColors.BACKGROUND);
+        
+        Dimension eastPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
+        eastPanel.setPreferredSize(eastPanelDim);
         
        
         ///
         
-        JPanel panelSrodkowy = new JPanel(new GridBagLayout());
+        JPanel centerPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH; // Wypełnienie komórek w obu kierunkach
         
         
-        DrawTekstZBazyDanych panelTekstuZbazyDanych = new DrawTekstZBazyDanych();
+        DrawDatabaseText dataBaseTextPanel = new DrawDatabaseText();
         gbc.weightx = 1;
         gbc.weighty = 4; // Ten panel zajmie 2/3 dostępnej przestrzeni
-        panelSrodkowy.add(panelTekstuZbazyDanych, gbc);
+        centerPanel.add(dataBaseTextPanel, gbc);
         
         
         /////
         
-        JPanel panelDoWprowadzaniaTekstu = new JPanel();
+        JPanel inputPanel = new JPanel();
         gbc.gridy = 1;
         gbc.weighty = 1; // Ten panel zajmie 1/3 dostępnej przestrzeni
-        panelSrodkowy.add(panelDoWprowadzaniaTekstu, gbc);
+        centerPanel.add(inputPanel, gbc);
         
+        // Button do wynikow
+        ResultsButton resultsButton = new ResultsButton();
+        southPanel.add(resultsButton);
+        resultsButton.setVisible(false);
+        
+        resultsButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ResultsPanels();
+				Words30Panels.this.dispose();
+				
+				
+			}
+		});
+        
+       
+
+ 
         // Co to robi?
         
-        JTextField tekstDoWprowadzenia = new JTextField(20);
-        panelDoWprowadzaniaTekstu.add(tekstDoWprowadzenia);
+        JTextField textField = new JTextField(20);
+        inputPanel.add(textField);
         
-        tekstDoWprowadzenia.addKeyListener(new KeyAdapter() {
+        textField.addKeyListener(new KeyAdapter() {
             int currentWordIndex = 0;
 
             @Override
@@ -103,23 +117,25 @@ public class Tryb30SlowPanels extends JFrame{
                 
                 if (Character.isWhitespace(c) || c == KeyEvent.VK_ENTER) {
                 	
-                    String enteredWord = tekstDoWprowadzenia.getText().trim();
+                    String enteredWord = textField.getText().trim();
          
-                    if (currentWordIndex < panelTekstuZbazyDanych.tablicaSlow.length) {
-                        if (enteredWord.equals(panelTekstuZbazyDanych.tablicaSlow[currentWordIndex])) {
+                    if (currentWordIndex < dataBaseTextPanel.wordsArray.length) {
+                        if (enteredWord.equals(dataBaseTextPanel.wordsArray[currentWordIndex])) {
                             System.out.println("Słowa są takie same: " + currentWordIndex);
-                            panelTekstuZbazyDanych.ustawKolorSlowa(currentWordIndex, Color.green);
+                            dataBaseTextPanel.setWordColor(currentWordIndex, Color.green);
                             
                         } else {
                             System.out.println("Słowa się różnią: " + currentWordIndex);
-                            panelTekstuZbazyDanych.ustawKolorSlowa(currentWordIndex, Color.red);
+                            dataBaseTextPanel.setWordColor(currentWordIndex, Color.red);
 
                         }
                         currentWordIndex++;
-                        tekstDoWprowadzenia.setText("");
+                        textField.setText("");
                     }
-                    if(currentWordIndex == panelTekstuZbazyDanych.tablicaSlow.length) {
+                    if(TimerSliderPanel.isTimerStopped == true) {
                         System.out.println("Koniec testu");
+                        resultsButton.setVisible(true);
+                        southPanel.repaint();
                     }
                 }
             }
@@ -128,14 +144,14 @@ public class Tryb30SlowPanels extends JFrame{
 
         // Dodanie panelu głównego do ramki
         
-        add(panelSrodkowy);
+        add(centerPanel);
 
         // Menu - Artur
         
         JMenuBar menuBar;
 		JMenu menu;
 		
-		JMenuItem powrot;
+		JMenuItem goBack;
 
 	    // Tworzenie paska menu
 		menuBar = new JMenuBar();
@@ -145,14 +161,14 @@ public class Tryb30SlowPanels extends JFrame{
 		menuBar.add(menu);
 
 	
-		powrot = new JMenuItem("Powrót do ekranu startowego");
-		menu.add(powrot);
-		powrot.addActionListener(new ActionListener(){
+		goBack = new JMenuItem("Powrót do ekranu startowego");
+		menu.add(goBack);
+		goBack.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
 		        welcomeWindowPanel.setVisible(true);// Pokaż nowe okno
-				Tryb30SlowPanels.this.dispose();
+				Words30Panels.this.dispose();
 			}
 		});
 		
@@ -174,5 +190,11 @@ public class Tryb30SlowPanels extends JFrame{
         setVisible(true);
     
        	}
-	
+	// Klasa, która nasłuchuje zdarzenia zakończenia czasu
+	public class AnotherClass implements TimerListener {
+	    @Override
+	    public void onTimerFinished() {
+	        System.out.println("Timer finished in AnotherClass!");
+	    }
+	}
 }

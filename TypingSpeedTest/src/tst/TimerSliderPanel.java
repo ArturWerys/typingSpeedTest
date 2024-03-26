@@ -4,6 +4,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//Interfejs do obsługi zdarzenia zakończenia czasu
+interface TimerListener {
+	void onTimerFinished();
+}
+
 public class TimerSliderPanel extends JPanel {
 
     SetWindowSize windowSize = new SetWindowSize();
@@ -12,8 +17,9 @@ public class TimerSliderPanel extends JPanel {
     int updateTimeMiliS = 10;
     int testDurationMilis = 5000;
     long elapsedTime;
+    public static boolean isTimerStopped = false;
     Timer timer;
-
+    
     public TimerSliderPanel() {
     	Dimension silderDim = new Dimension(windowSize.autoWindowWidth, sliderHeigth);
     	this.setPreferredSize(silderDim);
@@ -23,8 +29,8 @@ public class TimerSliderPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 repaint();
-                if (Tryb30SekundPanels.isFirstCharacterEntered) {
-                	elapsedTime = System.currentTimeMillis() - Tryb30SekundPanels.startTime;
+                if (Seconds30Panels.isFirstCharacterEntered) {
+                	elapsedTime = System.currentTimeMillis() - Seconds30Panels.startTime;
                 } else {
                 	elapsedTime = 0;
                 }
@@ -36,6 +42,10 @@ public class TimerSliderPanel extends JPanel {
                 if (elapsedTime >= testDurationMilis) {
                     timer.stop();
                     System.out.println("Timer stopped");
+                    isTimerStopped = true;
+//                    timerListener.onTimerFinished(); // Wywołanie metody interfejsu
+
+                    
                 }
             }
         });
@@ -44,7 +54,9 @@ public class TimerSliderPanel extends JPanel {
         this.setBackground(ThemeColors.BACKGROUND);
     }
 
-    @Override
+
+
+	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
