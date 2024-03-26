@@ -47,7 +47,7 @@ public class PreviousResultsPanels extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
-		        welcomeWindowPanel.setVisible(true);// Pokaż nowe okno
+		        welcomeWindowPanel.setVisible(true);
 				dispose();
 			}
 		});
@@ -64,7 +64,6 @@ public class PreviousResultsPanels extends JFrame{
 			
 		});
 		menu.add(exit);
-        
         
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -55,9 +55,7 @@ public class TimerSliderPanel extends JPanel {
 	public boolean timerSetter() {
         isTimerStopped = true;    
         return isTimerStopped;
-
 	}
-
 
 
 	@Override
