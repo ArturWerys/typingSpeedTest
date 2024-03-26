@@ -1,55 +1,68 @@
 package tst;
-
-
 import javax.swing.*;
-
-
-
 import java.awt.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class TimerSliderPanel extends JPanel {
-	
-	int sliderWidth;
-	private int counter = 0;
-	SetWindowSize windowSize = new SetWindowSize();
-	
-	public TimerSliderPanel() {
 
-		Timer timer = new Timer(1000, new ActionListener() { // Timer with interval of 1000 milliseconds (1 second)
+    SetWindowSize windowSize = new SetWindowSize();
+    int sliderWidth = windowSize.autoWindowWidth;
+    int sliderHeigth = (int) (0.03*windowSize.autoWindowHeight);
+    int updateTimeMiliS = 10;
+    int testDurationMilis = 5000;
+    long elapsedTime;
+    public static boolean isTimerStopped = false;
+    Timer timer;
+    
+    public TimerSliderPanel() {
+    	Dimension silderDim = new Dimension(windowSize.autoWindowWidth, sliderHeigth);
+    	this.setPreferredSize(silderDim);
+    	
+    	
+        timer = new Timer(updateTimeMiliS, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Update the counter or perform any other necessary action
-                counter++;
-                repaint(); // Request a repaint
-                System.out.println("repaint event occured");
-                long elapsedTime=System.currentTimeMillis() - Tryb30SekundPanels.startTime;
-                System.out.println("Czas z timera: "+elapsedTime);
+                repaint();
+                if (Seconds30Panels.isFirstCharacterEntered) {
+                	elapsedTime = System.currentTimeMillis() - Seconds30Panels.startTime;
+                } else {
+                	elapsedTime = 0;
+                }
                 
-                sliderWidth = windowSize.autoWindowWidth - 10*(int)(elapsedTime/1000);
+                double sliderDivision = (double)windowSize.autoWindowWidth/testDurationMilis;
+                double sliderDelta = elapsedTime * sliderDivision;
+                sliderWidth = (int)(windowSize.autoWindowWidth - sliderDelta);
+
+                if (elapsedTime >= testDurationMilis) {
+                    timer.stop();
+                    System.out.println("Timer stopped");
+                    isTimerStopped = timerSetter();
+                 }
             }
         });
-        timer.start(); // Start the timer
-		
-		
-        this.setBackground(Color.CYAN);
+        timer.start();
 
+        this.setBackground(ThemeColors.BACKGROUND);
+    }
+
+
+
+	public static boolean isTimerStoppedGetter() {
+		return isTimerStopped;
 	}
 	
-	
-	
+	public boolean timerSetter() {
+        isTimerStopped = true;    
+        return isTimerStopped;
+	}
+
+
 	@Override
-	protected void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
-		super.paintComponent(g);
-		
-		
-		
-		
-		g.setColor(ThemeColors.SLIDER);
-		g.fillRect(0, 0, sliderWidth, (int)(0.1 * windowSize.getAutoWindowHeigth()));
-	}
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.setColor(ThemeColors.SLIDER);
+        g.fillRect(0, 0, sliderWidth, sliderHeigth);
+    }
 }

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class WelcomeWindowPanels extends JFrame implements ActionListener{
+public class WelcomeWindowPanels extends JFrame{
 		
 	public WelcomeWindowPanels() {
 		super();
@@ -17,73 +17,79 @@ public class WelcomeWindowPanels extends JFrame implements ActionListener{
 		int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);
 		
-		//Dimension buttDimenison = new Dimension((int)0.5*windowWidth, (int)0.1*windowHeight);
+		Dimension buttDimenison = new Dimension((int)(0.4*windowWidth), (int)(0.15*windowHeight));
 		
-		JPanel panelGorny = new JPanel();
-        add(panelGorny, BorderLayout.PAGE_START);
-        panelGorny.setBackground(ThemeColors.BACKGROUND);
+		JPanel northPanel = new JPanel();
+        add(northPanel, BorderLayout.PAGE_START);
+        northPanel.setBackground(ThemeColors.BACKGROUND);
 		
-        Dimension panelGornyDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
-        panelGorny.setPreferredSize(panelGornyDim);
+        Dimension northPanelDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
+        northPanel.setPreferredSize(northPanelDim);
         
-        
-		JPanel panelGlowny = new JPanel();
-		add(panelGlowny, BorderLayout.CENTER);
-		panelGlowny.setBackground(ThemeColors.BACKGROUND);
+		JPanel mainPanel = new JPanel(new GridBagLayout());
+
+		add(mainPanel, BorderLayout.CENTER);
+		mainPanel.setBackground(ThemeColors.BACKGROUND);
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.insets = new Insets(7, 0, 7, 0); // Odstęp miezy przyciskami
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
 		
 		JLabel title = new JLabel("Typing Speed Test");
-		panelGlowny.add(title);
+	
 		title.setFont(CustomFonts.TITLE);
 		
-		JButton tryb30Slow = new JButton("30 słów");
-		tryb30Slow.setPreferredSize(new Dimension(500, 100)); 
-		panelGlowny.add(tryb30Slow);
-		tryb30Slow.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new Tryb30SlowPanels();
-				WelcomeWindowPanels.this.dispose();
-				
-			}
-		});
-		
-		
-		JButton tryb30Sekund = new JButton("30 sekund");
-		tryb30Sekund.setPreferredSize(new Dimension(500, 100)); 
-		panelGlowny.add(tryb30Sekund);
-		tryb30Sekund.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new Tryb30SekundPanels();
-				WelcomeWindowPanels.this.dispose();
-				
-			}
-		});
-		
-		
-		JButton poprzednieWyniki = new JButton("Poprzednie wyniki");
-		poprzednieWyniki.setPreferredSize(new Dimension(500, 100)); 
-		panelGlowny.add(poprzednieWyniki);
-		poprzednieWyniki.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//new TestWindowPanels();
-				WelcomeWindowPanels.this.dispose();
-				
-			}
-		});
-		
-		
-		
-		
-	}
+		JButton words30Button = new JButton("30 słów");
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		words30Button.setPreferredSize(buttDimenison);
+		words30Button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Words30Panels();
+				WelcomeWindowPanels.this.dispose();
+				
+			}
+		});
+		
+		JButton seconds30Button = new JButton("30 sekund");
+		seconds30Button.setAlignmentX(Component.CENTER_ALIGNMENT);
+		seconds30Button.setPreferredSize(buttDimenison); 
+		seconds30Button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Seconds30Panels();
+				WelcomeWindowPanels.this.dispose();
+				
+			}
+		});
+		
+		JButton previousResultButton = new JButton("Poprzednie wyniki");
+		previousResultButton.setPreferredSize(buttDimenison);
+		previousResultButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new PreviousResultsPanels();
+				WelcomeWindowPanels.this.dispose();
+				
+				
+			}
+		});
+			
+		mainPanel.add(title, constraints);
+		constraints.gridy++;
+		mainPanel.add(words30Button, constraints);
+		constraints.gridy++;
+		mainPanel.add(seconds30Button, constraints);
+		constraints.gridy++;
+		mainPanel.add(previousResultButton, constraints);
+		
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 

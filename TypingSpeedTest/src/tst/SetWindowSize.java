@@ -14,7 +14,7 @@ public class SetWindowSize {
 		
 		
 		
-		 //kod odpowiedzialny za zczytywanie rozmiaru ekranu użytkownika oraz ustawianie odpowiedniego rozmiaru okna - Mateusz
+		//kod odpowiedzialny za zczytywanie rozmiaru ekranu użytkownika oraz ustawianie odpowiedniego rozmiaru okna - Mateusz
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
 		autoWindowHeight = (int) (heightPercentage * screenSize.height);

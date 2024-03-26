@@ -13,15 +13,8 @@ public class Tst_Main_Class {
 
 		WelcomeWindowPanels window1 = new WelcomeWindowPanels();
 		window1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window1.setResizable(false);
 		window1.setVisible(true);
 		
-//		TestWindowPanels frame = new TestWindowPanels();
-//		frame.setResizable(false);
-//		frame.setVisible(true);
-		
-		
-
 	}
 
 }
