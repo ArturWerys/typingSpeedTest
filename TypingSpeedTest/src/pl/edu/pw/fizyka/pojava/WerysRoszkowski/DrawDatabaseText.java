@@ -1,4 +1,4 @@
-package tst;
+package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
 import java.awt.Color;
 import java.awt.Dimension;
