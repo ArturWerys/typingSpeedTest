@@ -123,10 +123,6 @@ public class Tryb30SekundPanels extends JFrame {
                         
                         startTime = System.currentTimeMillis();
                         elapsedTime = System.currentTimeMillis() - startTime;
-                        System.out.println("Czas z pentli: "+elapsedTime);
-                
-                        
-           
                     }
                 }
 				
