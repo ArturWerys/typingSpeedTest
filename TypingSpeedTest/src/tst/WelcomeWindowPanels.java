@@ -19,64 +19,63 @@ public class WelcomeWindowPanels extends JFrame implements ActionListener{
 		
 		//Dimension buttDimenison = new Dimension((int)0.5*windowWidth, (int)0.1*windowHeight);
 		
-		JPanel panelGorny = new JPanel();
-        add(panelGorny, BorderLayout.PAGE_START);
-        panelGorny.setBackground(ThemeColors.BACKGROUND);
+		JPanel northPanel = new JPanel();
+        add(northPanel, BorderLayout.PAGE_START);
+        northPanel.setBackground(ThemeColors.BACKGROUND);
 		
-        Dimension panelGornyDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
-        panelGorny.setPreferredSize(panelGornyDim);
+        Dimension northPanelDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
+        northPanel.setPreferredSize(northPanelDim);
         
         
-		JPanel panelGlowny = new JPanel();
-		add(panelGlowny, BorderLayout.CENTER);
-		panelGlowny.setBackground(ThemeColors.BACKGROUND);
+		JPanel mainPanel = new JPanel();
+		add(mainPanel, BorderLayout.CENTER);
+		mainPanel.setBackground(ThemeColors.BACKGROUND);
 		
 		JLabel title = new JLabel("Typing Speed Test");
-		panelGlowny.add(title);
+		mainPanel.add(title);
 		title.setFont(CustomFonts.TITLE);
 		
-		JButton tryb30Slow = new JButton("30 słów");
-		tryb30Slow.setPreferredSize(new Dimension(500, 100)); 
-		panelGlowny.add(tryb30Slow);
-		tryb30Slow.addActionListener(new ActionListener() {
+		JButton words30Button = new JButton("30 słów");
+		words30Button.setPreferredSize(new Dimension(500, 100)); 
+		mainPanel.add(words30Button);
+		words30Button.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Tryb30SlowPanels();
+				new Words30Panels();
 				WelcomeWindowPanels.this.dispose();
 				
 			}
 		});
 		
 		
-		JButton tryb30Sekund = new JButton("30 sekund");
-		tryb30Sekund.setPreferredSize(new Dimension(500, 100)); 
-		panelGlowny.add(tryb30Sekund);
-		tryb30Sekund.addActionListener(new ActionListener() {
+		JButton seconds30Button = new JButton("30 sekund");
+		seconds30Button.setPreferredSize(new Dimension(500, 100)); 
+		mainPanel.add(seconds30Button);
+		seconds30Button.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Tryb30SekundPanels();
+				new Seconds30Panels();
 				WelcomeWindowPanels.this.dispose();
 				
 			}
 		});
 		
 		
-		JButton poprzednieWyniki = new JButton("Poprzednie wyniki");
-		poprzednieWyniki.setPreferredSize(new Dimension(500, 100)); 
-		panelGlowny.add(poprzednieWyniki);
-		poprzednieWyniki.addActionListener(new ActionListener() {
+		JButton previousResultButton = new JButton("Poprzednie wyniki");
+		previousResultButton.setPreferredSize(new Dimension(500, 100)); 
+		mainPanel.add(previousResultButton);
+		previousResultButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//new TestWindowPanels();
+				new PreviousResultsPanels();
 				WelcomeWindowPanels.this.dispose();
+				
 				
 			}
 		});
-		
-		
 		
 		
 	}

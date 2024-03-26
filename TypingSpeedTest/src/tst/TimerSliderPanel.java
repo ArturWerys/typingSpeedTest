@@ -12,8 +12,9 @@ public class TimerSliderPanel extends JPanel {
     int updateTimeMiliS = 10;
     int testDurationMilis = 5000;
     long elapsedTime;
+    public static boolean isTimerStopped = false;
     Timer timer;
-
+    
     public TimerSliderPanel() {
     	Dimension silderDim = new Dimension(windowSize.autoWindowWidth, sliderHeigth);
     	this.setPreferredSize(silderDim);
@@ -23,8 +24,8 @@ public class TimerSliderPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 repaint();
-                if (Tryb30SekundPanels.isFirstCharacterEntered) {
-                	elapsedTime = System.currentTimeMillis() - Tryb30SekundPanels.startTime;
+                if (Seconds30Panels.isFirstCharacterEntered) {
+                	elapsedTime = System.currentTimeMillis() - Seconds30Panels.startTime;
                 } else {
                 	elapsedTime = 0;
                 }
@@ -36,7 +37,8 @@ public class TimerSliderPanel extends JPanel {
                 if (elapsedTime >= testDurationMilis) {
                     timer.stop();
                     System.out.println("Timer stopped");
-                }
+                    isTimerStopped = timerSetter();
+                 }
             }
         });
         timer.start();
@@ -44,7 +46,21 @@ public class TimerSliderPanel extends JPanel {
         this.setBackground(ThemeColors.BACKGROUND);
     }
 
-    @Override
+
+
+	public static boolean isTimerStoppedGetter() {
+		return isTimerStopped;
+	}
+	
+	public boolean timerSetter() {
+        isTimerStopped = true;    
+        return isTimerStopped;
+
+	}
+
+
+
+	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
