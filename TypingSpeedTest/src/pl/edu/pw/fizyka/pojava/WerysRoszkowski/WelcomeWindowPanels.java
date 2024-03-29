@@ -3,6 +3,8 @@ package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.*;
 
@@ -12,7 +14,7 @@ public class WelcomeWindowPanels extends JFrame{
 		super();
 		
 		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
-		SetWindowSize windowSize = new SetWindowSize();
+		SetWindowSize windowSize = new SetWindowSize(this);
 		int windowWidth = windowSize.getAutoWindowWidth();
 		int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);

@@ -24,7 +24,7 @@ public class Seconds30Panels extends JFrame {
 		super();		
 		
 		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
-		SetWindowSize windowSize = new SetWindowSize();
+		SetWindowSize windowSize = new SetWindowSize(this);
 		int windowWidth = windowSize.getAutoWindowWidth();
 	    int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);

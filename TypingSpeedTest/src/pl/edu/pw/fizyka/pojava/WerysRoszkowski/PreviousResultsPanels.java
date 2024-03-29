@@ -14,7 +14,7 @@ public class PreviousResultsPanels extends JFrame{
 	
 	public PreviousResultsPanels() {
 		super();
-		SetWindowSize windowSize = new SetWindowSize();
+		SetWindowSize windowSize = new SetWindowSize(this);
         int windowWidth = windowSize.getAutoWindowWidth();
         int windowHeight = windowSize.getAutoWindowHeigth();
         setSize(windowWidth, windowHeight);
