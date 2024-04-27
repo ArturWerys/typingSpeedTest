@@ -47,7 +47,6 @@ public class TimerSliderPanel extends JPanel {
     }
 
 
-
 	public static boolean isTimerStoppedGetter() {
 		return isTimerStopped;
 	}
