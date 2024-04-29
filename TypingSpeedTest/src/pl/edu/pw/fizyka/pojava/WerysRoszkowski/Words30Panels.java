@@ -15,12 +15,24 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 
 public class Words30Panels extends JFrame{
+    private JTextPane textPane;
+    public static String predefinedText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+    public static int currentIndex = 0;
+    public static int correctLetters = 0;
+    public static int wrongLetters = 0;
+    public static float result = 0;
+    public static boolean endOfTest = false;
 	
 	public Words30Panels() throws HeadlessException {
 		super();		
@@ -70,20 +82,7 @@ public class Words30Panels extends JFrame{
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH; // Wypełnienie komórek w obu kierunkach
         
-        
-        DrawDatabaseText dataBaseTextPanel = new DrawDatabaseText();
-        gbc.weightx = 1;
-        gbc.weighty = 4; // Ten panel zajmie 2/3 dostępnej przestrzeni
-        centerPanel.add(dataBaseTextPanel, gbc);
-        
-        
-        /////
-        
-        JPanel inputPanel = new JPanel();
-        gbc.gridy = 1;
-        gbc.weighty = 1; // Ten panel zajmie 1/3 dostępnej przestrzeni
-        centerPanel.add(inputPanel, gbc);
-        
+
         // Button do wynikow
         ResultsButton resultsButton = new ResultsButton();
         southPanel.add(resultsButton);
@@ -99,46 +98,79 @@ public class Words30Panels extends JFrame{
 				
 			}
 		});
-         
-        JTextField textField = new JTextField(20);
-        inputPanel.add(textField);
         
-        textField.addKeyListener(new KeyAdapter() {
-            int currentWordIndex = 0;
+        // Ustawienie text Pane
+        
+        textPane = new JTextPane();
+        textPane.setEditable(false);
+        StyledDocument doc = textPane.getStyledDocument();
+       
+        
+        textPane.setCaretColor(Color.red);
+       
 
+        // Add predefined text with initial coloring
+        Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
+        StyleConstants.setForeground(defaultStyle, Color.BLACK);
+        
+        try {
+            doc.insertString(doc.getLength(), predefinedText, defaultStyle);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+                
+        
+        gbc.weightx = 1;
+        gbc.weighty = 4; // Ten panel zajmie 2/3 dostępnej przestrzeni
+//        centerPanel.add(textPane, gbc);
+        
+        textPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                char c = e.getKeyChar();
-                
-                if (Character.isWhitespace(c) || c == KeyEvent.VK_ENTER) {
-                	
-                    String enteredWord = textField.getText().trim();
-         
-                    if (currentWordIndex < dataBaseTextPanel.wordsArray.length) {
-                        if (enteredWord.equals(dataBaseTextPanel.wordsArray[currentWordIndex])) {
-                            System.out.println("Słowa są takie same: " + currentWordIndex);
-                            dataBaseTextPanel.setWordColor(currentWordIndex, Color.green);
-                            
-                        } else {
-                            System.out.println("Słowa się różnią: " + currentWordIndex);
-                            dataBaseTextPanel.setWordColor(currentWordIndex, Color.red);
+                char typedChar = e.getKeyChar();
 
-                        }
-                        currentWordIndex++;
-                        textField.setText("");
-                    }
-                    if(currentWordIndex == dataBaseTextPanel.wordsArray.length) {
-                    	System.out.println("Koniec testu");
-                        resultsButton.setVisible(true);
-                        southPanel.repaint();
-                    }
+                if (currentIndex < predefinedText.length() && typedChar == KeyEvent.VK_BACK_SPACE) {
+                	e.consume();
+                	System.out.println("Backspace");
+                	
+                        currentIndex--;
+                       
+                        applyCharacterColor(currentIndex, Color.BLACK);
                     
-                      
                 }
+                else {
+                    if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
+                        // Correct character typed, color it green
+                        applyCharacterColor(currentIndex, Color.GREEN);
+                        correctLetters ++;
+                
+                    } else {
+                        // Incorrect character typed, color it red
+                        applyCharacterColor(currentIndex, Color.RED);
+                        wrongLetters++;
+
+                    }
+                    currentIndex++;
+                }
+                if (currentIndex == predefinedText.length()) {
+                	endOfTest = true;
+                    updateResult();
+                	textPane.setCaretPosition(0);
+
+                    
+
+
+                }
+                if(currentIndex < predefinedText.length()) {
+                	textPane.setCaretPosition(currentIndex);
+                }
+                
+
             }
         });
-
-
+        JScrollPane scrollPane = new JScrollPane(textPane);
+        centerPanel.add(scrollPane,gbc);
+        
         // Dodanie panelu głównego do ramki
         
         add(centerPanel);
@@ -187,5 +219,29 @@ public class Words30Panels extends JFrame{
         setVisible(true);
     
        	}
-	
+	// Metody do Text Pane
+    private void applyCharacterColor(int index, Color color) {
+        StyledDocument doc = textPane.getStyledDocument();
+        SimpleAttributeSet attributes = new SimpleAttributeSet();
+        StyleConstants.setForeground(attributes, color);
+        doc.setCharacterAttributes(index, 1, attributes, true);
+    }
+ // Method to update result and print it
+    public static void updateResult() {
+        if (endOfTest) {
+            float result = calculateResult();
+            System.out.println("Result: " + result);
+        }
+    }
+
+    // Method to calculate result
+    public static float calculateResult() {
+        if (predefinedText.length() == 0) {
+            return 0; 
+        }
+        float accuracy = (float) correctLetters / predefinedText.length();
+        return accuracy * 100; 
+    }
+
 }
+
