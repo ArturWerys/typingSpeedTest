@@ -6,89 +6,88 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.UIManager;
+
 import javax.swing.*;
+import net.miginfocom.swing.MigLayout;
 
 public class WelcomeWindowPanels extends JFrame{
 		
 	public WelcomeWindowPanels() {
 		super();
 		
+		try {
+			UIManager.setLookAndFeel(new FlatDarculaLaf());
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
 		SetWindowSize windowSize = new SetWindowSize(this);
 		int windowWidth = windowSize.getAutoWindowWidth();
 		int windowHeight = windowSize.getAutoWindowHeigth();
-		setSize(windowWidth, windowHeight);
+		setSize(975, 485);
 		
 		Dimension buttDimenison = new Dimension((int)(0.4*windowWidth), (int)(0.15*windowHeight));
+//        northPanel.setBackground(ThemeColors.BACKGROUND);
 		
-		JPanel northPanel = new JPanel();
-        add(northPanel, BorderLayout.PAGE_START);
-        northPanel.setBackground(ThemeColors.BACKGROUND);
-		
-        Dimension northPanelDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
-        northPanel.setPreferredSize(northPanelDim);
         
-		JPanel mainPanel = new JPanel(new GridBagLayout());
+		JPanel mainPanel = new JPanel();
 
-		add(mainPanel, BorderLayout.CENTER);
-		mainPanel.setBackground(ThemeColors.BACKGROUND);
-		
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.insets = new Insets(7, 0, 7, 0); // Odstęp miezy przyciskami
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.CENTER;
-		
-		JLabel title = new JLabel("Typing Speed Test");
-	
-		title.setFont(CustomFonts.TITLE);
-		
-		JButton words30Button = new JButton("30 słów");
-
-		words30Button.setPreferredSize(buttDimenison);
-		words30Button.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new Words30Panels();
-				WelcomeWindowPanels.this.dispose();
+		getContentPane().add(mainPanel, BorderLayout.CENTER);
+								mainPanel.setLayout(new GridLayout(0, 1, 0, 0));
+								
+								JLabel title = new JLabel("Typing Speed Test");
+								title.setHorizontalAlignment(SwingConstants.CENTER);
+								
+									title.setFont(CustomFonts.TITLE);
+									mainPanel.add(title);
 				
-			}
-		});
-		
-		JButton seconds30Button = new JButton("30 sekund");
-		seconds30Button.setAlignmentX(Component.CENTER_ALIGNMENT);
-		seconds30Button.setPreferredSize(buttDimenison); 
-		seconds30Button.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new Seconds30Panels();
-				WelcomeWindowPanels.this.dispose();
+				JButton words30Button = new JButton("30 słów");
+				words30Button.setAlignmentX(Component.CENTER_ALIGNMENT);
+						words30Button.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								new Words30Panels();
+								WelcomeWindowPanels.this.dispose();
+								
+							}
+						});
+						mainPanel.add(words30Button);
 				
-			}
-		});
-		
-		JButton previousResultButton = new JButton("Poprzednie wyniki");
-		previousResultButton.setPreferredSize(buttDimenison);
-		previousResultButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new PreviousResultsPanels();
-				WelcomeWindowPanels.this.dispose();
+				JButton seconds30Button = new JButton("30 sekund");
+				seconds30Button.setAlignmentX(Component.CENTER_ALIGNMENT);
+				seconds30Button.setPreferredSize(buttDimenison); 
+				seconds30Button.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new Seconds30Panels();
+						WelcomeWindowPanels.this.dispose();
+						
+					}
+				});
+				mainPanel.add(seconds30Button);
 				
-				
-			}
-		});
-			
-		mainPanel.add(title, constraints);
-		constraints.gridy++;
-		mainPanel.add(words30Button, constraints);
-		constraints.gridy++;
-		mainPanel.add(seconds30Button, constraints);
-		constraints.gridy++;
-		mainPanel.add(previousResultButton, constraints);
+				JButton previousResultButton = new JButton("Poprzednie wyniki");
+				previousResultButton.setPreferredSize(buttDimenison);
+				previousResultButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new PreviousResultsPanels();
+						WelcomeWindowPanels.this.dispose();
+						
+						
+					}
+				});
+				mainPanel.add(previousResultButton);
 		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

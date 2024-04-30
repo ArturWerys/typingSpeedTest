@@ -26,7 +26,7 @@ public class SetWindowSize {
                 Dimension size = container.getSize();
                 autoWindowHeight = size.width;
                 autoWindowWidth = size.height;
-                System.out.println("resize event occured, new dim: "+autoWindowWidth+", "+autoWindowHeight);
+//                System.out.println("resize event occured, new dim: "+autoWindowWidth+", "+autoWindowHeight);
             }
         });
 	}
