@@ -49,7 +49,7 @@ public class ResultsPanels extends JFrame {
 		goBack.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
+		        ObsoleteWelcomeWindowPanels welcomeWindowPanel = new ObsoleteWelcomeWindowPanels();
 		        welcomeWindowPanel.setVisible(true);// Pokaż nowe okno
 				dispose();
 			}

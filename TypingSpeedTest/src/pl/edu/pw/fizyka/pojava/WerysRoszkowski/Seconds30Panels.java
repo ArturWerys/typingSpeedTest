@@ -32,7 +32,6 @@ public class Seconds30Panels extends JFrame {
         //
         JPanel northPanel = new JPanel();
         add(northPanel, BorderLayout.PAGE_START);
-        northPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension northPanelDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
         northPanel.setPreferredSize(northPanelDim);
@@ -41,7 +40,6 @@ public class Seconds30Panels extends JFrame {
         //
         JPanel westPanel = new JPanel();
         add(westPanel, BorderLayout.WEST);
-        westPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension westPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
         westPanel.setPreferredSize(westPanelDim);
@@ -49,7 +47,6 @@ public class Seconds30Panels extends JFrame {
         //
         JPanel eastPanel = new JPanel();
         add(eastPanel, BorderLayout.EAST);
-        eastPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension eastPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
         eastPanel.setPreferredSize(eastPanelDim);
@@ -192,7 +189,7 @@ public class Seconds30Panels extends JFrame {
 		goBack.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
+		        ObsoleteWelcomeWindowPanels welcomeWindowPanel = new ObsoleteWelcomeWindowPanels();
 		        welcomeWindowPanel.setVisible(true);
 				Seconds30Panels.this.dispose();
 				isFirstCharacterEntered = false;

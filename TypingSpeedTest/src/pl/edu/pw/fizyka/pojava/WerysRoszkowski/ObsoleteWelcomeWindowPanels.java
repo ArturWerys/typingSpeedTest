@@ -15,9 +15,11 @@ import javax.swing.UIManager;
 import javax.swing.*;
 import net.miginfocom.swing.MigLayout;
 
-public class WelcomeWindowPanels extends JFrame{
+
+
+public class ObsoleteWelcomeWindowPanels extends JFrame{
 		
-	public WelcomeWindowPanels() {
+	public ObsoleteWelcomeWindowPanels() {
 		super();
 		
 		try {
@@ -55,7 +57,7 @@ public class WelcomeWindowPanels extends JFrame{
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								new Words30Panels();
-								WelcomeWindowPanels.this.dispose();
+								ObsoleteWelcomeWindowPanels.this.dispose();
 								
 							}
 						});
@@ -69,7 +71,7 @@ public class WelcomeWindowPanels extends JFrame{
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						new Seconds30Panels();
-						WelcomeWindowPanels.this.dispose();
+						ObsoleteWelcomeWindowPanels.this.dispose();
 						
 					}
 				});
@@ -82,7 +84,7 @@ public class WelcomeWindowPanels extends JFrame{
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						new PreviousResultsPanels();
-						WelcomeWindowPanels.this.dispose();
+						ObsoleteWelcomeWindowPanels.this.dispose();
 						
 						
 					}
