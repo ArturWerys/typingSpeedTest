@@ -58,7 +58,7 @@ public class WelcomeWindow extends JFrame {
 		btnPreviousResults.setToolTipText("Wykresy przedstawiające Twój postęp na podstawie poprzednich wyników.");
 		panel.add(btnPreviousResults, "cell 0 5,width 50%,alignx center,growy,aligny center");
 		
-		TstMenuBar menuBar = new TstMenuBar(true, this);
+		TstMenuBar menuBar = new TstMenuBar(false, this);
 		setJMenuBar(menuBar);	
 		
 		addComponentListener(new ComponentListener() {

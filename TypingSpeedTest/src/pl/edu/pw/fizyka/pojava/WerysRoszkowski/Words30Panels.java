@@ -23,6 +23,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+import net.miginfocom.swing.MigLayout;
 
 
 public class Words30Panels extends JFrame{
@@ -43,61 +44,18 @@ public class Words30Panels extends JFrame{
 	    int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);
         
-        //
-        JPanel northPanel = new JPanel();
-        add(northPanel, BorderLayout.PAGE_START);
-        northPanel.setBackground(ThemeColors.BACKGROUND);
-        
         Dimension panelGornyDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
-        northPanel.setPreferredSize(panelGornyDim);
-        
-        //
-        JPanel southPanel = new JPanel();
-        add(southPanel, BorderLayout.PAGE_END);
-        southPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension southPanelDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
-        southPanel.setPreferredSize(southPanelDim);
-        
-        //
-        JPanel westPanel = new JPanel();
-        add(westPanel, BorderLayout.WEST);
-        westPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension westPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
-        westPanel.setPreferredSize(westPanelDim);
-        
-        //
-        JPanel eastPanel = new JPanel();
-        add(eastPanel, BorderLayout.EAST);
-        eastPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension eastPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
-        eastPanel.setPreferredSize(eastPanelDim);
         
        
         ///
         
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH; // Wypełnienie komórek w obu kierunkach
-        
-
-        // Button do wynikow
-        ResultsButton resultsButton = new ResultsButton();
-        southPanel.add(resultsButton);
-        resultsButton.setVisible(false);
-        
-        resultsButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new ResultsPanels();
-				Words30Panels.this.dispose();
-				
-				
-			}
-		});
+        JPanel panel = new JPanel();
         
         // Ustawienie text Pane
         
@@ -118,10 +76,6 @@ public class Words30Panels extends JFrame{
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-                
-        
-        gbc.weightx = 1;
-        gbc.weighty = 4; // Ten panel zajmie 2/3 dostępnej przestrzeni
 //        centerPanel.add(textPane, gbc);
         
         textPane.addKeyListener(new KeyAdapter() {
@@ -136,7 +90,6 @@ public class Words30Panels extends JFrame{
                         currentIndex--;
                        
                         applyCharacterColor(currentIndex, Color.BLACK);
-                    
                 }
                 else {
                     if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
@@ -148,19 +101,16 @@ public class Words30Panels extends JFrame{
                         // Incorrect character typed, color it red
                         applyCharacterColor(currentIndex, Color.RED);
                         wrongLetters++;
-
                     }
                     currentIndex++;
                 }
+                
                 if (currentIndex == predefinedText.length()) {
                 	endOfTest = true;
                     updateResult();
                 	textPane.setCaretPosition(0);
-
-                    
-
-
                 }
+                
                 if(currentIndex < predefinedText.length()) {
                 	textPane.setCaretPosition(currentIndex);
                 }
@@ -168,57 +118,40 @@ public class Words30Panels extends JFrame{
 
             }
         });
+        panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][20%]"));
         JScrollPane scrollPane = new JScrollPane(textPane);
-        centerPanel.add(scrollPane,gbc);
+        panel.add(scrollPane, "cell 1 1,grow");
         
         // Dodanie panelu głównego do ramki
         
-        add(centerPanel);
-
-        // Menu - Artur
+        getContentPane().add(panel);
         
-        JMenuBar menuBar;
-		JMenu menu;
-		
-		JMenuItem goBack;
 
-	    // Tworzenie paska menu
-		menuBar = new JMenuBar();
-	    
-		//Dodawanie menu:
-		menu = new JMenu("Menu");
-		menuBar.add(menu);
-
-	
-		goBack = new JMenuItem("Powrót do ekranu startowego");
-		menu.add(goBack);
-		goBack.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-		        ObsoleteWelcomeWindowPanels welcomeWindowPanel = new ObsoleteWelcomeWindowPanels();
-		        welcomeWindowPanel.setVisible(true);
-				Words30Panels.this.dispose();
-			}
-		});
-		
-    	setJMenuBar(menuBar);
-    	
-    	menu.addSeparator();
-		JMenuItem exit = new JMenuItem("Exit");
-		exit.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);	
-			}
+        // Button do wynikow
+        ResultsButton resultsButton = new ResultsButton();
+        panel.add(resultsButton, "cell 1 2,width 30%,alignx center,height 10%,aligny center");
+        resultsButton.setVisible(false);
+        
+        resultsButton.addActionListener(new ActionListener() {
 			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ResultsPanels();
+				Words30Panels.this.dispose();
+				
+				
+			}
 		});
-		menu.add(exit);
+
+        TstMenuBar menuBar = new TstMenuBar(true, this);
+		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     
        	}
+	
 	// Metody do Text Pane
     private void applyCharacterColor(int index, Color color) {
         StyledDocument doc = textPane.getStyledDocument();
