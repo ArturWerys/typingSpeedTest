@@ -123,6 +123,8 @@ public class WelcomeWindow extends JFrame {
 			}
 		});
 		
+		
+		
 //		TstMenuBar menuBar = new TstMenuBar();
 //		setJMenuBar(menuBar);	
 		
