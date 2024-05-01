@@ -24,17 +24,15 @@ import java.awt.Component;
 import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class WelcomeWindow extends JFrame {
 	public WelcomeWindow() {
 		super();
 		
-		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
 		SetWindowSize windowSize = new SetWindowSize(this);
 		int windowWidth = windowSize.getAutoWindowWidth();
 		int windowHeight = windowSize.getAutoWindowHeigth();
-		
-		
 		setSize(new Dimension(windowWidth, windowHeight));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -60,11 +58,8 @@ public class WelcomeWindow extends JFrame {
 		btnPreviousResults.setToolTipText("Wykresy przedstawiające Twój postęp na podstawie poprzednich wyników.");
 		panel.add(btnPreviousResults, "cell 0 5,width 50%,alignx center,growy,aligny center");
 		
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
-		JMenu mnSettingsMenu = new JMenu("Settings");
-		menuBar.add(mnSettingsMenu);
+		TstMenuBar menuBar = new TstMenuBar(true, this);
+		setJMenuBar(menuBar);	
 		
 		addComponentListener(new ComponentListener() {
 			
@@ -123,16 +118,6 @@ public class WelcomeWindow extends JFrame {
 			}
 		});
 		
-		
-		
-//		TstMenuBar menuBar = new TstMenuBar();
-//		setJMenuBar(menuBar);	
-		
-//		requestFocus();
-//		setFocusableWindowState(true);
 		setVisible(true);
 	}
-	
-	
-
 }
