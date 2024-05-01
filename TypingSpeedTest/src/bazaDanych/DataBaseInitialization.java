@@ -11,7 +11,7 @@ public class DataBaseInitialization {
 		Connection conn = null;
 		try {
 			
-			conn = DriverManager.getConnection(	"jdbc:h2:tstDataBase", "sa", "");
+			conn = DriverManager.getConnection(	"jdbc:h2:tstData", "artur", "");
 			// domyslnie nazwa uzytkownika to "sa" a dostep jest bez hasla - ""
 			// Proba podlaczenia do bazy H2, ktora nie istnieje 
 			// domyslnie powoduje utworzenie nowej instancji pustej bazy 

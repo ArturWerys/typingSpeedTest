@@ -13,13 +13,13 @@ public class PrintTable {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(
-                    "jdbc:h2:tstDataBase", "sa",
+                    "jdbc:h2:tstData", "artur",
                     "");
 
             Statement statement = conn.createStatement();
 
             // Wykonaj zapytanie, aby pobrać całą tabelę
-            ResultSet rs = statement.executeQuery("SELECT * FROM `wyniki testow`");
+            ResultSet rs = statement.executeQuery("SELECT * FROM `wyniki`");
 
             // Pobierz metadane wyniku zapytania (np. liczba kolumn)
             int columnCount = rs.getMetaData().getColumnCount();

@@ -12,28 +12,30 @@ public class CreatingTable{
 		
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(	"jdbc:h2:tstDataBase", "sa", "");
+			conn = DriverManager.getConnection(	"jdbc:h2:tstData", "artur", "");
 			// domyslnie nazwa uzytkownika to "sa" a dostep jest bez hasla - ""
 			
 			
 		     Statement statement = conn.createStatement();
 		     // Usuwanie tabeli je�li ju� istnieje - kolejne uruchomienie przykladu nie wygeneruje bledu:
-		     statement.executeUpdate("DROP TABLE IF EXISTS `wyniki testow`;");
+		     statement.executeUpdate("DROP TABLE IF EXISTS `wyniki`;");
 				
 			 // Tworzenie tabeli o okreslonej strukturze danych
-		     statement.executeUpdate("CREATE TABLE `wyniki testow` ("+
+		     statement.executeUpdate("CREATE TABLE `wyniki` ("+
 						  "`Id` int(6) unsigned NOT NULL auto_increment,"+
 						  "`data` date default NULL,"+
+                          "`hour` VARCHAR(5) default NULL,"+ // Używamy VARCHAR dla godziny
 						  "`Correct words` float default NULL,"+
 						  "PRIMARY KEY  (`Id`)"+
 						") ;");
 				
 				
-				//Dodawanie "reczne" poszczegolnych rekordow do tabeli:				
-		     statement.executeUpdate("INSERT INTO `wyniki testow` (`Id`,`data`,`Correct words`) VALUES (1, '2024-04-28', 51);");
+				//Dodawanie "reczne" poszczegolnych rekordow do tabeli:
+
+//		     statement.executeUpdate("INSERT INTO `wyniki` (`Id`,`data`, `hour`,`Correct words`) VALUES (1, '2024-04-28',15.10, 50);");
 		     
 				// Przykladowe rownowazne polecenia SQL: 
-				statement.executeUpdate("INSERT INTO `wyniki testow` VALUES (2,'2024-04-28',55);");
+//				statement.executeUpdate("INSERT INTO `wyniki` VALUES (2,'2024-04-28',12.50,100);");
 				//statement.executeUpdate("INSERT INTO `waluty` (`data`,`USD`,`EUR`,`GBP`) VALUES ('2000-01-03',4.1171,4.165,6.6576);");
  		        //statement.executeUpdate("INSERT INTO waluty VALUES (1,'2000-01-03',4.1171,4.165,6.6576);");
 		        //statement.executeUpdate("INSERT INTO waluty (Id,data,USD,EUR,GBP) VALUES (1,'2000-01-03',4.1171,4.165,6.6576);");
