@@ -39,24 +39,24 @@ public class WelcomeWindow extends JFrame {
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new MigLayout("", "[grow,center]", "[][38%][4%][12.5%][12.5%][12.5%][5,grow]"));
+		panel.setLayout(new MigLayout("", "[25%][grow,center][25%]", "[][38%][4%][15%][15%][12%][grow]"));
 		
 		JLabel lblTitle = new JLabel("Typing Speed Test");
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 5));
-		panel.add(lblTitle, "cell 0 1,width 50%,alignx center,aligny bottom");
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		panel.add(lblTitle, "cell 1 1,growx,alignx center,aligny bottom");
 		
 		JButton btn30WordsButton = new JButton("Tryb 30 słów");
 		btn30WordsButton.setToolTipText("Tryb testu, gdzie prędkość pisania określona zostanie po napisanu 30 słów.");
-		panel.add(btn30WordsButton, "cell 0 3,width 50%,alignx center,growy,aligny center");
+		panel.add(btn30WordsButton, "cell 1 3,alignx center,aligny center,grow");
 		
 		JButton btn30SecondsButton = new JButton("Tryb 30 sekund");
 		btn30SecondsButton.setToolTipText("Tryb testu trwający 30 sekund. Napisz jak najwięcej słów w tym czasie!");
-		panel.add(btn30SecondsButton, "cell 0 4,width 50%,alignx center,growy,aligny center");
+		panel.add(btn30SecondsButton, "cell 1 4,alignx center,aligny center,grow");
 		
 		JButton btnPreviousResults = new JButton("Zobacz poprzednie wyniki");
 		btnPreviousResults.setToolTipText("Wykresy przedstawiające Twój postęp na podstawie poprzednich wyników.");
-		panel.add(btnPreviousResults, "cell 0 5,width 50%,alignx center,growy,aligny center");
+		panel.add(btnPreviousResults, "cell 1 5,alignx center,aligny center,grow");
 		
 		TstMenuBar menuBar = new TstMenuBar(false, this);
 		setJMenuBar(menuBar);	

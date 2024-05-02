@@ -17,6 +17,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
@@ -38,24 +40,19 @@ public class Words30Panels extends JFrame{
 	public Words30Panels() throws HeadlessException {
 		super();		
 		
-		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
+		UIDefaults defaults = UIManager.getDefaults();
+		
+		//Kod ustawiający początkowy automatyczny rozmiar okna. - Mateusz
 		SetWindowSize windowSize = new SetWindowSize(this);
 		int windowWidth = windowSize.getAutoWindowWidth();
 	    int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);
         
-        Dimension panelGornyDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
-        
-        Dimension southPanelDim = new Dimension(windowWidth, (int)(0.2 * windowHeight));
-        
-        Dimension westPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
-        
-        Dimension eastPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
-        
-       
-        ///
-        
         JPanel panel = new JPanel();
+        
+        // Button do wynikow
+        ResultsButton resultsButton = new ResultsButton();
+        resultsButton.setVisible(false);
         
         // Ustawienie text Pane
         
@@ -69,7 +66,7 @@ public class Words30Panels extends JFrame{
 
         // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
-        StyleConstants.setForeground(defaultStyle, Color.BLACK);
+        StyleConstants.setForeground(defaultStyle, defaults.getColor("textText"));
         
         try {
             doc.insertString(doc.getLength(), predefinedText, defaultStyle);
@@ -89,7 +86,7 @@ public class Words30Panels extends JFrame{
                 	
                         currentIndex--;
                        
-                        applyCharacterColor(currentIndex, Color.BLACK);
+                        applyCharacterColor(currentIndex, defaults.getColor("textText"));
                 }
                 else {
                     if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
@@ -109,6 +106,7 @@ public class Words30Panels extends JFrame{
                 	endOfTest = true;
                     updateResult();
                 	textPane.setCaretPosition(0);
+                    resultsButton.setVisible(true);
                 }
                 
                 if(currentIndex < predefinedText.length()) {
@@ -126,11 +124,12 @@ public class Words30Panels extends JFrame{
         
         getContentPane().add(panel);
         
+        
 
-        // Button do wynikow
-        ResultsButton resultsButton = new ResultsButton();
-        panel.add(resultsButton, "cell 1 2,width 30%,alignx center,height 10%,aligny center");
-        resultsButton.setVisible(false);
+        panel.add(resultsButton, "cell 1 2,alignx center,aligny center");
+        
+
+        
         
         resultsButton.addActionListener(new ActionListener() {
 			
