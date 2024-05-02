@@ -55,7 +55,6 @@ public class ResultsPanels extends JFrame {
         TstMenuBar menuBar = new TstMenuBar(true, this);
         setJMenuBar(menuBar);
         
-        
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
