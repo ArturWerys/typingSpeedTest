@@ -43,11 +43,12 @@ public class WelcomeWindow extends JFrame {
 		
 		JLabel lblTitle = new JLabel("Typing Speed Test");
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lblTitle.setFont(CustomFonts.TITLE_FONT.deriveFont(10f));
 		panel.add(lblTitle, "cell 1 1,growx,alignx center,aligny bottom");
 		
 		JButton btn30WordsButton = new JButton("Tryb 30 słów");
 		btn30WordsButton.setToolTipText("Tryb testu, gdzie prędkość pisania określona zostanie po napisanu 30 słów.");
+		btn30WordsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(10f));
 		panel.add(btn30WordsButton, "cell 1 3,alignx center,aligny center,grow");
 		
 		JButton btn30SecondsButton = new JButton("Tryb 30 sekund");
@@ -56,6 +57,7 @@ public class WelcomeWindow extends JFrame {
 		
 		JButton btnPreviousResults = new JButton("Zobacz poprzednie wyniki");
 		btnPreviousResults.setToolTipText("Wykresy przedstawiające Twój postęp na podstawie poprzednich wyników.");
+		btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont(10f));
 		panel.add(btnPreviousResults, "cell 1 5,alignx center,aligny center,grow");
 		
 		TstMenuBar menuBar = new TstMenuBar(false, this);
@@ -66,16 +68,24 @@ public class WelcomeWindow extends JFrame {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				int width = e.getComponent().getWidth();
-                int fontSize = (int) (width * 0.06); // Adjust this multiplier as needed
-                lblTitle.setFont(new Font("Tahoma", Font.PLAIN, fontSize));
+                float titleFontSize = (float)(width * 0.06); // Adjust this multiplier as needed
+                lblTitle.setFont(CustomFonts.TITLE_FONT.deriveFont(titleFontSize));
+                float buttonFontSize = (float)(width * 0.02);
+                btn30WordsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
+                btn30SecondsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
+                btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(buttonFontSize*0.8)));
 				
 			}
 			
 			@Override
 			public void componentResized(ComponentEvent e) {
 				int width = e.getComponent().getWidth();
-                int fontSize = (int) (width * 0.06); // Adjust this multiplier as needed
-                lblTitle.setFont(new Font("Tahoma", Font.PLAIN, fontSize));
+                float titleFontSize = (int) (width * 0.06); // Adjust this multiplier as needed
+                lblTitle.setFont(CustomFonts.TITLE_FONT.deriveFont(titleFontSize));
+                float buttonFontSize = (float)(width * 0.02);
+                btn30WordsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
+                btn30SecondsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
+                btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(buttonFontSize*0.8)));
 			}
 			
 			@Override

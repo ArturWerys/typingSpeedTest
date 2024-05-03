@@ -169,46 +169,8 @@ public class Seconds30Panels extends JFrame {
         
         add(centerPanel);
 
-        // Menu - Artur
-        
-        JMenuBar menuBar;
-		JMenu menu;
-		
-		JMenuItem goBack;
-
-	    // Tworzenie paska menu
-		menuBar = new JMenuBar();
-	    
-		//Dodawanie menu:
-		menu = new JMenu("Menu");
-		menuBar.add(menu);
-
-	
-		goBack = new JMenuItem("Powrót do ekranu startowego");
-		menu.add(goBack);
-		goBack.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-		        ObsoleteWelcomeWindowPanels welcomeWindowPanel = new ObsoleteWelcomeWindowPanels();
-		        welcomeWindowPanel.setVisible(true);
-				Seconds30Panels.this.dispose();
-				isFirstCharacterEntered = false;
-			}
-		});
-		
-		
-    	setJMenuBar(menuBar);
-    	
-    	menu.addSeparator();
-		JMenuItem exit = new JMenuItem("Exit");
-		exit.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);	
-			}
-			
-		});
-		menu.add(exit);
+        TstMenuBar menuBar = new TstMenuBar(true, this);
+        setJMenuBar(menuBar);
         
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
