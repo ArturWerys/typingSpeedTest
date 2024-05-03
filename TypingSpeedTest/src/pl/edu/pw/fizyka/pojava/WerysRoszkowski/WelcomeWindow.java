@@ -36,7 +36,7 @@ public class WelcomeWindow extends JFrame {
 		setSize(new Dimension(windowWidth, windowHeight));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		
+	
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new MigLayout("", "[25%][grow,center][25%]", "[][38%][4%][15%][15%][12%][grow]"));
