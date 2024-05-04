@@ -116,20 +116,15 @@ public class Words30Panels extends JFrame{
 
             }
         });
-        panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][20%]"));
+        panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%][20%]"));
         JScrollPane scrollPane = new JScrollPane(textPane);
         panel.add(scrollPane, "cell 1 1,grow");
         
         // Dodanie panelu głównego do ramki
         
         getContentPane().add(panel);
-        
-        
 
-        panel.add(resultsButton, "cell 1 2,alignx center,aligny center");
-        
-
-        
+        panel.add(resultsButton, "cell 1 3,alignx center,aligny center");
         
         resultsButton.addActionListener(new ActionListener() {
 			
@@ -147,9 +142,9 @@ public class Words30Panels extends JFrame{
         
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-    
+        setVisible(true);      
        	}
+	
 	
 	// Metody do Text Pane
     private void applyCharacterColor(int index, Color color) {

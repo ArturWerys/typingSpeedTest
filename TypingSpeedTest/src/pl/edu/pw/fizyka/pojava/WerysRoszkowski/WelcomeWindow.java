@@ -27,6 +27,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 public class WelcomeWindow extends JFrame {
+	private static final double titleScale = 0.06;
+	private static final double modeButtonScale = 0.02;
+	private static final double prevResBttnScale = 0.016;
+	
 	public WelcomeWindow() {
 		super();
 		
@@ -68,24 +72,19 @@ public class WelcomeWindow extends JFrame {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				int width = e.getComponent().getWidth();
-                float titleFontSize = (float)(width * 0.06); // Adjust this multiplier as needed
-                lblTitle.setFont(CustomFonts.TITLE_FONT.deriveFont(titleFontSize));
-                float buttonFontSize = (float)(width * 0.02);
-                btn30WordsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
-                btn30SecondsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
-                btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(buttonFontSize*0.8)));
-				
+                lblTitle.setFont(CustomFonts.TITLE_FONT.deriveFont((float)(width * titleScale)));
+                btn30WordsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * modeButtonScale)));
+                btn30SecondsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * modeButtonScale)));
+                btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * prevResBttnScale)));
 			}
 			
 			@Override
 			public void componentResized(ComponentEvent e) {
 				int width = e.getComponent().getWidth();
-                float titleFontSize = (int) (width * 0.06); // Adjust this multiplier as needed
-                lblTitle.setFont(CustomFonts.TITLE_FONT.deriveFont(titleFontSize));
-                float buttonFontSize = (float)(width * 0.02);
-                btn30WordsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
-                btn30SecondsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont(buttonFontSize));
-                btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(buttonFontSize*0.8)));
+                lblTitle.setFont(CustomFonts.TITLE_FONT.deriveFont((float)(width * titleScale)));
+                btn30WordsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * modeButtonScale)));
+                btn30SecondsButton.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * modeButtonScale)));
+                btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * prevResBttnScale)));
 			}
 			
 			@Override
