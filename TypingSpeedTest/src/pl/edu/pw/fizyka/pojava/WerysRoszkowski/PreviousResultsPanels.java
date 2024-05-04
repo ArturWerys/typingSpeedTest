@@ -16,7 +16,7 @@ public class PreviousResultsPanels extends JFrame{
 	
 	public PreviousResultsPanels() {
 		super();
-		SetWindowSize windowSize = new SetWindowSize();
+		SetWindowSize windowSize = new SetWindowSize(this);
         int windowWidth = windowSize.getAutoWindowWidth();
         int windowHeight = windowSize.getAutoWindowHeigth();
         setSize(windowWidth, windowHeight);
@@ -29,46 +29,11 @@ public class PreviousResultsPanels extends JFrame{
      
         panel.add(label);
         
+        TstMenuBar menuBar = new TstMenuBar(true, this);
+        setJMenuBar(menuBar);
         
-        JMenuBar menuBar;
-		JMenu menu;
-		
-		JMenuItem goBack;
-
-	    // Tworzenie paska menu
-		menuBar = new JMenuBar();
-	    
-		//Dodawanie menu:
-		menu = new JMenu("Menu");
-		menuBar.add(menu);
-
-	
-		goBack = new JMenuItem("Powrót do ekranu startowego");
-		menu.add(goBack);	
-		goBack.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
-		        welcomeWindowPanel.setVisible(true);
-				dispose();
-			}
-		});
-		
-    	setJMenuBar(menuBar);
-    	
-    	menu.addSeparator();
-		JMenuItem exit = new JMenuItem("Exit");
-		exit.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);	
-			}
-			
-		});
-		menu.add(exit);
-        
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    setLocationRelativeTo(null);
+		    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         
         ValuesFromDB.displayChart();
