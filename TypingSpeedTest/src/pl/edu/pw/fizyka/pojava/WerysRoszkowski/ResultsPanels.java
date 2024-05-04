@@ -29,6 +29,9 @@ public class ResultsPanels extends JFrame {
         setSize(windowWidth, windowHeight);
         getContentPane().setLayout(new MigLayout("", "[8%][grow][8%]", "[50%,grow][25%][15%,grow]"));
         
+        JPanel graphPanel = new JPanel();
+        getContentPane().add(graphPanel, "cell 1 0,grow");
+        
         JPanel statsPanel = new JPanel();
         getContentPane().add(statsPanel, "cell 1 1,grow");
         statsPanel.setLayout(new MigLayout("", "[10%][26%][26%,grow][26%][10%]", "[46.00%][grow]"));
@@ -54,15 +57,15 @@ public class ResultsPanels extends JFrame {
         JLabel lblConsistencyName = new JLabel("stałość tempa");
         statsPanel.add(lblConsistencyName, "cell 3 1,alignx center,aligny top");
         
-        JPanel panel = new JPanel();
-        getContentPane().add(panel, "cell 1 2,grow");
-        panel.setLayout(new MigLayout("", "[20%][20%][20%][20%][20%]", "[10%][100%][10%]"));
+        JPanel buttonsPanel = new JPanel();
+        getContentPane().add(buttonsPanel, "cell 1 2,grow");
+        buttonsPanel.setLayout(new MigLayout("", "[20%][20%][20%][20%][20%]", "[10%][100%][10%]"));
         
         JButton btnSaveResults = new JButton("Zapisz wyniki");
-        panel.add(btnSaveResults, "cell 1 1,alignx center,aligny center,grow");
+        buttonsPanel.add(btnSaveResults, "cell 1 1,alignx center,aligny center,grow");
         
         JButton btnDiscardResults = new JButton("Odrzuć wyniki");
-        panel.add(btnDiscardResults, "cell 3 1,alignx center,aligny center,grow");
+        buttonsPanel.add(btnDiscardResults, "cell 3 1,alignx center,aligny center,grow");
         
         TstMenuBar menuBar = new TstMenuBar(true, this);
         setJMenuBar(menuBar);
