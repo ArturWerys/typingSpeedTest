@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class TimerSliderPanel extends JPanel {
 
-    SetWindowSize windowSize = new SetWindowSize();
+    SetWindowSize windowSize = new SetWindowSize(this);
     int sliderWidth = windowSize.autoWindowWidth;
     int sliderHeigth = (int) (0.03*windowSize.autoWindowHeight);
     int updateTimeMiliS = 10;
@@ -45,7 +45,6 @@ public class TimerSliderPanel extends JPanel {
 
         this.setBackground(ThemeColors.BACKGROUND);
     }
-
 
 
 	public static boolean isTimerStoppedGetter() {

@@ -24,7 +24,7 @@ public class Seconds30Panels extends JFrame {
 		super();		
 		
 		//Kod ustawiający automatyczny rozmiar okna. - Mateusz
-		SetWindowSize windowSize = new SetWindowSize();
+		SetWindowSize windowSize = new SetWindowSize(this);
 		int windowWidth = windowSize.getAutoWindowWidth();
 	    int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);
@@ -32,7 +32,6 @@ public class Seconds30Panels extends JFrame {
         //
         JPanel northPanel = new JPanel();
         add(northPanel, BorderLayout.PAGE_START);
-        northPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension northPanelDim = new Dimension(windowWidth, (int)(0.18 * windowHeight));
         northPanel.setPreferredSize(northPanelDim);
@@ -41,7 +40,6 @@ public class Seconds30Panels extends JFrame {
         //
         JPanel westPanel = new JPanel();
         add(westPanel, BorderLayout.WEST);
-        westPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension westPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
         westPanel.setPreferredSize(westPanelDim);
@@ -49,7 +47,6 @@ public class Seconds30Panels extends JFrame {
         //
         JPanel eastPanel = new JPanel();
         add(eastPanel, BorderLayout.EAST);
-        eastPanel.setBackground(ThemeColors.BACKGROUND);
         
         Dimension eastPanelDim = new Dimension((int)(0.07 * windowWidth), windowHeight);
         eastPanel.setPreferredSize(eastPanelDim);
@@ -172,46 +169,8 @@ public class Seconds30Panels extends JFrame {
         
         add(centerPanel);
 
-        // Menu - Artur
-        
-        JMenuBar menuBar;
-		JMenu menu;
-		
-		JMenuItem goBack;
-
-	    // Tworzenie paska menu
-		menuBar = new JMenuBar();
-	    
-		//Dodawanie menu:
-		menu = new JMenu("Menu");
-		menuBar.add(menu);
-
-	
-		goBack = new JMenuItem("Powrót do ekranu startowego");
-		menu.add(goBack);
-		goBack.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-		        WelcomeWindowPanels welcomeWindowPanel = new WelcomeWindowPanels();
-		        welcomeWindowPanel.setVisible(true);
-				Seconds30Panels.this.dispose();
-				isFirstCharacterEntered = false;
-			}
-		});
-		
-		
-    	setJMenuBar(menuBar);
-    	
-    	menu.addSeparator();
-		JMenuItem exit = new JMenuItem("Exit");
-		exit.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);	
-			}
-			
-		});
-		menu.add(exit);
+        TstMenuBar menuBar = new TstMenuBar(true, this);
+        setJMenuBar(menuBar);
         
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
