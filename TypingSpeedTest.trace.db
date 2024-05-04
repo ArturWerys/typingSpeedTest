@@ -1,0 +1,40 @@
+04-28 14:31:12 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM wynikiTestow [42102-172]
+04-28 14:31:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM wynikiTestow [42102-172]
+04-28 14:31:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM wynikiTestow [42102-172]
+04-28 14:31:39 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM wynikiTestow [42102-172]
+04-28 14:31:39 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM wynikiTestow [42102-172]
+04-28 14:32:30 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM wynikiTestow [42102-172]
+04-28 14:32:37 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM `wynikiTestow` [42102-172]
+04-28 14:32:38 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM `wynikiTestow` [42102-172]
+04-28 14:32:42 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM `wynikiTestow` [42102-172]
+04-28 14:32:43 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "WYNIKITESTOW" nie istnieje
+Table "WYNIKITESTOW" not found; SQL statement:
+SELECT * FROM `wynikiTestow` [42102-172]

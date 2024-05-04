@@ -6,10 +6,20 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -30,7 +40,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
-    public static String predefinedText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+    public static String predefinedText = "Miłość to nie pluszowy miś ani kwiaty";
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static int wrongLetters = 0;
@@ -38,12 +48,13 @@ public class Words30Panels extends JFrame{
     public static boolean endOfTest = false;
 	
 	public Words30Panels() throws HeadlessException {
-		super();		
+		super();
 		
 		UIDefaults defaults = UIManager.getDefaults();
 		
 		//Kod ustawiający początkowy automatyczny rozmiar okna. - Mateusz
 		SetWindowSize windowSize = new SetWindowSize(this);
+
 		int windowWidth = windowSize.getAutoWindowWidth();
 	    int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);
@@ -80,43 +91,47 @@ public class Words30Panels extends JFrame{
             public void keyTyped(KeyEvent e) {
                 char typedChar = e.getKeyChar();
 
-                if (currentIndex < predefinedText.length() && typedChar == KeyEvent.VK_BACK_SPACE) {
-                	e.consume();
-                	System.out.println("Backspace");
-                	
+                if (typedChar == '\n' || typedChar == '\b') {
+                    e.consume(); // Zapobiega domyślnej akcji klawisza Enter i Backspace
+
+                    if (typedChar == '\b' && currentIndex > 0) {
+                        // Cofnij się o jeden znak, jeśli możliwe
                         currentIndex--;
-                       
+                        correctLetters--;
+                        textPane.setCaretPosition(currentIndex);
                         applyCharacterColor(currentIndex, defaults.getColor("textText"));
-                }
-                else {
-                    if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
-                        // Correct character typed, color it green
-                        applyCharacterColor(currentIndex, Color.GREEN);
-                        correctLetters ++;
-                
-                    } else {
-                        // Incorrect character typed, color it red
-                        applyCharacterColor(currentIndex, Color.RED);
-                        wrongLetters++;
                     }
-                    currentIndex++;
+
+                    return;
                 }
-                
+
+                if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
+                    // Prawidłowy znak wpisany, koloruj na zielono
+                    applyCharacterColor(currentIndex, Color.GREEN);
+                    correctLetters++;
+                } else {
+                    // Nieprawidłowy znak wpisany, koloruj na czerwono
+                    applyCharacterColor(currentIndex, Color.RED);
+                    wrongLetters++;
+                }
+                currentIndex++;
+
                 if (currentIndex == predefinedText.length()) {
                 	endOfTest = true;
                     updateResult();
-                	textPane.setCaretPosition(0);
+                    textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
                 }
-                
-                if(currentIndex < predefinedText.length()) {
-                	textPane.setCaretPosition(currentIndex);
-                }
-                
 
+                if (currentIndex < predefinedText.length()) {
+                    textPane.setCaretPosition(currentIndex);
+                }
+              
             }
         });
+
         panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%][20%]"));
+    
         JScrollPane scrollPane = new JScrollPane(textPane);
         panel.add(scrollPane, "cell 1 1,grow");
         
@@ -158,8 +173,26 @@ public class Words30Panels extends JFrame{
         if (endOfTest) {
             float result = calculateResult();
             System.out.println("Result: " + result);
+            
+            LocalTime currentTime = LocalTime.now();
+            String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+            
+            try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
+                String insertQuery = "INSERT INTO wyniki (data, hour, `Correct words`) VALUES (?, ?, ?)";
+                try (PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                    statement.setDate(1, new java.sql.Date(new java.util.Date().getTime())); 
+                    statement.setString(2, formattedTime);
+                    statement.setFloat(3, result);
+                    statement.executeUpdate();
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+
 
     // Method to calculate result
     public static float calculateResult() {

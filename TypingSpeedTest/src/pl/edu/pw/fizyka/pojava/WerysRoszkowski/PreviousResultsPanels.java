@@ -10,6 +10,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import bazaDanych.ValuesFromDB;
+
 public class PreviousResultsPanels extends JFrame{
 	
 	public PreviousResultsPanels() {
@@ -27,13 +29,14 @@ public class PreviousResultsPanels extends JFrame{
      
         panel.add(label);
         
-        
         TstMenuBar menuBar = new TstMenuBar(true, this);
         setJMenuBar(menuBar);
         
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    setLocationRelativeTo(null);
+		    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        
+        ValuesFromDB.displayChart();
     }
 	
 
