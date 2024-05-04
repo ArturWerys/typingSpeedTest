@@ -10,6 +10,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import bazaDanych.ValuesFromDB;
+
 public class PreviousResultsPanels extends JFrame{
 	
 	public PreviousResultsPanels() {
@@ -42,7 +44,7 @@ public class PreviousResultsPanels extends JFrame{
 
 	
 		goBack = new JMenuItem("Powrót do ekranu startowego");
-		menu.add(goBack);
+		menu.add(goBack);	
 		goBack.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -68,6 +70,8 @@ public class PreviousResultsPanels extends JFrame{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        
+        ValuesFromDB.displayChart();
     }
 	
 

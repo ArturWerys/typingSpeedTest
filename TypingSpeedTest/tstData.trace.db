@@ -442,3 +442,53 @@ CREATE TABLE `wyniki` (`Id` int(6) unsigned NOT NULL auto_increment,`data` date 
 	at org.h2.jdbc.JdbcStatement.executeUpdateInternal(JdbcStatement.java:123)
 	at org.h2.jdbc.JdbcStatement.executeUpdate(JdbcStatement.java:112)
 	at bazaDanych.CreatingTable.main(CreatingTable.java:24)
+05-04 11:29:11 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Kolumna "Correct words" nie istnieje
+Column "Correct words" not found [42122-172]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3072)
+	at org.h2.jdbc.JdbcResultSet.get(JdbcResultSet.java:3133)
+	at org.h2.jdbc.JdbcResultSet.getFloat(JdbcResultSet.java:691)
+	at bazaDanych.NumberOfTest.main(NumberOfTest.java:25)
+05-04 11:30:04 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Kolumna "CORRECT WORDS" nie istnieje
+Column "CORRECT WORDS" not found [42122-172]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3072)
+	at org.h2.jdbc.JdbcResultSet.get(JdbcResultSet.java:3133)
+	at org.h2.jdbc.JdbcResultSet.getFloat(JdbcResultSet.java:691)
+	at bazaDanych.NumberOfTest.main(NumberOfTest.java:25)
+05-04 11:48:35 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Objekt jest zamkniety
+The object is already closed [90007-172]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.message.DbException.get(DbException.java:135)
+	at org.h2.jdbc.JdbcResultSet.checkClosed(JdbcResultSet.java:3099)
+	at org.h2.jdbc.JdbcResultSet.next(JdbcResultSet.java:119)
+	at bazaDanych.NumberOfTest.main(NumberOfTest.java:25)
+05-04 11:48:42 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Objekt jest zamkniety
+The object is already closed [90007-172]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.message.DbException.get(DbException.java:135)
+	at org.h2.jdbc.JdbcResultSet.checkClosed(JdbcResultSet.java:3099)
+	at org.h2.jdbc.JdbcResultSet.next(JdbcResultSet.java:119)
+	at bazaDanych.NumberOfTest.main(NumberOfTest.java:25)
+05-04 11:49:14 jdbc[2]: exception
+org.h2.jdbc.JdbcSQLException: Objekt jest zamkniety
+The object is already closed [90007-172]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	at org.h2.message.DbException.get(DbException.java:169)
+	at org.h2.message.DbException.get(DbException.java:146)
+	at org.h2.message.DbException.get(DbException.java:135)
+	at org.h2.jdbc.JdbcResultSet.checkClosed(JdbcResultSet.java:3099)
+	at org.h2.jdbc.JdbcResultSet.next(JdbcResultSet.java:119)
+	at bazaDanych.NumberOfTest.main(NumberOfTest.java:25)
