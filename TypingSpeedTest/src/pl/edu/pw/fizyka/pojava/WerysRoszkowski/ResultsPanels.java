@@ -112,9 +112,8 @@ public class ResultsPanels extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new PreviousResultsPanels();
 				ResultsPanels.this.dispose();
-				
+				new PreviousResultsPanels();
 			}
 		});
 		
