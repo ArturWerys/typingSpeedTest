@@ -13,7 +13,9 @@ import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,6 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
+import javax.swing.Timer;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -34,16 +38,16 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import net.miginfocom.swing.MigLayout;
+import javax.swing.JProgressBar;
 
 public class Seconds30Panels extends JFrame {
 	
-	public static boolean isFirstCharacterEntered = false;
-	public static long startTime;
-	private static long elapsedTime;
+//	public static boolean isFirstCharacterEntered = false;
+//	public static long startTime;
+//	private static long elapsedTime;
 
     private JTextPane textPane;
     public static JButton resultsButton;
-    public static TimerSliderPanel timerSliderPanel;
     public static String predefinedText = "Miłość to nie pluszowy miś ani kwiaty";
     public static int currentIndex = 0;
     public static int correctLetters = 0;
@@ -51,11 +55,15 @@ public class Seconds30Panels extends JFrame {
     public static float result = 0;
     public static boolean endOfTest = false;
     
+    Timer timer;
+    private int totalTime = 5000; // Total time in milliseconds (e.g., 5 seconds)
+    private int updateInterval = 50; // Update interval in milliseconds (e.g., every 50 ms)
+    
     
 	
 	public Seconds30Panels() {
-		                
-        // Dodanie panelu głównego do ramki
+		
+		boolean isFirstCharacterEntered = true;
         
 		UIDefaults defaults = UIManager.getDefaults();
 		
@@ -71,11 +79,6 @@ public class Seconds30Panels extends JFrame {
         // Button do wynikow
         resultsButton = new ResultsButton();
         resultsButton.setVisible(false);
-        
-        // TimerSlider
-        
-        timerSliderPanel = new TimerSliderPanel();
-        add(timerSliderPanel, BorderLayout.PAGE_END);
        
         
         // Ustawienie text Pane
@@ -84,8 +87,7 @@ public class Seconds30Panels extends JFrame {
         textPane.setEditable(false);
         StyledDocument doc = textPane.getStyledDocument();
        
-        textPane.setCaretColor(Color.red);
-       
+        textPane.setCaretColor(defaults.getColor("Caret"));
 
         // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
@@ -97,53 +99,63 @@ public class Seconds30Panels extends JFrame {
             e.printStackTrace();
         }
         
+        
         textPane.addKeyListener(new KeyAdapter() {
+        	private boolean firstCharacterTyped = true;
+        	
+        	
             @Override
             public void keyTyped(KeyEvent e) {
-                char typedChar = e.getKeyChar();
-                
-                isFirstCharacterEntered = true;            
-                startTime = System.currentTimeMillis();
-                elapsedTime = System.currentTimeMillis() - startTime;
-                
-                if (typedChar == '\n' || typedChar == '\b') {
-                    e.consume(); // Zapobiega domyślnej akcji klawisza Enter i Backspace
+            	if(!endOfTest) {
+            		char typedChar = e.getKeyChar();
+                    
+                    if(firstCharacterTyped) {
+                    	firstCharacterTyped = false;
+                    	timer.start();
+                    }
+                    
+                    if (typedChar == '\n' || typedChar == '\b') {
+                        e.consume(); // Zapobiega domyślnej akcji klawisza Enter i Backspace
 
-                    if (typedChar == '\b' && currentIndex > 0) {
-                        // Cofnij się o jeden znak, jeśli możliwe
-                        currentIndex--;
-                        correctLetters--;
-                        textPane.setCaretPosition(currentIndex);
-                        applyCharacterColor(currentIndex, defaults.getColor("textText"));
+                        if (typedChar == '\b' && currentIndex > 0) {
+                            // Cofnij się o jeden znak, jeśli możliwe
+                            currentIndex--;
+                            correctLetters--;
+                            textPane.setCaretPosition(currentIndex);
+                            applyCharacterColor(currentIndex, defaults.getColor("textText"));
+                        }
+
+                        return;
                     }
 
-                    return;
-                }
+                    if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
+                        // Prawidłowy znak wpisany, koloruj na zielono
+                        applyCharacterColor(currentIndex, Color.GREEN);
+                        correctLetters++;
+                    } else {
+                        // Nieprawidłowy znak wpisany, koloruj na czerwono
+                        applyCharacterColor(currentIndex, Color.RED);
+                        wrongLetters++;
+                    }
+                    currentIndex++;
 
-                if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
-                    // Prawidłowy znak wpisany, koloruj na zielono
-                    applyCharacterColor(currentIndex, Color.GREEN);
-                    correctLetters++;
-                } else {
-                    // Nieprawidłowy znak wpisany, koloruj na czerwono
-                    applyCharacterColor(currentIndex, Color.RED);
-                    wrongLetters++;
-                }
-                currentIndex++;
+                    if (currentIndex == predefinedText.length()) {
+                    	endOfTest = true;
+                        updateResult();
+                        textPane.setCaretPosition(0);
+                        resultsButton.setVisible(true);
+                    }
 
-                if (currentIndex == predefinedText.length()) {
-                	endOfTest = true;
-                    updateResult();
-                    textPane.setCaretPosition(0);
-                    resultsButton.setVisible(true);
-                }
-
-                if (currentIndex < predefinedText.length()) {
-                    textPane.setCaretPosition(currentIndex);
-                }
+                    if (currentIndex < predefinedText.length()) {
+                        textPane.setCaretPosition(currentIndex);
+                    }
+            	}
+            	
+                
               
             }
         });
+        getContentPane().setLayout(new MigLayout("", "[100%]", "[94%][6%]"));
 
         panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%][20%]"));
     
@@ -152,9 +164,34 @@ public class Seconds30Panels extends JFrame {
         
         // Dodanie panelu głównego do ramki
         
-        getContentPane().add(panel);
+        getContentPane().add(panel, "cell 0 0,grow");
 
         panel.add(resultsButton, "cell 1 3,alignx center,aligny center");
+        
+        JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
+        getContentPane().add(progressBar, "cell 0 1,alignx center,aligny center,grow");
+        
+        timer = new Timer(updateInterval, new ActionListener() {
+            private int elapsedTime = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elapsedTime += updateInterval;
+                int progress = 100 - (int) ((double) elapsedTime / totalTime * 100);
+                progressBar.setValue(progress);
+
+                if (elapsedTime >= totalTime) {
+                    timer.stop();
+                    textPane.setEditable(false);
+                    endOfTest = true;
+                    currentIndex = 0;
+                    updateResult();
+                    textPane.setCaretPosition(0);
+                    resultsButton.setVisible(true);
+                }
+            }
+        });
+
         
         resultsButton.addActionListener(new ActionListener() {
 			
@@ -162,8 +199,7 @@ public class Seconds30Panels extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels();
 				Seconds30Panels.this.dispose();
-				
-				
+				endOfTest = false;	
 			}
 		});
 
