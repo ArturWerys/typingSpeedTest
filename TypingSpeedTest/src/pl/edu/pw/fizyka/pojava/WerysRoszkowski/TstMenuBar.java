@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 
 public class TstMenuBar extends JMenuBar {
 	
@@ -35,6 +36,17 @@ public class TstMenuBar extends JMenuBar {
 				welcomeWindow.requestFocus();
 				welcomeWindow.setFocusableWindowState(true);
 				((Window) componentToClose).dispose();
+			}
+		});
+		
+		mntmThemeChooser.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				SwingUtilities.invokeLater(() -> {
+		            new ThemeList(componentToClose);
+		        });
 			}
 		});
 		
