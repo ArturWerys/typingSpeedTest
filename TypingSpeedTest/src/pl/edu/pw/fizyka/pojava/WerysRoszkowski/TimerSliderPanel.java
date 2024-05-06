@@ -62,6 +62,7 @@ public class TimerSliderPanel extends JPanel {
         super.paintComponent(g);
 
         g.setColor(ThemeColors.SLIDER);
+        
         g.fillRect(0, 0, sliderWidth, sliderHeigth);
     }
 }
