@@ -54,7 +54,6 @@ public class Words30Panels extends JFrame{
 		
 		//Kod ustawiający początkowy automatyczny rozmiar okna. - Mateusz
 		SetWindowSize windowSize = new SetWindowSize(this);
-
 		int windowWidth = windowSize.getAutoWindowWidth();
 	    int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);
@@ -147,6 +146,7 @@ public class Words30Panels extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels();
 				Words30Panels.this.dispose();
+				
 				
 				
 			}
