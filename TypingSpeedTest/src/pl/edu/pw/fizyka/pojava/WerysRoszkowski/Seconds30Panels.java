@@ -182,10 +182,12 @@ public class Seconds30Panels extends JFrame {
 
                 if (elapsedTime >= totalTime) {
                     timer.stop();
-                    textPane.setEditable(false);
                     endOfTest = true;
-                    currentIndex = 0;
                     updateResult();
+                    currentIndex = 0;
+                    correctLetters = 0;
+                    wrongLetters = 0;
+                    result = 0;
                     textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
                 }
