@@ -1,29 +1,32 @@
 package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+
 import java.awt.HeadlessException;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import java.io.BufferedReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -40,13 +43,13 @@ import net.miginfocom.swing.MigLayout;
 
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
-    public static String predefinedText = "Miłość to nie pluszowy miś ani kwiaty";
+    public static String predefinedText = "";
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static int wrongLetters = 0;
     public static float result = 0;
     public static boolean endOfTest = false;
-	
+    
 	public Words30Panels() throws HeadlessException {
 		super();
 		
@@ -54,6 +57,7 @@ public class Words30Panels extends JFrame{
 		
 		//Kod ustawiający początkowy automatyczny rozmiar okna. - Mateusz
 		SetWindowSize windowSize = new SetWindowSize(this);
+
 		int windowWidth = windowSize.getAutoWindowWidth();
 	    int windowHeight = windowSize.getAutoWindowHeigth();
 		setSize(windowWidth, windowHeight);
@@ -70,10 +74,9 @@ public class Words30Panels extends JFrame{
         textPane.setEditable(false);
         StyledDocument doc = textPane.getStyledDocument();
        
+        loadText();
         
         textPane.setCaretColor(Color.red);
-       
-
         // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
         StyleConstants.setForeground(defaultStyle, defaults.getColor("textText"));
@@ -83,7 +86,7 @@ public class Words30Panels extends JFrame{
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-//        centerPanel.add(textPane, gbc);
+
         
         textPane.addKeyListener(new KeyAdapter() {
             @Override
@@ -124,8 +127,7 @@ public class Words30Panels extends JFrame{
 
                 if (currentIndex < predefinedText.length()) {
                     textPane.setCaretPosition(currentIndex);
-                }
-              
+                }              
             }
         });
 
@@ -146,7 +148,6 @@ public class Words30Panels extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels();
 				Words30Panels.this.dispose();
-				
 				
 				
 			}
@@ -202,6 +203,28 @@ public class Words30Panels extends JFrame{
         float accuracy = (float) correctLetters / predefinedText.length();
         return accuracy * 100; 
     }
+    
+    public void loadText() {
+        try {
+            InputStream inputStream = Words30Panels.class.getResourceAsStream("/sampleText.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+            StringBuilder stringBuilder = new StringBuilder();
+            String st;
+            while ((st = br.readLine()) != null) {
+                stringBuilder.append(st).append("\n"); // Dodaj odczytaną linię do ciągu, razem z nową linią
+            }
+
+            predefinedText = stringBuilder.toString(); // Zapisz cały odczytany tekst do zmiennej loadedText
+
+            br.close(); // Zamknij BufferedReader, gdy skończysz
+
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
 
