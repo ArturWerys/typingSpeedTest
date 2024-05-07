@@ -5,6 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +18,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+
+import bazaDanych.ExampleChart;
+import bazaDanych.ValuesFromDB;
 import net.miginfocom.swing.MigLayout;
 
 public class ResultsPanels extends JFrame {
@@ -32,6 +43,13 @@ public class ResultsPanels extends JFrame {
         JPanel graphPanel = new JPanel();
         getContentPane().add(graphPanel, "cell 1 0,grow");
         
+     // Dodanie wykresu do panelu graph1Panel
+        JFreeChart chart = ExampleChart.displayChart(); // Tworzenie wykresu
+        ChartPanel chartPanel = new ChartPanel(chart); // Konwersja wykresu na panel
+        
+        graphPanel.setLayout(new BorderLayout());
+        graphPanel.add(chartPanel, BorderLayout.CENTER);
+        
         JPanel statsPanel = new JPanel();
         getContentPane().add(statsPanel, "cell 1 1,grow");
         statsPanel.setLayout(new MigLayout("", "[10%][26%][26%,grow][26%][10%]", "[46.00%][grow]"));
@@ -40,7 +58,7 @@ public class ResultsPanels extends JFrame {
         lblWPMCount.setToolTipText("Słowa na minutę w tym teście. Liczone jako");
         statsPanel.add(lblWPMCount, "cell 1 0,alignx center,aligny bottom");
         
-        JLabel lblAccuracyCount = new JLabel("90%");
+        JLabel lblAccuracyCount = new JLabel(dataFromDB() + "%");
         lblAccuracyCount.setToolTipText("Poprawność wpisywanych znaków. Najlepsza możliwa to 100%. Każdy błąd ją obniża.");
         statsPanel.add(lblAccuracyCount, "cell 2 0,alignx center,aligny bottom");
         
@@ -67,7 +85,7 @@ public class ResultsPanels extends JFrame {
         JButton btnDiscardResults = new JButton("Odrzuć wyniki");
         buttonsPanel.add(btnDiscardResults, "cell 3 1,alignx center,aligny center,grow");
         
-        TstMenuBar menuBar = new TstMenuBar(true, this);
+        TstMenuBar menuBar = new TstMenuBar(true, true, this);
         setJMenuBar(menuBar);
         
 		addComponentListener(new ComponentListener() {
@@ -119,13 +137,49 @@ public class ResultsPanels extends JFrame {
 				new PreviousResultsPanels();
 			}
 		});
-		
-
-        
+   
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         this.requestFocus();
 		this.setFocusableWindowState(true);
     }
+    
+    public int dataFromDB() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        float accuracy = 0.0f; // Inicjalizacja zmiennej accuracy
+
+        try {
+            // Utwórz połączenie
+            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
+
+            // Utwórz obiekt instrukcji
+            stmt = conn.createStatement();
+
+            // Wykonaj zapytanie SQL
+            rs = stmt.executeQuery("SELECT `CORRECT WORDS` FROM wyniki");
+
+            // Przetwórz wyniki zapytania
+            while (rs.next()) {
+                accuracy = rs.getFloat("CORRECT WORDS"); // Aktualizuj accuracy za każdym razem, gdy znajdziesz nową wartość
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Zamykanie ResultSet, Statement i Connection
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Rzutowanie float na int i zwrócenie wartości
+        return (int) accuracy;
+    }
+
 }

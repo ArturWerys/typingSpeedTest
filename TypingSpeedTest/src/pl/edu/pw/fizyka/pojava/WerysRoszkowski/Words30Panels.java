@@ -1,29 +1,34 @@
 package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+
 import java.awt.HeadlessException;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import java.io.BufferedReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -40,13 +45,14 @@ import net.miginfocom.swing.MigLayout;
 
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
-    public static String predefinedText = "Miłość to nie pluszowy miś ani kwiaty";
+    private ResultsButton resultsButton;
+    public static String predefinedText = TextLoader.loadText("SampleText.txt");
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static int wrongLetters = 0;
     public static float result = 0;
     public static boolean endOfTest = false;
-	
+    
 	public Words30Panels() throws HeadlessException {
 		super();
 		
@@ -62,7 +68,7 @@ public class Words30Panels extends JFrame{
         JPanel panel = new JPanel();
         
         // Button do wynikow
-        ResultsButton resultsButton = new ResultsButton();
+        resultsButton = new ResultsButton();
         resultsButton.setVisible(false);
         
         // Ustawienie text Pane
@@ -70,65 +76,113 @@ public class Words30Panels extends JFrame{
         textPane = new JTextPane();
         textPane.setEditable(false);
         StyledDocument doc = textPane.getStyledDocument();
-       
+        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont( (float)(this.getWidth()*0.02)));
         
-        textPane.setCaretColor(Color.red);
-       
-
+        textPane.setCaretColor(defaults.getColor("Caret"));
         // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
-        StyleConstants.setForeground(defaultStyle, defaults.getColor("textText"));
+        StyleConstants.setForeground(defaultStyle, defaults.getColor("Button.disabledText"));
+
         
         try {
             doc.insertString(doc.getLength(), predefinedText, defaultStyle);
+            textPane.setCaretPosition(0);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-//        centerPanel.add(textPane, gbc);
+
         
         textPane.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
                 char typedChar = e.getKeyChar();
 
-                if (typedChar == '\n' || typedChar == '\b') {
-                    e.consume(); // Zapobiega domyślnej akcji klawisza Enter i Backspace
-
-                    if (typedChar == '\b' && currentIndex > 0) {
-                        // Cofnij się o jeden znak, jeśli możliwe
+                if (keyCode == KeyEvent.VK_ENTER) {
+                    // Obsługa klawisza Enter
+                    e.consume();
+                    return;
+                } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
+                    // Obsługa klawisza Backspace
+                    if (currentIndex > 0) {
                         currentIndex--;
                         correctLetters--;
                         textPane.setCaretPosition(currentIndex);
-                        applyCharacterColor(currentIndex, defaults.getColor("textText"));
+                        applyCharacterColor(currentIndex, defaults.getColor("Button.disabledText"));
                     }
-
+                    e.consume();
+                    return;
+                } else if (keyCode == KeyEvent.VK_SHIFT || keyCode == KeyEvent.VK_CONTROL || keyCode == KeyEvent.VK_ALT || keyCode == KeyEvent.VK_CAPS_LOCK || keyCode == KeyEvent.VK_TAB) {
+                    e.consume();
+                    return;
+                } else if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_HOME || keyCode == KeyEvent.VK_END || keyCode == KeyEvent.VK_PAGE_UP || keyCode == KeyEvent.VK_PAGE_DOWN) {
+                    e.consume();
                     return;
                 }
 
                 if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
                     // Prawidłowy znak wpisany, koloruj na zielono
-                    applyCharacterColor(currentIndex, Color.GREEN);
+                    applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     correctLetters++;
                 } else {
                     // Nieprawidłowy znak wpisany, koloruj na czerwono
-                    applyCharacterColor(currentIndex, Color.RED);
+                    applyCharacterColor(currentIndex, new Color(199, 0, 0));
                     wrongLetters++;
                 }
                 currentIndex++;
 
-                if (currentIndex == predefinedText.length()) {
-                	endOfTest = true;
+                if (currentIndex == (predefinedText.length()-1)) {
+                    endOfTest = true;
                     updateResult();
-                    textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
                 }
 
                 if (currentIndex < predefinedText.length()) {
                     textPane.setCaretPosition(currentIndex);
                 }
-              
             }
         });
+        
+
+        addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				int width = e.getComponent().getWidth();
+		        int fontSize = (int) (width * 0.02);
+		        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) fontSize));
+
+		        StyledDocument doc = textPane.getStyledDocument();
+		        int length = doc.getLength();
+		        Color defaultTextColor = defaults.getColor("Button.disabledText");
+		        for (int i = 0; i < length; i++) {
+		            SimpleAttributeSet attrs = new SimpleAttributeSet(doc.getCharacterElement(i).getAttributes());
+		            StyleConstants.setFontSize(attrs, fontSize);
+		            StyleConstants.setForeground(attrs, defaultTextColor);
+		            doc.setCharacterAttributes(i, 1, attrs, false);
+		        }
+		        repaint();
+				
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
         panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%][20%]"));
     
@@ -147,12 +201,12 @@ public class Words30Panels extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels();
 				Words30Panels.this.dispose();
-				
+				resetTextPane();
 				
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, this);
+        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
@@ -201,6 +255,34 @@ public class Words30Panels extends JFrame{
         }
         float accuracy = (float) correctLetters / predefinedText.length();
         return accuracy * 100; 
+    }
+    
+    public void resetTextPane() {
+    	
+    	correctLetters = 0;
+        currentIndex = 0;
+        correctLetters = 0;
+        wrongLetters = 0;
+        result = 0;
+        endOfTest = false;
+        
+        StyledDocument doc = textPane.getStyledDocument();
+        try {
+			doc.remove(0, doc.getLength());
+		} catch (BadLocationException e) {
+
+			e.printStackTrace();
+		} 
+        
+        String newPredefinedText = TextLoader.loadText("SampleText.txt");
+        try {
+            doc.insertString(doc.getLength(), newPredefinedText, null);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        
+        textPane.setCaretPosition(0); 
+        resultsButton.setVisible(false); 
     }
 
 }
