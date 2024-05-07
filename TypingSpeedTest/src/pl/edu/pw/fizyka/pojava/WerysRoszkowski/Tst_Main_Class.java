@@ -15,8 +15,7 @@ public class Tst_Main_Class {
 		
 		FlatLightLaf.setup();
 		UIManager.put( "Button.arc", 20 );
-
-
+		
 		WelcomeWindow welcomeWindow = new WelcomeWindow();
 		
 		welcomeWindow.requestFocus();
