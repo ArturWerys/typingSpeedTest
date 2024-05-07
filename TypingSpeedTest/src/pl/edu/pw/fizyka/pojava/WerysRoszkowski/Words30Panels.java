@@ -7,6 +7,8 @@ import java.awt.HeadlessException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -43,7 +45,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
-    public static String predefinedText = "";
+    public static String predefinedText = TextLoader.loadText("SampleText.txt");
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static int wrongLetters = 0;
@@ -73,10 +75,9 @@ public class Words30Panels extends JFrame{
         textPane = new JTextPane();
         textPane.setEditable(false);
         StyledDocument doc = textPane.getStyledDocument();
-       
-        loadText();
+        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont(15f));
         
-        textPane.setCaretColor(Color.red);
+        textPane.setCaretColor(defaults.getColor("Caret"));
         // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
         StyleConstants.setForeground(defaultStyle, defaults.getColor("textText"));
@@ -90,20 +91,29 @@ public class Words30Panels extends JFrame{
         
         textPane.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
                 char typedChar = e.getKeyChar();
 
-                if (typedChar == '\n' || typedChar == '\b') {
-                    e.consume(); // Zapobiega domyślnej akcji klawisza Enter i Backspace
-
-                    if (typedChar == '\b' && currentIndex > 0) {
-                        // Cofnij się o jeden znak, jeśli możliwe
+                if (keyCode == KeyEvent.VK_ENTER) {
+                    // Obsługa klawisza Enter
+                    e.consume();
+                    return;
+                } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
+                    // Obsługa klawisza Backspace
+                    if (currentIndex > 0) {
                         currentIndex--;
                         correctLetters--;
                         textPane.setCaretPosition(currentIndex);
                         applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     }
-
+                    e.consume();
+                    return;
+                } else if (keyCode == KeyEvent.VK_SHIFT || keyCode == KeyEvent.VK_CONTROL || keyCode == KeyEvent.VK_ALT || keyCode == KeyEvent.VK_CAPS_LOCK || keyCode == KeyEvent.VK_TAB) {
+                    e.consume();
+                    return;
+                } else if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_HOME || keyCode == KeyEvent.VK_END || keyCode == KeyEvent.VK_PAGE_UP || keyCode == KeyEvent.VK_PAGE_DOWN) {
+                    e.consume();
                     return;
                 }
 
@@ -119,7 +129,7 @@ public class Words30Panels extends JFrame{
                 currentIndex++;
 
                 if (currentIndex == predefinedText.length()) {
-                	endOfTest = true;
+                    endOfTest = true;
                     updateResult();
                     textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
@@ -127,9 +137,37 @@ public class Words30Panels extends JFrame{
 
                 if (currentIndex < predefinedText.length()) {
                     textPane.setCaretPosition(currentIndex);
-                }              
+                }
             }
         });
+
+        addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				int width = e.getComponent().getWidth();
+                textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) (width * 0.2)));
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
         panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%][20%]"));
     
@@ -204,26 +242,6 @@ public class Words30Panels extends JFrame{
         return accuracy * 100; 
     }
     
-    public void loadText() {
-        try {
-            InputStream inputStream = Words30Panels.class.getResourceAsStream("/sampleText.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-            StringBuilder stringBuilder = new StringBuilder();
-            String st;
-            while ((st = br.readLine()) != null) {
-                stringBuilder.append(st).append("\n"); // Dodaj odczytaną linię do ciągu, razem z nową linią
-            }
-
-            predefinedText = stringBuilder.toString(); // Zapisz cały odczytany tekst do zmiennej loadedText
-
-            br.close(); // Zamknij BufferedReader, gdy skończysz
-
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }
