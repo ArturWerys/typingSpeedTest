@@ -15,49 +15,8 @@ public class ValuesFromDB {
     
     static ArrayList<Integer> idList = new ArrayList<>();
     static ArrayList<Float> accuracyList = new ArrayList<>();
-    
-//    public static void main(String[] args) {
-//        Connection conn = null;
-//        Statement stmt = null;
-//        ResultSet rs = null;
-//
-//
-//        try {
-//            // Utwórz połączenie
-//            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
-//
-//            // Utwórz obiekt instrukcji
-//            stmt = conn.createStatement();
-//
-//            // Wykonaj zapytanie SQL
-//            rs = stmt.executeQuery("SELECT `ID`, `CORRECT WORDS` FROM wyniki");
-//
-//            // Przetwórz wyniki zapytania
-//            while (rs.next()) {
-//                int idValue = rs.getInt("ID");
-//                idList.add(idValue);
-//                
-//                float accuracy = rs.getFloat("CORRECT WORDS");
-//                accuracyList.add(accuracy);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            // Zamykanie ResultSet, Statement i Connection
-//            try {
-//                if (rs != null) rs.close();
-//                if (stmt != null) stmt.close();
-//                if (conn != null) conn.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        displayChart();
-//
-//        
-//}
-    
-    public static void displayChart() {
+       
+    public static JFreeChart displayChart() {
     	
     	Connection conn = null;
         Statement stmt = null;
@@ -102,7 +61,6 @@ public class ValuesFromDB {
             series.add(idList.get(x),accuracyList.get(x));
 
         }
-        
 
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
@@ -123,11 +81,10 @@ public class ValuesFromDB {
         xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
 
 
-        // Tutaj możesz dodać kod do wyświetlenia wykresu, na przykład:
-         ChartFrame frame = new ChartFrame("Wykres", chart);
-         frame.pack();
-         frame.setVisible(true);
-         
-       
+        // Wyświetlenie wykresu 
+        ChartFrame frame = new ChartFrame("Wykres", chart);
+        frame.pack();
+        
+        return chart; 
     }
 }

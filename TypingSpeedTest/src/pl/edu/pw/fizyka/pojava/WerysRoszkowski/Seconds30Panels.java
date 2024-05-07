@@ -41,14 +41,10 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JProgressBar;
 
 public class Seconds30Panels extends JFrame {
-	
-//	public static boolean isFirstCharacterEntered = false;
-//	public static long startTime;
-//	private static long elapsedTime;
 
     private JTextPane textPane;
     public static JButton resultsButton;
-    public static String predefinedText = "Miłość to nie pluszowy miś ani kwiaty";
+    public static String predefinedText = TextLoader.loadText("sampleText30sec.txt");
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static int wrongLetters = 0;
@@ -56,8 +52,8 @@ public class Seconds30Panels extends JFrame {
     public static boolean endOfTest = false;
     
     Timer timer;
-    private int totalTime = 5000; // Total time in milliseconds (e.g., 5 seconds)
-    private int updateInterval = 50; // Update interval in milliseconds (e.g., every 50 ms)
+    private int totalTime = 30000;
+    private int updateInterval = 10;
     
     
 	
@@ -103,28 +99,36 @@ public class Seconds30Panels extends JFrame {
         textPane.addKeyListener(new KeyAdapter() {
         	private boolean firstCharacterTyped = true;
         	
-        	
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
             	if(!endOfTest) {
-            		char typedChar = e.getKeyChar();
+            		int keyCode = e.getKeyCode();
+                    char typedChar = e.getKeyChar();
                     
                     if(firstCharacterTyped) {
                     	firstCharacterTyped = false;
                     	timer.start();
                     }
-                    
-                    if (typedChar == '\n' || typedChar == '\b') {
-                        e.consume(); // Zapobiega domyślnej akcji klawisza Enter i Backspace
 
-                        if (typedChar == '\b' && currentIndex > 0) {
-                            // Cofnij się o jeden znak, jeśli możliwe
+                    if (keyCode == KeyEvent.VK_ENTER) {
+                        // Obsługa klawisza Enter
+                        e.consume();
+                        return;
+                    } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
+                        // Obsługa klawisza Backspace
+                        if (currentIndex > 0) {
                             currentIndex--;
                             correctLetters--;
                             textPane.setCaretPosition(currentIndex);
                             applyCharacterColor(currentIndex, defaults.getColor("textText"));
                         }
-
+                        e.consume();
+                        return;
+                    } else if (keyCode == KeyEvent.VK_SHIFT || keyCode == KeyEvent.VK_CONTROL || keyCode == KeyEvent.VK_ALT || keyCode == KeyEvent.VK_CAPS_LOCK || keyCode == KeyEvent.VK_TAB) {
+                        e.consume();
+                        return;
+                    } else if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_HOME || keyCode == KeyEvent.VK_END || keyCode == KeyEvent.VK_PAGE_UP || keyCode == KeyEvent.VK_PAGE_DOWN) {
+                        e.consume();
                         return;
                     }
 
@@ -140,7 +144,7 @@ public class Seconds30Panels extends JFrame {
                     currentIndex++;
 
                     if (currentIndex == predefinedText.length()) {
-                    	endOfTest = true;
+                        endOfTest = true;
                         updateResult();
                         textPane.setCaretPosition(0);
                         resultsButton.setVisible(true);
@@ -152,9 +156,10 @@ public class Seconds30Panels extends JFrame {
             	}
             	
                 
-              
             }
         });
+        
+        
         getContentPane().setLayout(new MigLayout("", "[100%]", "[94%][6%]"));
 
         panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%][20%]"));
@@ -254,7 +259,7 @@ public class Seconds30Panels extends JFrame {
         if (predefinedText.length() == 0) {
             return 0; 
         }
-        float accuracy = (float) correctLetters / predefinedText.length();
+        float accuracy = (float) correctLetters / currentIndex;
         return accuracy * 100; 
     }
     
