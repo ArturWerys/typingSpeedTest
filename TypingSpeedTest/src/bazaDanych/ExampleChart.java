@@ -12,7 +12,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class ExampleChart {
     public static JFreeChart displayChart() {
-        // Dane przykładowe
+
         List<Integer> timeList = Arrays.asList(1, 2, 3, 4, 5,6,7,8,9,10);
         List<Double> wpmList = Arrays.asList(80.0, 85.0, 90.0, 92.0, 88.0, 55.0, 42.3, 67.9, 99.0, 45.8);
 
@@ -26,7 +26,6 @@ public class ExampleChart {
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
 
-        // Tworzymy wykres XY
         JFreeChart chart = ChartFactory.createXYLineChart(
                 "Przykładowy wykres", // Tytuł
                 "Czas", // Opis osi X
@@ -43,7 +42,6 @@ public class ExampleChart {
         xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
 
-        // Wyświetlenie wykresu
         ChartFrame frame = new ChartFrame("Wykres", chart);
         frame.pack();
 

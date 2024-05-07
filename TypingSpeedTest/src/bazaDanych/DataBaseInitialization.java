@@ -12,15 +12,6 @@ public class DataBaseInitialization {
 		try {
 			
 			conn = DriverManager.getConnection(	"jdbc:h2:tstData", "artur", "");
-			// domyslnie nazwa uzytkownika to "sa" a dostep jest bez hasla - ""
-			// Proba podlaczenia do bazy H2, ktora nie istnieje 
-			// domyslnie powoduje utworzenie nowej instancji pustej bazy 
-			// (w postaci pliku z rozszerzeniem *.db, np. nazwabazy.h2.db)
-			
-			// Dymyslne tworzenie pustej bazy danych czasem moze generowac bledy,
-			// dlatego mozliwe jest wylaczenie domyslnego tworzenia pustej bazy
-			// conn = DriverManager.getConnection(	"jdbc:h2:nazwabazy5;IFEXISTS=TRUE", "sa", "");
-			
 			
 		} finally {
 			if (conn!= null){

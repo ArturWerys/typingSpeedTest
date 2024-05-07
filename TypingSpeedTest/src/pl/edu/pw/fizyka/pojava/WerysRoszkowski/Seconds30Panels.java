@@ -137,22 +137,13 @@ public class Seconds30Panels extends JFrame {
                     }
 
                     if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
-                        // Prawidłowy znak wpisany, koloruj na zielono
                         applyCharacterColor(currentIndex, defaults.getColor("textText"));
                         correctLetters++;
                     } else {
-                        // Nieprawidłowy znak wpisany, koloruj na czerwono
                         applyCharacterColor(currentIndex, new Color(199, 0, 0));
                         wrongLetters++;
                     }
                     currentIndex++;
-
-//                    if (currentIndex == predefinedText.length()) {
-//                        endOfTest = true;
-//                        updateResult();
-//                        textPane.setCaretPosition(0);
-//                        resultsButton.setVisible(true);
-//                    }
 
                     if (currentIndex < predefinedText.length()) {
                         textPane.setCaretPosition(currentIndex);
@@ -215,7 +206,7 @@ public class Seconds30Panels extends JFrame {
 			}
 		});
         
-addComponentListener(new ComponentListener() {
+        addComponentListener(new ComponentListener() {
 			
 			@Override
 			public void componentShown(ComponentEvent e) {
@@ -264,7 +255,6 @@ addComponentListener(new ComponentListener() {
        	}
 	
 	
-	// Metody do Text Pane
 		private void applyCharacterColor(int index, Color color) {
 			StyledDocument doc = textPane.getStyledDocument();
 			SimpleAttributeSet attributes = new SimpleAttributeSet();
@@ -272,10 +262,9 @@ addComponentListener(new ComponentListener() {
 			doc.setCharacterAttributes(index, 1, attributes, true);
 		}
     
-	 // Method to update result and print it
+
 	    public static void updateResult() {
 	        if (endOfTest) {
-	//        	resultsButton.setVisible(true);
 	            float result = calculateResult();
 	            System.out.println("Result: " + result);
 	            
@@ -298,8 +287,6 @@ addComponentListener(new ComponentListener() {
 	    }
 
 
-
-	    // Method to calculate result
 	    public static float calculateResult() {
 	        if (predefinedText.length() == 0) {
 	            return 0; 

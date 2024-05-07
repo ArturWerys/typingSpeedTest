@@ -21,15 +21,14 @@ public class PrintTable {
             // Wykonaj zapytanie, aby pobrać całą tabelę
             ResultSet rs = statement.executeQuery("SELECT * FROM `wyniki`");
 
-            // Pobierz metadane wyniku zapytania (np. liczba kolumn)
+            // Pobierz metadane wyniku zapytania
             int columnCount = rs.getMetaData().getColumnCount();
 
-            // Iteruj przez wynik i wyświetl każdy rekord
             while (rs.next()) {
                 for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + " | "); // Wyświetl wartość każdej kolumny
+                    System.out.print(rs.getString(i) + " | "); 
                 }
-                System.out.println(); // Nowa linia po wyświetleniu rekordu
+                System.out.println(); 
             }
         } finally {
             if (conn != null) {

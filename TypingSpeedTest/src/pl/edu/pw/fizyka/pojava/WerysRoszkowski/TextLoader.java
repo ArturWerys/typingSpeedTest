@@ -17,12 +17,12 @@ public class TextLoader {
             StringBuilder stringBuilder = new StringBuilder();
             String st;
             while ((st = br.readLine()) != null) {
-                stringBuilder.append(st).append("\n"); // Dodaj odczytaną linię do ciągu, razem z nową linią
+                stringBuilder.append(st).append("\n"); 
             }
 
-             predefinedText = stringBuilder.toString(); // Zapisz cały odczytany tekst do zmiennej loadedText
+             predefinedText = stringBuilder.toString(); 
 
-            br.close(); // Zamknij BufferedReader, gdy skończysz
+            br.close(); 
 
             
         } catch (IOException e) {

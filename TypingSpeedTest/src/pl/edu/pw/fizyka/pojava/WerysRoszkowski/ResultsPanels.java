@@ -149,7 +149,7 @@ public class ResultsPanels extends JFrame {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
-        float accuracy = 0.0f; // Inicjalizacja zmiennej accuracy
+        float accuracy = 0.0f; 
 
         try {
             // Utwórz połączenie
@@ -163,12 +163,12 @@ public class ResultsPanels extends JFrame {
 
             // Przetwórz wyniki zapytania
             while (rs.next()) {
-                accuracy = rs.getFloat("CORRECT WORDS"); // Aktualizuj accuracy za każdym razem, gdy znajdziesz nową wartość
+                accuracy = rs.getFloat("CORRECT WORDS"); 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Zamykanie ResultSet, Statement i Connection
+
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
@@ -178,7 +178,6 @@ public class ResultsPanels extends JFrame {
             }
         }
 
-        // Rzutowanie float na int i zwrócenie wartości
         return (int) accuracy;
     }
 

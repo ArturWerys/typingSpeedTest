@@ -121,11 +121,9 @@ public class Words30Panels extends JFrame{
                 }
 
                 if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
-                    // Prawidłowy znak wpisany, koloruj na zielono
                     applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     correctLetters++;
                 } else {
-                    // Nieprawidłowy znak wpisany, koloruj na czerwono
                     applyCharacterColor(currentIndex, new Color(199, 0, 0));
                     wrongLetters++;
                 }
@@ -214,15 +212,13 @@ public class Words30Panels extends JFrame{
         setVisible(true);      
        	}
 	
-	
-	// Metody do Text Pane
     private void applyCharacterColor(int index, Color color) {
         StyledDocument doc = textPane.getStyledDocument();
         SimpleAttributeSet attributes = new SimpleAttributeSet();
         StyleConstants.setForeground(attributes, color);
         doc.setCharacterAttributes(index, 1, attributes, true);
     }
- // Method to update result and print it
+    
     public static void updateResult() {
         if (endOfTest) {
             float result = calculateResult();
@@ -247,8 +243,6 @@ public class Words30Panels extends JFrame{
     }
 
 
-
-    // Method to calculate result
     public static float calculateResult() {
         if (predefinedText.length() == 0) {
             return 0; 
