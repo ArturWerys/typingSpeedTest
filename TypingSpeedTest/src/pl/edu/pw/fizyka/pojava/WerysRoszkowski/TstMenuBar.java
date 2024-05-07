@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 
 public class TstMenuBar extends JMenuBar {
 	
-	public TstMenuBar(boolean returnToWelcomeScreen, JFrame componentToClose) {
+	public TstMenuBar(boolean returnToWelcomeScreen, boolean changeTheme, JFrame componentToClose) {
 		JMenu mnMainMenu = new JMenu("Menu");
 		add(mnMainMenu);
 		
@@ -23,7 +23,10 @@ public class TstMenuBar extends JMenuBar {
 		}
 		
 		JMenuItem mntmThemeChooser = new JMenuItem("Wybierz motyw");
-		mnMainMenu.add(mntmThemeChooser);
+		
+		if(changeTheme) {
+			mnMainMenu.add(mntmThemeChooser);
+		}
 		
 		JMenuItem mntmExit = new JMenuItem("Zamknij program");
 		mnMainMenu.add(mntmExit);
