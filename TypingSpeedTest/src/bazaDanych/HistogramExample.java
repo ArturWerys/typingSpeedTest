@@ -12,7 +12,6 @@ public class HistogramExample extends JFrame {
 
 	public static JFreeChart displayHistogram() {
 		
-		// Dane do wykresu
         double[] data = {90, 90, 100, 100, 100, 88, 88, 93, 54, 33};
         int bins = 15; // Liczba przedziałów
 
