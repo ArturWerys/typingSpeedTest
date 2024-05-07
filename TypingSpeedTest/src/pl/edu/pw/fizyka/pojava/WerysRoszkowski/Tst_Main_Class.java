@@ -13,7 +13,7 @@ public class Tst_Main_Class {
 	
 	public static void main(String[] args) {
 		
-		FlatGruvboxDarkHardIJTheme.setup();
+		FlatLightLaf.setup();
 		UIManager.put( "Button.arc", 20 );
 
 

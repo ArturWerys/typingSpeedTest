@@ -3,6 +3,8 @@ package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -84,13 +86,15 @@ public class Seconds30Panels extends JFrame {
         StyledDocument doc = textPane.getStyledDocument();
        
         textPane.setCaretColor(defaults.getColor("Caret"));
+        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont( (float)(this.getWidth()*0.02)));
 
         // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
-        StyleConstants.setForeground(defaultStyle, defaults.getColor("textText"));
+        StyleConstants.setForeground(defaultStyle, defaults.getColor("Button.disabledText"));
         
         try {
             doc.insertString(doc.getLength(), predefinedText, defaultStyle);
+            textPane.setCaretPosition(0);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
@@ -120,7 +124,7 @@ public class Seconds30Panels extends JFrame {
                             currentIndex--;
                             correctLetters--;
                             textPane.setCaretPosition(currentIndex);
-                            applyCharacterColor(currentIndex, defaults.getColor("textText"));
+                            applyCharacterColor(currentIndex, defaults.getColor("Button.disabledText"));
                         }
                         e.consume();
                         return;
@@ -134,21 +138,21 @@ public class Seconds30Panels extends JFrame {
 
                     if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
                         // Prawidłowy znak wpisany, koloruj na zielono
-                        applyCharacterColor(currentIndex, Color.GREEN);
+                        applyCharacterColor(currentIndex, defaults.getColor("textText"));
                         correctLetters++;
                     } else {
                         // Nieprawidłowy znak wpisany, koloruj na czerwono
-                        applyCharacterColor(currentIndex, Color.RED);
+                        applyCharacterColor(currentIndex, new Color(199, 0, 0));
                         wrongLetters++;
                     }
                     currentIndex++;
 
-                    if (currentIndex == predefinedText.length()) {
-                        endOfTest = true;
-                        updateResult();
-                        textPane.setCaretPosition(0);
-                        resultsButton.setVisible(true);
-                    }
+//                    if (currentIndex == predefinedText.length()) {
+//                        endOfTest = true;
+//                        updateResult();
+//                        textPane.setCaretPosition(0);
+//                        resultsButton.setVisible(true);
+//                    }
 
                     if (currentIndex < predefinedText.length()) {
                         textPane.setCaretPosition(currentIndex);
@@ -162,7 +166,7 @@ public class Seconds30Panels extends JFrame {
         
         getContentPane().setLayout(new MigLayout("", "[100%]", "[94%][6%]"));
 
-        panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%][20%]"));
+        panel.setLayout(new MigLayout("", "[10%][grow][10%]", "[18%][grow][15%]"));
     
         JScrollPane scrollPane = new JScrollPane(textPane);
         panel.add(scrollPane, "cell 1 1,grow");
@@ -171,7 +175,7 @@ public class Seconds30Panels extends JFrame {
         
         getContentPane().add(panel, "cell 0 0,grow");
 
-        panel.add(resultsButton, "cell 1 3,alignx center,aligny center");
+        panel.add(resultsButton, "cell 1 2,alignx center,aligny center");
         
         JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
         getContentPane().add(progressBar, "cell 0 1,alignx center,aligny center,grow");
@@ -206,11 +210,52 @@ public class Seconds30Panels extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels();
 				Seconds30Panels.this.dispose();
-				endOfTest = false;	
+				endOfTest = false;
+				resetTextPane();
+			}
+		});
+        
+addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				int width = e.getComponent().getWidth();
+		        int fontSize = (int) (width * 0.02);
+		        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) fontSize));
+
+		        StyledDocument doc = textPane.getStyledDocument();
+		        int length = doc.getLength();
+		        Color defaultTextColor = defaults.getColor("Button.disabledText");
+		        for (int i = 0; i < length; i++) {
+		            SimpleAttributeSet attrs = new SimpleAttributeSet(doc.getCharacterElement(i).getAttributes());
+		            StyleConstants.setFontSize(attrs, fontSize);
+		            StyleConstants.setForeground(attrs, defaultTextColor);
+		            doc.setCharacterAttributes(i, 1, attrs, false);
+		        }
+		        repaint();
+				
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, this);
+        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
@@ -220,47 +265,72 @@ public class Seconds30Panels extends JFrame {
 	
 	
 	// Metody do Text Pane
-    private void applyCharacterColor(int index, Color color) {
-        StyledDocument doc = textPane.getStyledDocument();
-        SimpleAttributeSet attributes = new SimpleAttributeSet();
-        StyleConstants.setForeground(attributes, color);
-        doc.setCharacterAttributes(index, 1, attributes, true);
-    }
+		private void applyCharacterColor(int index, Color color) {
+			StyledDocument doc = textPane.getStyledDocument();
+			SimpleAttributeSet attributes = new SimpleAttributeSet();
+			StyleConstants.setForeground(attributes, color);
+			doc.setCharacterAttributes(index, 1, attributes, true);
+		}
     
- // Method to update result and print it
-    public static void updateResult() {
-        if (endOfTest) {
-//        	resultsButton.setVisible(true);
-            float result = calculateResult();
-            System.out.println("Result: " + result);
-            
-            LocalTime currentTime = LocalTime.now();
-            String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            
-            try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
-                String insertQuery = "INSERT INTO wyniki (data, hour, `Correct words`) VALUES (?, ?, ?)";
-                try (PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-                    statement.setDate(1, new java.sql.Date(new java.util.Date().getTime())); 
-                    statement.setString(2, formattedTime);
-                    statement.setFloat(3, result);
-                    statement.executeUpdate();
+	 // Method to update result and print it
+	    public static void updateResult() {
+	        if (endOfTest) {
+	//        	resultsButton.setVisible(true);
+	            float result = calculateResult();
+	            System.out.println("Result: " + result);
+	            
+	            LocalTime currentTime = LocalTime.now();
+	            String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+	            
+	            try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
+	                String insertQuery = "INSERT INTO wyniki (data, hour, `Correct words`) VALUES (?, ?, ?)";
+	                try (PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+	                    statement.setDate(1, new java.sql.Date(new java.util.Date().getTime())); 
+	                    statement.setString(2, formattedTime);
+	                    statement.setFloat(3, result);
+	                    statement.executeUpdate();
+	
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 
+	    // Method to calculate result
+	    public static float calculateResult() {
+	        if (predefinedText.length() == 0) {
+	            return 0; 
+	        }
+	        float accuracy = (float) correctLetters / currentIndex;
+	        return accuracy * 100; 
+	    }
+	    
+	    public void resetTextPane() {
+	    	
+	    	correctLetters = 0;
+	        currentIndex = 0;
+	        correctLetters = 0;
+	        wrongLetters = 0;
+	        result = 0;
+	        
+	        StyledDocument doc = textPane.getStyledDocument();
+	        try {
+				doc.remove(0, doc.getLength());
+			} catch (BadLocationException e) {
 
-    // Method to calculate result
-    public static float calculateResult() {
-        if (predefinedText.length() == 0) {
-            return 0; 
-        }
-        float accuracy = (float) correctLetters / currentIndex;
-        return accuracy * 100; 
-    }
-    
+				e.printStackTrace();
+			} 
+	        
+	        String newPredefinedText = TextLoader.loadText("SampleText.txt");
+	        try {
+	            doc.insertString(doc.getLength(), newPredefinedText, null);
+	        } catch (BadLocationException e) {
+	            e.printStackTrace();
+	        }
+	        
+	        textPane.setCaretPosition(0); 
+	    }
 	}

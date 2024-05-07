@@ -45,6 +45,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
+    private ResultsButton resultsButton;
     public static String predefinedText = TextLoader.loadText("SampleText.txt");
     public static int currentIndex = 0;
     public static int correctLetters = 0;
@@ -67,7 +68,7 @@ public class Words30Panels extends JFrame{
         JPanel panel = new JPanel();
         
         // Button do wynikow
-        ResultsButton resultsButton = new ResultsButton();
+        resultsButton = new ResultsButton();
         resultsButton.setVisible(false);
         
         // Ustawienie text Pane
@@ -75,15 +76,17 @@ public class Words30Panels extends JFrame{
         textPane = new JTextPane();
         textPane.setEditable(false);
         StyledDocument doc = textPane.getStyledDocument();
-        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont(15f));
+        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont( (float)(this.getWidth()*0.02)));
         
         textPane.setCaretColor(defaults.getColor("Caret"));
         // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
-        StyleConstants.setForeground(defaultStyle, defaults.getColor("textText"));
+        StyleConstants.setForeground(defaultStyle, defaults.getColor("Button.disabledText"));
+
         
         try {
             doc.insertString(doc.getLength(), predefinedText, defaultStyle);
+            textPane.setCaretPosition(0);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
@@ -105,7 +108,7 @@ public class Words30Panels extends JFrame{
                         currentIndex--;
                         correctLetters--;
                         textPane.setCaretPosition(currentIndex);
-                        applyCharacterColor(currentIndex, defaults.getColor("textText"));
+                        applyCharacterColor(currentIndex, defaults.getColor("Button.disabledText"));
                     }
                     e.consume();
                     return;
@@ -119,19 +122,18 @@ public class Words30Panels extends JFrame{
 
                 if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
                     // Prawidłowy znak wpisany, koloruj na zielono
-                    applyCharacterColor(currentIndex, Color.GREEN);
+                    applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     correctLetters++;
                 } else {
                     // Nieprawidłowy znak wpisany, koloruj na czerwono
-                    applyCharacterColor(currentIndex, Color.RED);
+                    applyCharacterColor(currentIndex, new Color(199, 0, 0));
                     wrongLetters++;
                 }
                 currentIndex++;
 
-                if (currentIndex == predefinedText.length()) {
+                if (currentIndex == (predefinedText.length()-1)) {
                     endOfTest = true;
                     updateResult();
-                    textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
                 }
 
@@ -140,19 +142,32 @@ public class Words30Panels extends JFrame{
                 }
             }
         });
+        
 
         addComponentListener(new ComponentListener() {
 			
 			@Override
 			public void componentShown(ComponentEvent e) {
-				int width = e.getComponent().getWidth();
-                textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) (width * 0.2)));
+				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void componentResized(ComponentEvent e) {
-				// TODO Auto-generated method stub
+				int width = e.getComponent().getWidth();
+		        int fontSize = (int) (width * 0.02);
+		        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) fontSize));
+
+		        StyledDocument doc = textPane.getStyledDocument();
+		        int length = doc.getLength();
+		        Color defaultTextColor = defaults.getColor("Button.disabledText");
+		        for (int i = 0; i < length; i++) {
+		            SimpleAttributeSet attrs = new SimpleAttributeSet(doc.getCharacterElement(i).getAttributes());
+		            StyleConstants.setFontSize(attrs, fontSize);
+		            StyleConstants.setForeground(attrs, defaultTextColor);
+		            doc.setCharacterAttributes(i, 1, attrs, false);
+		        }
+		        repaint();
 				
 			}
 			
@@ -186,12 +201,12 @@ public class Words30Panels extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels();
 				Words30Panels.this.dispose();
-				
+				resetTextPane();
 				
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, this);
+        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
@@ -242,7 +257,33 @@ public class Words30Panels extends JFrame{
         return accuracy * 100; 
     }
     
+    public void resetTextPane() {
+    	
+    	correctLetters = 0;
+        currentIndex = 0;
+        correctLetters = 0;
+        wrongLetters = 0;
+        result = 0;
+        endOfTest = false;
+        
+        StyledDocument doc = textPane.getStyledDocument();
+        try {
+			doc.remove(0, doc.getLength());
+		} catch (BadLocationException e) {
 
+			e.printStackTrace();
+		} 
+        
+        String newPredefinedText = TextLoader.loadText("SampleText.txt");
+        try {
+            doc.insertString(doc.getLength(), newPredefinedText, null);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        
+        textPane.setCaretPosition(0); 
+        resultsButton.setVisible(false); 
+    }
 
 }
 

@@ -64,7 +64,7 @@ public class WelcomeWindow extends JFrame {
 		btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont(10f));
 		panel.add(btnPreviousResults, "cell 1 5,alignx center,aligny center,grow");
 		
-		TstMenuBar menuBar = new TstMenuBar(false, this);
+		TstMenuBar menuBar = new TstMenuBar(false, true, this);
 		setJMenuBar(menuBar);	
 		
 		addComponentListener(new ComponentListener() {
