@@ -44,7 +44,6 @@ public class ValuesFromDB {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Zamykanie ResultSet, Statement i Connection
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
@@ -64,9 +63,9 @@ public class ValuesFromDB {
 
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
-        // Tworzymy wykres XY
+
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Accuracy wraz z kolejnymi testami", // Tytuł
+                "Accuracy wraz z kolejnymi testami", 
                 "Kolejne testy", // Opis osi X
                 "Accuracy",
                 dataset, // Dane
@@ -80,8 +79,6 @@ public class ValuesFromDB {
         xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
 
-
-        // Wyświetlenie wykresu 
         ChartFrame frame = new ChartFrame("Wykres", chart);
         frame.pack();
         
