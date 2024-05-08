@@ -219,6 +219,8 @@ public class Words30Panels extends JFrame{
         doc.setCharacterAttributes(index, 1, attributes, true);
     }
     
+    // BAZA DANYCH
+    
     public static void updateResult() {
         if (endOfTest) {
             float result = calculateResult();

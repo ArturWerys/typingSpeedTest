@@ -88,7 +88,6 @@ public class Seconds30Panels extends JFrame {
         textPane.setCaretColor(defaults.getColor("Caret"));
         textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont( (float)(this.getWidth()*0.02)));
 
-        // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
         StyleConstants.setForeground(defaultStyle, defaults.getColor("Button.disabledText"));
         
@@ -262,6 +261,8 @@ public class Seconds30Panels extends JFrame {
 			doc.setCharacterAttributes(index, 1, attributes, true);
 		}
     
+		
+		// Baza danych
 
 	    public static void updateResult() {
 	        if (endOfTest) {
