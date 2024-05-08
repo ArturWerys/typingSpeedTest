@@ -14,14 +14,14 @@ public class CreatingTable{
 			conn = DriverManager.getConnection(	"jdbc:h2:tstData", "artur", "");
 	
 		     Statement statement = conn.createStatement();
-		     // Usuwanie tabeli - kolejne uruchomienie przykladu nie wygeneruje bledu:
+		     // Usuwanie tabeli - kolejne uruchomienie nie wygeneruje bledu:
 		     statement.executeUpdate("DROP TABLE IF EXISTS `wyniki`;");
 				
 			 // Tworzenie tabeli o okreslonej strukturze danych
 		     statement.executeUpdate("CREATE TABLE `wyniki` ("+
 						  "`Id` int(6) unsigned NOT NULL auto_increment,"+
 						  "`data` date default NULL,"+
-                          "`hour` VARCHAR(5) default NULL,"+ // Używamy VARCHAR dla godziny
+                          "`hour` VARCHAR(5) default NULL,"+ // VARCHAR dla godziny
 						  "`Correct words` float default NULL,"+
 						  "PRIMARY KEY  (`Id`)"+
 						") ;");

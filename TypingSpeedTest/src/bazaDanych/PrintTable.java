@@ -18,10 +18,10 @@ public class PrintTable {
 
             Statement statement = conn.createStatement();
 
-            // Wykonaj zapytanie, aby pobrać całą tabelę
+            // Pobieranie całej tabeli
             ResultSet rs = statement.executeQuery("SELECT * FROM `wyniki`");
 
-            // Pobierz metadane wyniku zapytania
+            // Pobieranie metadanych wyniku zapytania
             int columnCount = rs.getMetaData().getColumnCount();
 
             while (rs.next()) {

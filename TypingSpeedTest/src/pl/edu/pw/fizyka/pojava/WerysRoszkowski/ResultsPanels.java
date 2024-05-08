@@ -145,6 +145,8 @@ public class ResultsPanels extends JFrame {
 		this.setFocusableWindowState(true);
     }
     
+    // Baza danych
+    
     public int dataFromDB() {
         Connection conn = null;
         Statement stmt = null;
