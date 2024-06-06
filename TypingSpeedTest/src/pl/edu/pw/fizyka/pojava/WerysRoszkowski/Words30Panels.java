@@ -41,6 +41,13 @@ public class Words30Panels extends JFrame{
     public static float result = 0;
     public static boolean endOfTest = false;
     
+    // WPM
+    
+    private long startTime = 0;
+
+
+
+    
 	public Words30Panels() throws HeadlessException {
 		super();
 		
@@ -85,6 +92,10 @@ public class Words30Panels extends JFrame{
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 char typedChar = e.getKeyChar();
+                
+                if(currentIndex == 0) {
+                    startTime = System.currentTimeMillis();
+                }
 
                 if (keyCode == KeyEvent.VK_ENTER) {
                     // Obsługa klawisza Enter
@@ -107,25 +118,46 @@ public class Words30Panels extends JFrame{
                     e.consume();
                     return;
                 }
+                
+
 
                 if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
                     applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     correctLetters++;
+                                  
+                                        
                 } else {
                     applyCharacterColor(currentIndex, new Color(199, 0, 0));
                     wrongLetters++;
                 }
                 currentIndex++;
+                         
 
-                if (currentIndex == (predefinedText.length()-1)) {
+                if (currentIndex == predefinedText.length()) {
                     endOfTest = true;
                     updateResult();
                     resultsButton.setVisible(true);
+
+                    long totalTimeMillis = System.currentTimeMillis() - startTime;
+
+                    double totalTimeMinutes = ((totalTimeMillis / 1000.0)/60);
+
+                    double numberOfWords = correctLetters / 5.0;
+                    double WPM = numberOfWords / totalTimeMinutes;
+
+                    System.out.println("Total time: " + totalTimeMinutes + " minutes");
+                    System.out.println("WPM: " + WPM);
+                    System.out.println("Correct letters: " + correctLetters);
                 }
+
+                
 
                 if (currentIndex < predefinedText.length()) {
                     textPane.setCaretPosition(currentIndex);
                 }
+                
+ 
+                               
             }
         });
         
