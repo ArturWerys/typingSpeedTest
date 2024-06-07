@@ -49,7 +49,6 @@ public class Seconds30Panels extends JFrame {
     public static String predefinedText = TextLoader.loadText("sampleText30sec.txt");
     public static int currentIndex = 0;
     public static int correctLetters = 0;
-    public static int wrongLetters = 0;
     public static boolean endOfTest = false;
     
     Timer timer;
@@ -132,12 +131,11 @@ public class Seconds30Panels extends JFrame {
                         return;
                     }
 
-                    if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
+                    if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
                         applyCharacterColor(currentIndex, defaults.getColor("textText"));
                         correctLetters++;
                     } else {
                         applyCharacterColor(currentIndex, new Color(199, 0, 0));
-                        wrongLetters++;
                     }
                     currentIndex++;
 
@@ -158,8 +156,6 @@ public class Seconds30Panels extends JFrame {
         JScrollPane scrollPane = new JScrollPane(textPane);
         panel.add(scrollPane, "cell 1 1,grow");
         
-        // Dodanie panelu głównego do ramki
-        
         getContentPane().add(panel, "cell 0 0,grow");
 
         panel.add(resultsButton, "cell 1 2,alignx center,aligny center");
@@ -179,10 +175,6 @@ public class Seconds30Panels extends JFrame {
                 if (elapsedTime >= totalTime) {
                     timer.stop();
                     endOfTest = true;
-//                    updateResult();
-                    currentIndex = 0;
-                    correctLetters = 0;
-                    wrongLetters = 0;
                     textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
                 }
@@ -194,7 +186,9 @@ public class Seconds30Panels extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ResultsPanels();
+				new ResultsPanels(calculateSeconds30Results());
+				currentIndex = 0;
+                correctLetters = 0;
 				Seconds30Panels.this.dispose();
 				endOfTest = false;
 				resetTextPane();
@@ -258,14 +252,22 @@ public class Seconds30Panels extends JFrame {
 		}
     
 		
-		
+		public static int[] calculateSeconds30Results() {
+
+	    	System.out.println("Cock: " + correctLetters);
+	    	System.out.println("Text length+ "+predefinedText.length());
+	    	
+	        int wpm = StatsCalculationMethods.calculateSeconds30WPM(correctLetters);
+	        int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, predefinedText.length());
+	    	    	
+	        return new int[] {(int) accuracy, (int) wpm};
+	    }
 		
 	    public void resetTextPane() {
 	    	
 	    	correctLetters = 0;
 	        currentIndex = 0;
 	        correctLetters = 0;
-	        wrongLetters = 0;
 
 	        
 	        StyledDocument doc = textPane.getStyledDocument();
