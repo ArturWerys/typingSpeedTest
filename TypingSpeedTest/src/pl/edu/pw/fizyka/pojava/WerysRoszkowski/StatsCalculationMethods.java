@@ -51,4 +51,5 @@ public class StatsCalculationMethods {
         return (int) accuracy; 
 	}
 	
+ 	
 }

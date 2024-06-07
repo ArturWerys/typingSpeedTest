@@ -9,13 +9,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,9 +36,17 @@ public class Words30Panels extends JFrame{
     public static int correctLetters = 0;
     public static boolean endOfTest = false;
     
-    // WPM
-    
     public static long startTime = 0;
+    
+ // Zmienna do przechowywania czasu ostatniego naciśnięcia klawisza
+    public static long lastKeyPressTime = System.currentTimeMillis();
+    
+    ArrayList<Long> letterTimes = new ArrayList<>();
+    
+    ArrayList<Long> oneWordTime = new ArrayList<>();
+
+    
+    // ------------------------------------------ // 
     
 	public Words30Panels() throws HeadlessException {
 		super();
@@ -87,6 +90,39 @@ public class Words30Panels extends JFrame{
         textPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+            	
+            	
+            	
+            	
+            	// LOGIKA NOWEGO WYKRESU
+            	
+            	long currentTime = System.currentTimeMillis();
+                long timeDifference = currentTime - lastKeyPressTime;
+                lastKeyPressTime = currentTime;
+
+                // Dodanie różnicy czasu do listy
+                letterTimes.add(timeDifference);
+                
+                // Wyświetl różnicę czasu w milisekundach
+                System.out.println("Time between key presses: " + timeDifference + " ms");
+            	
+                
+                
+                
+                for (int x=0; x < letterTimes.size(); x++ ) {
+               
+                	 	
+                	for(int i=x; i< x+5; i++) {
+//                		oneWordTime.add();
+                	}
+                	
+                }
+                
+                
+                
+                
+            	// ------------------------------------------- // 
+                
                 int keyCode = e.getKeyCode();
                 char typedChar = e.getKeyChar();
                 
@@ -133,7 +169,6 @@ public class Words30Panels extends JFrame{
                     endOfTest = true;
                     resultsButton.setVisible(true);
 
-                    
                 }
 
                 
@@ -205,7 +240,7 @@ public class Words30Panels extends JFrame{
 				new ResultsPanels(calculateWords30Results());
 				Words30Panels.this.dispose();
 				resetTextPane();
-				
+					
 			}
 		});
 
