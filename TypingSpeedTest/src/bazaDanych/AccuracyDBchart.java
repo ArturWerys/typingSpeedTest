@@ -30,7 +30,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 
-public class ValuesFromDB {
+public class AccuracyDBchart {
     
     static ArrayList<Integer> idList = new ArrayList<>();
     static ArrayList<Float> accuracyList = new ArrayList<>();

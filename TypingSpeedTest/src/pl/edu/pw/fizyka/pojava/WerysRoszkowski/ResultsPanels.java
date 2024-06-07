@@ -7,23 +7,21 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-
 import bazaDanych.ExampleChart;
-import bazaDanych.ValuesFromDB;
 import net.miginfocom.swing.MigLayout;
 
 public class ResultsPanels extends JFrame {
@@ -31,9 +29,9 @@ public class ResultsPanels extends JFrame {
 	private static final double nameLabelScale = 0.02;
 	private static final double BttnTextScale = 0.016;
     
-    public ResultsPanels() {
+    public ResultsPanels(int[] results) {
         super();
-        
+                
         SetWindowSize windowSize = new SetWindowSize(this);
         int windowWidth = windowSize.getAutoWindowWidth();
         int windowHeight = windowSize.getAutoWindowHeigth();
@@ -54,11 +52,11 @@ public class ResultsPanels extends JFrame {
         getContentPane().add(statsPanel, "cell 1 1,grow");
         statsPanel.setLayout(new MigLayout("", "[10%][26%][26%,grow][26%][10%]", "[46.00%][grow]"));
         
-        JLabel lblWPMCount = new JLabel("60");
+        JLabel lblWPMCount = new JLabel(""+ results[1]);
         lblWPMCount.setToolTipText("Słowa na minutę w tym teście. Liczone jako");
         statsPanel.add(lblWPMCount, "cell 1 0,alignx center,aligny bottom");
         
-        JLabel lblAccuracyCount = new JLabel(dataFromDB() + "%");
+        JLabel lblAccuracyCount = new JLabel(results[0] + "%");
         lblAccuracyCount.setToolTipText("Poprawność wpisywanych znaków. Najlepsza możliwa to 100%. Każdy błąd ją obniża.");
         statsPanel.add(lblAccuracyCount, "cell 2 0,alignx center,aligny bottom");
         
@@ -133,8 +131,24 @@ public class ResultsPanels extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				updateResult(results);
 				ResultsPanels.this.dispose();
 				new PreviousResultsPanels();
+			}
+		});
+		
+		btnDiscardResults.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+		    	int answer = JOptionPane.showConfirmDialog(null, "Czy na pewno", "Potwierdzenie",
+						JOptionPane.YES_NO_OPTION);
+				if (answer == JOptionPane.YES_OPTION) {
+					ResultsPanels.this.dispose();
+					new PreviousResultsPanels();
+				}
+				
 			}
 		});
    
@@ -145,42 +159,66 @@ public class ResultsPanels extends JFrame {
 		this.setFocusableWindowState(true);
     }
     
-    // Baza danych
-    
-    public int dataFromDB() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        float accuracy = 0.0f; 
+    public static void updateResult(int[] results) {
+    	
+        LocalTime currentTime = LocalTime.now();
+        String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+        
+        try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
+            String insertQuery = "INSERT INTO wyniki (data, hour, `Correct words`, `WPM`) VALUES (?, ?, ?,?)";
+            try (PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setDate(1, new java.sql.Date(new java.util.Date().getTime())); 
+                statement.setString(2, formattedTime);
+                statement.setFloat(3, results[0]);
+                statement.setFloat(4, results[1]);
 
-        try {
-            // Utwórz połączenie
-            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
+                statement.executeUpdate();
 
-            // Utwórz obiekt instrukcji
-            stmt = conn.createStatement();
-
-            // Wykonaj zapytanie SQL
-            rs = stmt.executeQuery("SELECT `CORRECT WORDS` FROM wyniki");
-
-            // Przetwórz wyniki zapytania
-            while (rs.next()) {
-                accuracy = rs.getFloat("CORRECT WORDS"); 
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
+}
 
-        return (int) accuracy;
-    }
+    
+//    public static void deleteLatestResult() {
+//    	
+//    	int answer = JOptionPane.showConfirmDialog(null, "Czy na pewno", "Potwierdzenie",
+//				JOptionPane.YES_NO_OPTION);
+//		if (answer == JOptionPane.YES_OPTION) {
+//	        try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
+//	            // Znajdowanie najnowszego rekordu na podstawie daty i godziny
+//	            String findLatestQuery = "SELECT id FROM wyniki ORDER BY data DESC, hour DESC LIMIT 1";
+//	            try (Statement findStatement = connection.createStatement();
+//	                 ResultSet resultSet = findStatement.executeQuery(findLatestQuery)) {
+//	                
+//	                if (resultSet.next()) {
+//	                    int latestId = resultSet.getInt("id");
+//
+//	                    // Usunięcie najnowszego rekordu
+//	                    String deleteQuery = "DELETE FROM wyniki WHERE id = ?";
+//	                    try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+//	                        deleteStatement.setInt(1, latestId);
+//	                        int rowsDeleted = deleteStatement.executeUpdate();
+//	                        if (rowsDeleted > 0) {
+//	                            System.out.println("The latest record was deleted successfully.");
+//	                        } else {
+//	                            System.out.println("No record found to delete.");
+//	                        }
+//	                    }
+//	                } else {
+//	                    System.out.println("No records found in the database.");
+//	                }
+//	            }
+//	        } catch (SQLException e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
+//		
+//		else {
+//			JOptionPane.showMessageDialog(null, "Wybrano Nie.");
+//		}
+//
+//    }	
 
 }

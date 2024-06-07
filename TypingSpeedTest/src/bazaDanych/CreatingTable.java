@@ -23,12 +23,13 @@ public class CreatingTable{
 						  "`data` date default NULL,"+
                           "`hour` VARCHAR(5) default NULL,"+ // VARCHAR dla godziny
 						  "`Correct words` float default NULL,"+
+                          "`WPM` float default NULL,"+
 						  "PRIMARY KEY  (`Id`)"+
 						") ;");
 				
 				// Dane poczatkowe
-				statement.executeUpdate("INSERT INTO `wyniki` VALUES (1,'2024-05-08',17.50, 88.54);");
-				statement.executeUpdate("INSERT INTO `wyniki` VALUES (2,'2024-05-08',17.51, 90.54);");
+				statement.executeUpdate("INSERT INTO `wyniki` VALUES (1,'2024-05-08',17.50, 88.54, 55);");
+				statement.executeUpdate("INSERT INTO `wyniki` VALUES (2,'2024-05-08',17.51, 90.54, 20);");
 
 			
 		} finally {

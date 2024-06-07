@@ -50,7 +50,6 @@ public class Seconds30Panels extends JFrame {
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static int wrongLetters = 0;
-    public static float result = 0;
     public static boolean endOfTest = false;
     
     Timer timer;
@@ -60,9 +59,7 @@ public class Seconds30Panels extends JFrame {
     
 	
 	public Seconds30Panels() {
-		
-		boolean isFirstCharacterEntered = true;
-        
+		        
 		UIDefaults defaults = UIManager.getDefaults();
 		
 		//Kod ustawiający początkowy automatyczny rozmiar okna. - Mateusz
@@ -182,11 +179,10 @@ public class Seconds30Panels extends JFrame {
                 if (elapsedTime >= totalTime) {
                     timer.stop();
                     endOfTest = true;
-                    updateResult();
+//                    updateResult();
                     currentIndex = 0;
                     correctLetters = 0;
                     wrongLetters = 0;
-                    result = 0;
                     textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
                 }
@@ -262,47 +258,15 @@ public class Seconds30Panels extends JFrame {
 		}
     
 		
-		// Baza danych
-
-	    public static void updateResult() {
-	        if (endOfTest) {
-	            float result = calculateResult();
-	            System.out.println("Result: " + result);
-	            
-	            LocalTime currentTime = LocalTime.now();
-	            String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-	            
-	            try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
-	                String insertQuery = "INSERT INTO wyniki (data, hour, `Correct words`) VALUES (?, ?, ?)";
-	                try (PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-	                    statement.setDate(1, new java.sql.Date(new java.util.Date().getTime())); 
-	                    statement.setString(2, formattedTime);
-	                    statement.setFloat(3, result);
-	                    statement.executeUpdate();
-	
-	                }
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-
-
-	    public static float calculateResult() {
-	        if (predefinedText.length() == 0) {
-	            return 0; 
-	        }
-	        float accuracy = (float) correctLetters / currentIndex;
-	        return accuracy * 100; 
-	    }
-	    
+		
+		
 	    public void resetTextPane() {
 	    	
 	    	correctLetters = 0;
 	        currentIndex = 0;
 	        correctLetters = 0;
 	        wrongLetters = 0;
-	        result = 0;
+
 	        
 	        StyledDocument doc = textPane.getStyledDocument();
 	        try {
