@@ -34,12 +34,17 @@ import net.miginfocom.swing.MigLayout;
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
     private ResultsButton resultsButton;
-    public static String predefinedText = TextLoader.loadText("SampleText.txt");
+//    public static String predefinedText = TextLoader.loadText("SampleText.txt");
+    public static String predefinedText = TextLoader.loadText("testowy.txt");
+
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static int wrongLetters = 0;
-    public static float result = 0;
     public static boolean endOfTest = false;
+    
+    // WPM
+    
+    public static long startTime = 0;
     
 	public Words30Panels() throws HeadlessException {
 		super();
@@ -85,6 +90,10 @@ public class Words30Panels extends JFrame{
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 char typedChar = e.getKeyChar();
+                
+                if(currentIndex == 0) {
+                    startTime = System.currentTimeMillis();
+                }
 
                 if (keyCode == KeyEvent.VK_ENTER) {
                     // Obsługa klawisza Enter
@@ -107,25 +116,35 @@ public class Words30Panels extends JFrame{
                     e.consume();
                     return;
                 }
+                
 
-                if (currentIndex < predefinedText.length() && Character.toLowerCase(typedChar) == Character.toLowerCase(predefinedText.charAt(currentIndex))) {
+
+                if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
                     applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     correctLetters++;
+                                  
+                                        
                 } else {
                     applyCharacterColor(currentIndex, new Color(199, 0, 0));
                     wrongLetters++;
                 }
                 currentIndex++;
+                         
 
-                if (currentIndex == (predefinedText.length()-1)) {
+                if (currentIndex == predefinedText.length()-1) {
                     endOfTest = true;
-                    updateResult();
                     resultsButton.setVisible(true);
+
+                    
                 }
 
+                
                 if (currentIndex < predefinedText.length()) {
                     textPane.setCaretPosition(currentIndex);
                 }
+                
+ 
+                               
             }
         });
         
@@ -185,7 +204,7 @@ public class Words30Panels extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ResultsPanels();
+				new ResultsPanels(calculateWords30Results());
 				Words30Panels.this.dispose();
 				resetTextPane();
 				
@@ -209,45 +228,23 @@ public class Words30Panels extends JFrame{
     
     // BAZA DANYCH
     
-    public static void updateResult() {
-        if (endOfTest) {
-            float result = calculateResult();
-            System.out.println("Result: " + result);
-            
-            LocalTime currentTime = LocalTime.now();
-            String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            
-            try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
-                String insertQuery = "INSERT INTO wyniki (data, hour, `Correct words`) VALUES (?, ?, ?)";
-                try (PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-                    statement.setDate(1, new java.sql.Date(new java.util.Date().getTime())); 
-                    statement.setString(2, formattedTime);
-                    statement.setFloat(3, result);
-                    statement.executeUpdate();
+    public static int[] calculateWords30Results() {
 
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    public static float calculateResult() {
-        if (predefinedText.length() == 0) {
-            return 0; 
-        }
-        float accuracy = (float) correctLetters / predefinedText.length();
-        return accuracy * 100; 
-    }
+    	System.out.println("Cock: " + correctLetters);
+    	System.out.println("Text length+ "+predefinedText.length());
+    	
+        int wpm = StatsCalculationMethods.calculateWords30WPM(startTime, correctLetters);
+        int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, predefinedText.length());
+    	    	
+        return new int[] {(int) accuracy, (int) wpm};
+    }    
+    
     
     public void resetTextPane() {
     	
     	correctLetters = 0;
         currentIndex = 0;
-        correctLetters = 0;
         wrongLetters = 0;
-        result = 0;
         endOfTest = false;
         
         StyledDocument doc = textPane.getStyledDocument();

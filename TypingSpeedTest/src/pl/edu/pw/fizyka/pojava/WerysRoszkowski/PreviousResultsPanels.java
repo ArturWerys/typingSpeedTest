@@ -8,7 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import bazaDanych.HistogramExample;
-import bazaDanych.ValuesFromDB;
+import bazaDanych.AccuracyDBchart;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import net.miginfocom.swing.MigLayout;
@@ -51,7 +51,7 @@ public class PreviousResultsPanels extends JFrame {
         setVisible(true);
 
         // Dodanie wykresu do panelu graph1Panel
-        JFreeChart chart = ValuesFromDB.displayChart(); // Tworzenie wykresu
+        JFreeChart chart = AccuracyDBchart.displayChart(); // Tworzenie wykresu
         ChartPanel chartPanel = new ChartPanel(chart); // Konwersja wykresu na panel
         
         graph1Panel.setLayout(new BorderLayout());
