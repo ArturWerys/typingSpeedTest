@@ -39,7 +39,6 @@ public class Words30Panels extends JFrame{
 
     public static int currentIndex = 0;
     public static int correctLetters = 0;
-    public static int wrongLetters = 0;
     public static boolean endOfTest = false;
     
     // WPM
@@ -126,7 +125,6 @@ public class Words30Panels extends JFrame{
                                         
                 } else {
                     applyCharacterColor(currentIndex, new Color(199, 0, 0));
-                    wrongLetters++;
                 }
                 currentIndex++;
                          
@@ -226,8 +224,6 @@ public class Words30Panels extends JFrame{
         doc.setCharacterAttributes(index, 1, attributes, true);
     }
     
-    // BAZA DANYCH
-    
     public static int[] calculateWords30Results() {
 
     	System.out.println("Cock: " + correctLetters);
@@ -244,7 +240,6 @@ public class Words30Panels extends JFrame{
     	
     	correctLetters = 0;
         currentIndex = 0;
-        wrongLetters = 0;
         endOfTest = false;
         
         StyledDocument doc = textPane.getStyledDocument();
