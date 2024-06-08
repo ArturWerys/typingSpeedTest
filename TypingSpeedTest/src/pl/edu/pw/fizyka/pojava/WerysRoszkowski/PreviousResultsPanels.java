@@ -7,10 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import bazaDanych.HistogramExample;
-import bazaDanych.AccuracyDBchart;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+
+import bazaDanych_wykresy.AccuracyDBchart;
+import bazaDanych_wykresy.WpmDBchart;
 import net.miginfocom.swing.MigLayout;
 
 public class PreviousResultsPanels extends JFrame {
@@ -58,7 +59,7 @@ public class PreviousResultsPanels extends JFrame {
         graph1Panel.add(chartPanel, BorderLayout.CENTER);
         
         // Dodanie histogram do panelu graph2Panel
-        JFreeChart histogram = HistogramExample.displayHistogram(); // Tworzenie wykresu
+        JFreeChart histogram = WpmDBchart.displayHistogram(); // Tworzenie wykresu
         ChartPanel chartPanel2 = new ChartPanel(histogram); // Konwersja wykresu na panel
         
         graph2Panel.setLayout(new BorderLayout());

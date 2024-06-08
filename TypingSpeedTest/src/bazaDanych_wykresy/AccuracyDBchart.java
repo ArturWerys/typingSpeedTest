@@ -1,4 +1,4 @@
-package bazaDanych;
+package bazaDanych_wykresy;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -43,9 +43,6 @@ public class AccuracyDBchart {
         Statement stmt = null;
         ResultSet rs = null;
         
-    	UIDefaults defaults = UIManager.getDefaults();
-
-
 
         try {
             // Utwórz połączenie

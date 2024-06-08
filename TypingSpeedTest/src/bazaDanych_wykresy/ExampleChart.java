@@ -1,4 +1,4 @@
-package bazaDanych;
+package bazaDanych_wykresy;
 
 import java.util.Arrays;
 import java.util.List;

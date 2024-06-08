@@ -9,13 +9,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,9 +36,20 @@ public class Words30Panels extends JFrame{
     public static int correctLetters = 0;
     public static boolean endOfTest = false;
     
-    // WPM
-    
     public static long startTime = 0;
+    
+ // Zmienna do przechowywania czasu ostatniego naciśnięcia klawisza
+    public static long lastKeyPressTime = System.currentTimeMillis();
+    
+    ArrayList<Long> letterTimes = new ArrayList<>();
+    
+    public static ArrayList<Float> oneWordTime = new ArrayList<>();
+    
+    public static ArrayList<Float> oneWordWPM = new ArrayList<>();
+    
+
+    
+    // ------------------------------------------ // 
     
 	public Words30Panels() throws HeadlessException {
 		super();
@@ -87,6 +93,47 @@ public class Words30Panels extends JFrame{
         textPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+            	
+            	
+            	// LOGIKA NOWEGO WYKRESU
+            	
+            	long currentTime = System.currentTimeMillis();
+                long timeDifference = currentTime - lastKeyPressTime;
+                lastKeyPressTime = currentTime;
+
+                // Dodanie różnicy czasu do listy
+                letterTimes.add(timeDifference);
+                
+                // Wyświetl różnicę czasu w milisekundach
+//                System.out.println("Time between key presses: " + timeDifference + " ms");
+            	
+                
+                
+
+                int intervalLength = 5;
+                int range = letterTimes.size() - intervalLength + 1;
+
+                oneWordTime.clear(); // Clear previous values
+                
+                for (int i = 0; i < range; i += intervalLength) {
+                
+                	long sum = 0;
+                    
+                	for (int j = 0; j < intervalLength; j++) {
+                        sum += letterTimes.get(i + j);
+                    
+                	}
+                    
+                	oneWordTime.add((float) ((sum / 1000.0)/60));
+                	
+                	
+                }
+
+                
+                
+
+            	// ------------------------------------------- // 
+                
                 int keyCode = e.getKeyCode();
                 char typedChar = e.getKeyChar();
                 
@@ -133,7 +180,6 @@ public class Words30Panels extends JFrame{
                     endOfTest = true;
                     resultsButton.setVisible(true);
 
-                    
                 }
 
                 
@@ -205,7 +251,7 @@ public class Words30Panels extends JFrame{
 				new ResultsPanels(calculateWords30Results());
 				Words30Panels.this.dispose();
 				resetTextPane();
-				
+					
 			}
 		});
 
@@ -226,14 +272,22 @@ public class Words30Panels extends JFrame{
     
     public static int[] calculateWords30Results() {
 
-    	System.out.println("Cock: " + correctLetters);
-    	System.out.println("Text length+ "+predefinedText.length());
-    	
         int wpm = StatsCalculationMethods.calculateWords30WPM(startTime, correctLetters);
         int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, predefinedText.length());
     	    	
+        System.out.println("Ilość czasów słów " + oneWordTime.size());
+        
+        for (int x = 0; x < oneWordTime.size(); x++) {
+        	oneWordWPM.add(1/oneWordTime.get(x));
+            System.out.println("WPM dla słow " + oneWordWPM.get(x));
+
+        }
+        
+
+       
         return new int[] {(int) accuracy, (int) wpm};
     }    
+    
     
     
     public void resetTextPane() {
@@ -259,7 +313,8 @@ public class Words30Panels extends JFrame{
         
         textPane.setCaretPosition(0); 
         resultsButton.setVisible(false); 
+        
+        
     }
 
 }
-
