@@ -7,10 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import bazaDanych.HistogramExample;
-import bazaDanych.AccuracyDBchart;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+
+import bazaDanych_wykresy.AccuracyDBchart;
+import bazaDanych_wykresy.HistogramExample;
 import net.miginfocom.swing.MigLayout;
 
 public class PreviousResultsPanels extends JFrame {

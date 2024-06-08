@@ -29,8 +29,8 @@ import net.miginfocom.swing.MigLayout;
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
     private ResultsButton resultsButton;
-//    public static String predefinedText = TextLoader.loadText("SampleText.txt");
-    public static String predefinedText = TextLoader.loadText("testowy.txt");
+    public static String predefinedText = TextLoader.loadText("SampleText.txt");
+//    public static String predefinedText = TextLoader.loadText("testowy.txt");
 
     public static int currentIndex = 0;
     public static int correctLetters = 0;
@@ -43,7 +43,10 @@ public class Words30Panels extends JFrame{
     
     ArrayList<Long> letterTimes = new ArrayList<>();
     
-    ArrayList<Long> oneWordTime = new ArrayList<>();
+    public static ArrayList<Float> oneWordTime = new ArrayList<>();
+    
+    public static ArrayList<Float> oneWordWPM = new ArrayList<>();
+    
 
     
     // ------------------------------------------ // 
@@ -92,8 +95,6 @@ public class Words30Panels extends JFrame{
             public void keyPressed(KeyEvent e) {
             	
             	
-            	
-            	
             	// LOGIKA NOWEGO WYKRESU
             	
             	long currentTime = System.currentTimeMillis();
@@ -104,23 +105,33 @@ public class Words30Panels extends JFrame{
                 letterTimes.add(timeDifference);
                 
                 // Wyświetl różnicę czasu w milisekundach
-                System.out.println("Time between key presses: " + timeDifference + " ms");
+//                System.out.println("Time between key presses: " + timeDifference + " ms");
             	
                 
                 
+
+                int intervalLength = 5;
+                int range = letterTimes.size() - intervalLength + 1;
+
+                oneWordTime.clear(); // Clear previous values
                 
-                for (int x=0; x < letterTimes.size(); x++ ) {
-               
-                	 	
-                	for(int i=x; i< x+5; i++) {
-//                		oneWordTime.add();
+                for (int i = 0; i < range; i += intervalLength) {
+                
+                	long sum = 0;
+                    
+                	for (int j = 0; j < intervalLength; j++) {
+                        sum += letterTimes.get(i + j);
+                    
                 	}
+                    
+                	oneWordTime.add((float) ((sum / 1000.0)/60));
+                	
                 	
                 }
+
                 
                 
-                
-                
+
             	// ------------------------------------------- // 
                 
                 int keyCode = e.getKeyCode();
@@ -261,14 +272,22 @@ public class Words30Panels extends JFrame{
     
     public static int[] calculateWords30Results() {
 
-    	System.out.println("Cock: " + correctLetters);
-    	System.out.println("Text length+ "+predefinedText.length());
-    	
         int wpm = StatsCalculationMethods.calculateWords30WPM(startTime, correctLetters);
         int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, predefinedText.length());
     	    	
+        System.out.println("Ilość czasów słów " + oneWordTime.size());
+        
+        for (int x = 0; x < oneWordTime.size(); x++) {
+        	oneWordWPM.add(1/oneWordTime.get(x));
+            System.out.println("WPM dla słow " + oneWordWPM.get(x));
+
+        }
+        
+
+       
         return new int[] {(int) accuracy, (int) wpm};
     }    
+    
     
     
     public void resetTextPane() {
@@ -294,6 +313,8 @@ public class Words30Panels extends JFrame{
         
         textPane.setCaretPosition(0); 
         resultsButton.setVisible(false); 
+        
+        
     }
 
 }

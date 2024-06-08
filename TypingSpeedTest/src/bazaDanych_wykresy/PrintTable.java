@@ -1,4 +1,4 @@
-package bazaDanych;
+package bazaDanych_wykresy;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

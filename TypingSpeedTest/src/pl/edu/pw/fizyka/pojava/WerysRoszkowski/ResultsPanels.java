@@ -21,7 +21,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import bazaDanych.ExampleChart;
+
+import bazaDanych_wykresy.ExampleChart;
+import bazaDanych_wykresy.WpmTimeChartWords30;
 import net.miginfocom.swing.MigLayout;
 
 public class ResultsPanels extends JFrame {
@@ -42,7 +44,7 @@ public class ResultsPanels extends JFrame {
         getContentPane().add(graphPanel, "cell 1 0,grow");
         
      // Dodanie wykresu do panelu graph1Panel
-        JFreeChart chart = ExampleChart.displayChart(); // Tworzenie wykresu
+        JFreeChart chart = WpmTimeChartWords30.displayChart(); // Tworzenie wykresu
         ChartPanel chartPanel = new ChartPanel(chart); // Konwersja wykresu na panel
         
         graphPanel.setLayout(new BorderLayout());
@@ -181,44 +183,4 @@ public class ResultsPanels extends JFrame {
 }
 
     
-//    public static void deleteLatestResult() {
-//    	
-//    	int answer = JOptionPane.showConfirmDialog(null, "Czy na pewno", "Potwierdzenie",
-//				JOptionPane.YES_NO_OPTION);
-//		if (answer == JOptionPane.YES_OPTION) {
-//	        try (Connection connection = DriverManager.getConnection("jdbc:h2:tstData", "artur", "")) {
-//	            // Znajdowanie najnowszego rekordu na podstawie daty i godziny
-//	            String findLatestQuery = "SELECT id FROM wyniki ORDER BY data DESC, hour DESC LIMIT 1";
-//	            try (Statement findStatement = connection.createStatement();
-//	                 ResultSet resultSet = findStatement.executeQuery(findLatestQuery)) {
-//	                
-//	                if (resultSet.next()) {
-//	                    int latestId = resultSet.getInt("id");
-//
-//	                    // Usunięcie najnowszego rekordu
-//	                    String deleteQuery = "DELETE FROM wyniki WHERE id = ?";
-//	                    try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
-//	                        deleteStatement.setInt(1, latestId);
-//	                        int rowsDeleted = deleteStatement.executeUpdate();
-//	                        if (rowsDeleted > 0) {
-//	                            System.out.println("The latest record was deleted successfully.");
-//	                        } else {
-//	                            System.out.println("No record found to delete.");
-//	                        }
-//	                    }
-//	                } else {
-//	                    System.out.println("No records found in the database.");
-//	                }
-//	            }
-//	        } catch (SQLException e) {
-//	            e.printStackTrace();
-//	        }
-//	    }
-//		
-//		else {
-//			JOptionPane.showMessageDialog(null, "Wybrano Nie.");
-//		}
-//
-//    }	
-
 }

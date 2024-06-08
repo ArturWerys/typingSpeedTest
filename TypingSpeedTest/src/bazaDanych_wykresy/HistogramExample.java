@@ -1,4 +1,4 @@
-package bazaDanych;
+package bazaDanych_wykresy;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
