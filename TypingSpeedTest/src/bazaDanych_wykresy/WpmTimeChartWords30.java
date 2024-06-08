@@ -1,15 +1,6 @@
 package bazaDanych_wykresy;
 
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -29,9 +20,12 @@ public class WpmTimeChartWords30 {
 	    	
 	        // Wykres
 	    	XYSeries series = new XYSeries("WPM / t");
-	        
-	        for (int x=0; x < Words30Panels.oneWordTime.size(); x++) {
-	            series.add(Words30Panels.oneWordTime.get(x),Words30Panels.oneWordWPM.get(x));
+	        for (int x=0; x <5; x++) {
+
+//	        for (int x=0; x < Words30Panels.oneWordTime.size(); x++) {
+//	            series.add(czas testu ,Words30Panels.oneWordWPM.get(x));
+	            series.add(2 , 2);
+
 
 	        }
 

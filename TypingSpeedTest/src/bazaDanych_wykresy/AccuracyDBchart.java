@@ -43,7 +43,6 @@ public class AccuracyDBchart {
         Statement stmt = null;
         ResultSet rs = null;
         
-    	UIDefaults defaults = UIManager.getDefaults();
 
         try {
             // Utwórz połączenie

@@ -29,8 +29,8 @@ import net.miginfocom.swing.MigLayout;
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
     private ResultsButton resultsButton;
-    public static String predefinedText = TextLoader.loadText("SampleText.txt");
-//    public static String predefinedText = TextLoader.loadText("testowy.txt");
+//    public static String predefinedText = TextLoader.loadText("SampleText.txt");
+    public static String predefinedText = TextLoader.loadText("testowy.txt");
 
     public static int currentIndex = 0;
     public static int correctLetters = 0;
@@ -318,4 +318,3 @@ public class Words30Panels extends JFrame{
     }
 
 }
-
