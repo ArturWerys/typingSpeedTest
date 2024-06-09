@@ -1,6 +1,8 @@
 package bazaDanych_wykresy;
 
 import java.awt.Color;
+import java.util.ArrayList;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -16,67 +18,69 @@ import pl.edu.pw.fizyka.pojava.WerysRoszkowski.Words30Panels;
 
 public class WpmTimeChartWords30 {
 
-	 public static JFreeChart displayChart() {
-	    	
-	        // Wykres
-	    	XYSeries series = new XYSeries("WPM / t");
-	        for (int x=0; x <5; x++) {
+    public static JFreeChart displayChart() {
+        
+        // OŚ X
+        ArrayList<Float> wpmByTimes = Words30Panels.discreteWpmCalculation();
+        ArrayList<Long> fullElapsedTimes = Words30Panels.fullElapsedTime;
 
-//	        for (int x=0; x < Words30Panels.oneWordTime.size(); x++) {
-//	            series.add(czas testu ,Words30Panels.oneWordWPM.get(x));
-	            series.add(2 , 2);
+        int wpmSize = wpmByTimes.size();
+        int timeSize = fullElapsedTimes.size();
+        int numberToRemove = timeSize - wpmSize;
 
+        for (int i = 0; i < numberToRemove; i++) {
+            fullElapsedTimes.remove(fullElapsedTimes.size() - 1);
+        }
 
-	        }
+        // Wykres
+        XYSeries series = new XYSeries("WPM / t");
 
-	        XYSeriesCollection dataset = new XYSeriesCollection();
-	        dataset.addSeries(series);
+        // Naprawienie pętli
+        for (int x = 0; x < wpmSize; x++) {
+            series.add(fullElapsedTimes.get(x), wpmByTimes.get(x));
+        }
 
-	        JFreeChart chart = ChartFactory.createXYLineChart(
-	                "WPM wraz z kolejnymi napisanymi słowami", 
-	                "Czas", // Opis osi X
-	                "WPM",
-	                dataset, // Dane
-	                PlotOrientation.VERTICAL, // Orientacja wykresu
-	                true, // Legenda
-	                true, // Tooltips
-	                false
-	        );
-	        // Ustawienie osi X na liczby całkowite
-	        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
-	        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-	        xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
+        System.out.println("Time size " + Words30Panels.fullElapsedTime.size());
+        System.out.println("WPM size " + wpmByTimes.size());
 
-	        
-	        // ZMIANA WYGLĄDU
-	 
-	        XYPlot plot = (XYPlot) chart.getPlot();
-//	        Integer width = 500;
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
 
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "WPM wraz z kolejnymi napisanymi słowami", 
+                "Czas", // Opis osi X
+                "WPM",
+                dataset, // Dane
+                PlotOrientation.VERTICAL, // Orientacja wykresu
+                true, // Legenda
+                true, // Tooltips
+                false
+        );
 
-//	        plot.setBackgroundPaint(defaults.getColor("Button.disabledText"));
-	        plot.setBackgroundPaint(Color.white);
+        // Ustawienie osi X na liczby całkowite
+        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
+        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
 
-	        plot.setDomainGridlinePaint(Color.white);
-	        plot.setRangeGridlinePaint(Color.white);
-	        plot.setOutlineVisible(false);
-	        
-	        
-	     // ZMIANA WYGLĄDU LEGENDY
-	        LegendTitle legend = chart.getLegend();
-	        legend.setFrame(BlockBorder.NONE);
-//	        legend.setItemLabelPadding(new RectangleInsets(5.0, 2.0, 10.0, width));
-	        legend.setPadding(20.0, 20.0, 0.0, 0.0);
-	        
-	        // Ukrycie osi Y
-	        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-//	        rangeAxis.setVisible(false);
-	        
-	   
-	        
-	        ChartFrame frame = new ChartFrame("Wykres", chart);
-	        frame.pack();
-	        
-	        return chart; 
-	    }
+        // ZMIANA WYGLĄDU
+        XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.white);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+        plot.setOutlineVisible(false);
+
+        // ZMIANA WYGLĄDU LEGENDY
+        LegendTitle legend = chart.getLegend();
+        legend.setFrame(BlockBorder.NONE);
+        legend.setPadding(20.0, 20.0, 0.0, 0.0);
+
+        // Ukrycie osi Y
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        // rangeAxis.setVisible(false);
+
+        ChartFrame frame = new ChartFrame("Wykres", chart);
+        frame.pack();
+
+        return chart;
+    }
 }
