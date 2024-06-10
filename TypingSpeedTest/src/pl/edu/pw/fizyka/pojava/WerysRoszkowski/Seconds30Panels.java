@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javax.swing.InputMap;
 import javax.swing.JButton;
@@ -54,6 +55,15 @@ public class Seconds30Panels extends JFrame {
     private int totalTime = 30000;
     private int updateInterval = 10;
     
+    
+    public static long startTime = 0;
+
+ // Zmienna do przechowywania czasu ostatniego naciśnięcia klawisza
+    public static long lastKeyPressTime = System.currentTimeMillis();
+    
+    public static ArrayList<Long> letterTimes = new ArrayList<>();
+    
+    public static ArrayList<Long> fullElapsedTime = new ArrayList<>();
     
 	
 	public Seconds30Panels() {
@@ -133,8 +143,16 @@ public class Seconds30Panels extends JFrame {
                     if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
                         applyCharacterColor(currentIndex, defaults.getColor("textText"));
                         correctLetters++;
+                        
+                    	letterTimesCalculation();
+
+                        
                     } else {
                         applyCharacterColor(currentIndex, new Color(199, 0, 0));
+                        
+                    	letterTimesCalculation();
+
+                        
                     }
                     currentIndex++;
 
@@ -234,7 +252,7 @@ public class Seconds30Panels extends JFrame {
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
+        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this, true);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
@@ -261,6 +279,50 @@ public class Seconds30Panels extends JFrame {
 	    	    	
 	        return new int[] {(int) accuracy, (int) wpm};
 	    }
+		
+        private boolean isFirstKeyPress = true;
+
+		
+		
+	    public void letterTimesCalculation() {
+	        // LOGIKA NOWEGO WYKRESU
+	        
+	        long currentTime = System.currentTimeMillis();
+
+	        if (isFirstKeyPress) {
+	            // Jeśli to pierwsze naciśnięcie klawisza, ustawiamy czas i zmieniamy flagę
+	            lastKeyPressTime = currentTime;
+	            isFirstKeyPress = false;
+	            // Dodajemy 0 do fullElapsedTime jako początek
+	            fullElapsedTime.add(0L);
+	            return;
+	        }
+	        
+
+	        
+	        long timeDifference = currentTime - lastKeyPressTime;
+	        
+	        lastKeyPressTime = currentTime;
+
+	        // Dodanie różnicy czasu do listy
+	        letterTimes.add(timeDifference);
+	        
+	        // LOGIKA OSI X (czasu) full elapsed time
+	        
+	        if (fullElapsedTime.size() == 1 && fullElapsedTime.get(0) == 0) {
+	        
+	        	fullElapsedTime.set(0, timeDifference);
+	        
+	        } else {
+	            long lastElapsedTime = fullElapsedTime.get(fullElapsedTime.size() - 1);
+	            long newElapsedTime = lastElapsedTime + timeDifference;
+	            fullElapsedTime.add(newElapsedTime);
+	        }
+	        
+	                
+	    }
+	    
+	   
 		
 	    public void resetTextPane() {
 	    	

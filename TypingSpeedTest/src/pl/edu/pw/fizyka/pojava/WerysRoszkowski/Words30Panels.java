@@ -31,7 +31,7 @@ import net.miginfocom.swing.MigLayout;
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
     private ResultsButton resultsButton;
-    public static String predefinedText = TextLoader.loadText("SampleText.txt");
+    public static String predefinedText = TextList.predefinedText;
 //    public static String predefinedText = TextLoader.loadText("testowy.txt");
 
     public static int currentIndex = 0;
@@ -43,7 +43,7 @@ public class Words30Panels extends JFrame{
  // Zmienna do przechowywania czasu ostatniego naciśnięcia klawisza
     public static long lastKeyPressTime = System.currentTimeMillis();
     
-    static ArrayList<Long> letterTimes = new ArrayList<>();
+    public static ArrayList<Long> letterTimes = new ArrayList<>();
     
     public static ArrayList<Long> fullElapsedTime = new ArrayList<>();
 
@@ -131,14 +131,18 @@ public class Words30Panels extends JFrame{
                     
                 	// LOGIKA NOWEGO WYKRESU
                 	
+//                	StatsCalculationMethods.letterTimesCalculation(isFirstKeyPress, lastKeyPressTime, fullElapsedTime, letterTimes);
+
                 	letterTimesCalculation();
 
-                    
                                   
                                         
                 } else {
                     applyCharacterColor(currentIndex, Color.red);
 
+//                	StatsCalculationMethods.letterTimesCalculation(isFirstKeyPress, lastKeyPressTime, fullElapsedTime, letterTimes);
+
+                    
                 	letterTimesCalculation();
                 
                 }
@@ -224,7 +228,7 @@ public class Words30Panels extends JFrame{
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
+        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this, true);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
@@ -292,38 +296,7 @@ public class Words30Panels extends JFrame{
         
                 
     }
-    
-    public static ArrayList<Float> discreteWpmCalculation() {
         
-    	ArrayList<Float> wpmByTimes = new ArrayList<>();
-        
-        // Sprawdzamy, czy jest wystarczająca ilość danych do przetworzenia
-        
-    	if (letterTimes.size() < 5) {
-            return wpmByTimes; // Zwracamy pustą listę, jeśli nie ma wystarczającej ilości danych
-        }
-        
-        // Iterujemy po letterTimes, biorąc pod uwagę 5 kolejnych elementów
-        for (int i = 0; i <= letterTimes.size() - 5; i++) {
-            // Bierzemy podtablicę 5 kolejnych wartości z letterTimes
-        
-        	long sum = 0;
-            
-        	for (int j = i; j < i + 5; j++) {
-                sum += letterTimes.get(j);
-            }
-            
-            // Obliczamy WPM na podstawie sumy 5 wartości z letterTimes
-            
-        	float wpm = 1 / ((float) sum / 60000);
-            
-            wpmByTimes.add(wpm);
-        }
-                
-        return wpmByTimes;
-    }
-    
-    
     
     public void resetTextPane() {
     	

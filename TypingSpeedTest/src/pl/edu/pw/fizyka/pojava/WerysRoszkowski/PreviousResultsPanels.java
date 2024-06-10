@@ -24,7 +24,7 @@ public class PreviousResultsPanels extends JFrame {
         int windowHeight = windowSize.getAutoWindowHeigth();
         setSize(windowWidth, windowHeight);
 
-        TstMenuBar menuBar = new TstMenuBar(true, true, this);
+        TstMenuBar menuBar = new TstMenuBar(true, true, this, true);
         setJMenuBar(menuBar);
 
         setLocationRelativeTo(null);

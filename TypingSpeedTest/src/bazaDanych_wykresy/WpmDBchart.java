@@ -27,7 +27,7 @@ public class WpmDBchart extends JFrame {
 
         try {
             // Utwórz połączenie
-            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", ""); // Adjust the connection string as needed
+            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", ""); 
 
             // Utwórz obiekt instrukcji
             stmt = conn.createStatement();

@@ -31,6 +31,10 @@ public class WelcomeWindow extends JFrame {
 	private static final double modeButtonScale = 0.02;
 	private static final double prevResBttnScale = 0.016;
 	
+	public static boolean words30choosen = false;
+	
+	
+	
 	public WelcomeWindow() {
 		super();
 		
@@ -64,7 +68,7 @@ public class WelcomeWindow extends JFrame {
 		btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont(10f));
 		panel.add(btnPreviousResults, "cell 1 5,alignx center,aligny center,grow");
 		
-		TstMenuBar menuBar = new TstMenuBar(false, true, this);
+		TstMenuBar menuBar = new TstMenuBar(false, true, this, true);
 		setJMenuBar(menuBar);	
 		
 		addComponentListener(new ComponentListener() {
@@ -105,6 +109,7 @@ public class WelcomeWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Words30Panels();
+				words30choosen = true;
 				WelcomeWindow.this.dispose();
 			}
 		});

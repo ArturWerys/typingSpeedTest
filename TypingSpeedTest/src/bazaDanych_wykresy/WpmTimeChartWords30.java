@@ -14,15 +14,28 @@ import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import pl.edu.pw.fizyka.pojava.WerysRoszkowski.Seconds30Panels;
+import pl.edu.pw.fizyka.pojava.WerysRoszkowski.StatsCalculationMethods;
+import pl.edu.pw.fizyka.pojava.WerysRoszkowski.WelcomeWindow;
 import pl.edu.pw.fizyka.pojava.WerysRoszkowski.Words30Panels;
 
 public class WpmTimeChartWords30 {
 
     public static JFreeChart displayChart() {
         
-        // OŚ X
-        ArrayList<Float> wpmByTimes = Words30Panels.discreteWpmCalculation();
-        ArrayList<Long> fullElapsedTimes = Words30Panels.fullElapsedTime;
+    	ArrayList<Float> wpmByTimes = new ArrayList<Float>();
+    	ArrayList<Long> fullElapsedTimes = new ArrayList<Long>();
+    	
+    	if(WelcomeWindow.words30choosen == true) {
+    		  wpmByTimes = StatsCalculationMethods.discreteWpmCalculation(Words30Panels.letterTimes);
+    		  fullElapsedTimes = Words30Panels.fullElapsedTime;
+    	}
+    	else {
+    		wpmByTimes = StatsCalculationMethods.discreteWpmCalculation(Seconds30Panels.letterTimes);
+  		  	fullElapsedTimes = Seconds30Panels.fullElapsedTime;
+    	}
+    	
+      
 
         int wpmSize = wpmByTimes.size();
         int timeSize = fullElapsedTimes.size();
