@@ -61,6 +61,6 @@ public class TextList extends JFrame {
 			
 			break;
 		}
-	}
+	
 
-}
+	}}

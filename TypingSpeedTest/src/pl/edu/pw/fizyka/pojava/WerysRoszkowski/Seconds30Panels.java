@@ -339,7 +339,8 @@ public class Seconds30Panels extends JFrame {
 				e.printStackTrace();
 			} 
 	        
-	        String newPredefinedText = TextLoader.loadText("SampleText.txt");
+	        
+	        String newPredefinedText = TextLoader.loadText("nadNiemnem30sec.txt");
 	        try {
 	            doc.insertString(doc.getLength(), newPredefinedText, null);
 	        } catch (BadLocationException e) {
