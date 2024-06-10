@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -38,6 +39,18 @@ public class ResultsPanels extends JFrame {
         int windowWidth = windowSize.getAutoWindowWidth();
         int windowHeight = windowSize.getAutoWindowHeigth();
         setSize(windowWidth, windowHeight);
+        
+        int constancyCount;
+        
+        if(WelcomeWindow.words30choosen == true) {
+			ArrayList<Float> smoothedWpmByTimes = StatsCalculationMethods.movingAverage(StatsCalculationMethods.discreteWpmCalculation(Words30Panels.letterTimes), 10);
+			constancyCount = StatsCalculationMethods.calculateConstancy(smoothedWpmByTimes);
+			
+		} else {
+			ArrayList<Float> smoothedWpmByTimes = StatsCalculationMethods.movingAverage(StatsCalculationMethods.discreteWpmCalculation(Seconds30Panels.letterTimes), 10);
+			constancyCount = StatsCalculationMethods.calculateConstancy(smoothedWpmByTimes);
+		}
+        
         getContentPane().setLayout(new MigLayout("", "[8%][grow][8%]", "[50%,grow][25%][15%,grow]"));
         
         JPanel graphPanel = new JPanel();
@@ -62,9 +75,9 @@ public class ResultsPanels extends JFrame {
         lblAccuracyCount.setToolTipText("Poprawność wpisywanych znaków. Najlepsza możliwa to 100%. Każdy błąd ją obniża.");
         statsPanel.add(lblAccuracyCount, "cell 2 0,alignx center,aligny bottom");
         
-        JLabel lblConsistencyCount = new JLabel("85");
-        lblConsistencyCount.setToolTipText("Stałość tempa pisania. Liczona jako");
-        statsPanel.add(lblConsistencyCount, "cell 3 0,alignx center,aligny bottom");
+        JLabel lblConstancyCount = new JLabel(constancyCount + "%");
+        lblConstancyCount.setToolTipText("Stałość tempa pisania. Liczona jako");
+        statsPanel.add(lblConstancyCount, "cell 3 0,alignx center,aligny bottom");
         
         JLabel lblWPMName = new JLabel("WPM");
         statsPanel.add(lblWPMName, "cell 1 1,alignx center,aligny top");
@@ -72,8 +85,8 @@ public class ResultsPanels extends JFrame {
         JLabel lblAccuracyName = new JLabel("dokładność");
         statsPanel.add(lblAccuracyName, "cell 2 1,alignx center,aligny top");
         
-        JLabel lblConsistencyName = new JLabel("stałość tempa");
-        statsPanel.add(lblConsistencyName, "cell 3 1,alignx center,aligny top");
+        JLabel lblConstancyName = new JLabel("stałość tempa");
+        statsPanel.add(lblConstancyName, "cell 3 1,alignx center,aligny top");
         
         JPanel buttonsPanel = new JPanel();
         getContentPane().add(buttonsPanel, "cell 1 2,grow");
@@ -95,10 +108,10 @@ public class ResultsPanels extends JFrame {
 				int width = e.getComponent().getWidth();
                 lblWPMName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
                 lblAccuracyName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
-                lblConsistencyName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
+                lblConstancyName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
                 lblWPMCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
                 lblAccuracyCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
-                lblConsistencyCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
+                lblConstancyCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
                 btnSaveResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * BttnTextScale)));
                 btnDiscardResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * BttnTextScale)));
 			}
@@ -108,10 +121,10 @@ public class ResultsPanels extends JFrame {
 				int width = e.getComponent().getWidth();
                 lblWPMName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
                 lblAccuracyName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
-                lblConsistencyName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
+                lblConstancyName.setFont(CustomFonts.RSLTS_STATS_NAME_FONT.deriveFont((float)(width * nameLabelScale)));
                 lblWPMCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
                 lblAccuracyCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
-                lblConsistencyCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
+                lblConstancyCount.setFont(CustomFonts.RSLTS_STATS_COUNT_FONT.deriveFont((float)(width * countLabelScale)));
                 btnSaveResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * BttnTextScale)));
                 btnDiscardResults.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * BttnTextScale)));
 			}
@@ -153,6 +166,10 @@ public class ResultsPanels extends JFrame {
 				
 			}
 		});
+		
+		
+		
+		
    
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
