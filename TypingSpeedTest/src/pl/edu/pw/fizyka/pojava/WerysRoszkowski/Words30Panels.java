@@ -9,7 +9,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,8 +31,8 @@ import net.miginfocom.swing.MigLayout;
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
     private ResultsButton resultsButton;
-//    public static String predefinedText = TextLoader.loadText("SampleText.txt");
-    public static String predefinedText = TextLoader.loadText("testowy.txt");
+    public static String predefinedText = TextList.predefinedText;
+//    public static String predefinedText = TextLoader.loadText("testowy.txt");
 
     public static int currentIndex = 0;
     public static int correctLetters = 0;
@@ -41,13 +43,11 @@ public class Words30Panels extends JFrame{
  // Zmienna do przechowywania czasu ostatniego naciśnięcia klawisza
     public static long lastKeyPressTime = System.currentTimeMillis();
     
-    ArrayList<Long> letterTimes = new ArrayList<>();
+    public static ArrayList<Long> letterTimes = new ArrayList<>();
     
-    public static ArrayList<Float> oneWordTime = new ArrayList<>();
-    
-    public static ArrayList<Float> oneWordWPM = new ArrayList<>();
-    
+    public static ArrayList<Long> fullElapsedTime = new ArrayList<>();
 
+    
     
     // ------------------------------------------ // 
     
@@ -93,46 +93,6 @@ public class Words30Panels extends JFrame{
         textPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-            	
-            	
-            	// LOGIKA NOWEGO WYKRESU
-            	
-            	long currentTime = System.currentTimeMillis();
-                long timeDifference = currentTime - lastKeyPressTime;
-                lastKeyPressTime = currentTime;
-
-                // Dodanie różnicy czasu do listy
-                letterTimes.add(timeDifference);
-                
-                // Wyświetl różnicę czasu w milisekundach
-//                System.out.println("Time between key presses: " + timeDifference + " ms");
-            	
-                
-                
-
-                int intervalLength = 5;
-                int range = letterTimes.size() - intervalLength + 1;
-
-                oneWordTime.clear(); // Clear previous values
-                
-                for (int i = 0; i < range; i += intervalLength) {
-                
-                	long sum = 0;
-                    
-                	for (int j = 0; j < intervalLength; j++) {
-                        sum += letterTimes.get(i + j);
-                    
-                	}
-                    
-                	oneWordTime.add((float) ((sum / 1000.0)/60));
-                	
-                	
-                }
-
-                
-                
-
-            	// ------------------------------------------- // 
                 
                 int keyCode = e.getKeyCode();
                 char typedChar = e.getKeyChar();
@@ -164,14 +124,27 @@ public class Words30Panels extends JFrame{
                 }
                 
 
-
                 if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
                     applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     correctLetters++;
+                    
+                    
+                	// LOGIKA NOWEGO WYKRESU
+                	
+//                	StatsCalculationMethods.letterTimesCalculation(isFirstKeyPress, lastKeyPressTime, fullElapsedTime, letterTimes);
+
+                	letterTimesCalculation();
+
                                   
                                         
                 } else {
-                    applyCharacterColor(currentIndex, new Color(199, 0, 0));
+                    applyCharacterColor(currentIndex, Color.red);
+
+//                	StatsCalculationMethods.letterTimesCalculation(isFirstKeyPress, lastKeyPressTime, fullElapsedTime, letterTimes);
+
+                    
+                	letterTimesCalculation();
+                
                 }
                 currentIndex++;
                          
@@ -255,7 +228,7 @@ public class Words30Panels extends JFrame{
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
+        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this, true);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
@@ -274,27 +247,64 @@ public class Words30Panels extends JFrame{
 
         int wpm = StatsCalculationMethods.calculateWords30WPM(startTime, correctLetters);
         int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, predefinedText.length());
-    	    	
-        System.out.println("Ilość czasów słów " + oneWordTime.size());
-        
-        for (int x = 0; x < oneWordTime.size(); x++) {
-        	oneWordWPM.add(1/oneWordTime.get(x));
-            System.out.println("WPM dla słow " + oneWordWPM.get(x));
+    	    	    
+        for(int x = 0; x < fullElapsedTime.size(); x++) {
+            System.out.println(" Czas kolejny słów od początku testu: " + fullElapsedTime.get(x));
 
         }
         
-
        
         return new int[] {(int) accuracy, (int) wpm};
     }    
     
+
+    private boolean isFirstKeyPress = true;
+
     
+    public void letterTimesCalculation() {
+        // LOGIKA NOWEGO WYKRESU
+        
+        long currentTime = System.currentTimeMillis();
+
+        if (isFirstKeyPress) {
+            // Jeśli to pierwsze naciśnięcie klawisza, ustawiamy czas i zmieniamy flagę
+            lastKeyPressTime = currentTime;
+            isFirstKeyPress = false;
+            // Dodajemy 0 do fullElapsedTime jako początek
+            fullElapsedTime.add(0L);
+            return;
+        }
+        
+        long timeDifference = currentTime - lastKeyPressTime;
+        
+        lastKeyPressTime = currentTime;
+
+        // Dodanie różnicy czasu do listy
+        letterTimes.add(timeDifference);
+        
+        // LOGIKA OSI X (czasu) full elapsed time
+        
+        if (fullElapsedTime.size() == 1 && fullElapsedTime.get(0) == 0) {
+        
+        	fullElapsedTime.set(0, timeDifference);
+        
+        } else {
+            long lastElapsedTime = fullElapsedTime.get(fullElapsedTime.size() - 1);
+            long newElapsedTime = lastElapsedTime + timeDifference;
+            fullElapsedTime.add(newElapsedTime);
+        }
+        
+                
+    }
+        
     
     public void resetTextPane() {
     	
     	correctLetters = 0;
         currentIndex = 0;
         endOfTest = false;
+        
+        
         
         StyledDocument doc = textPane.getStyledDocument();
         try {
@@ -304,7 +314,7 @@ public class Words30Panels extends JFrame{
 			e.printStackTrace();
 		} 
         
-        String newPredefinedText = TextLoader.loadText("SampleText.txt");
+        String newPredefinedText = TextLoader.loadText("nadNiemnem.txt");
         try {
             doc.insertString(doc.getLength(), newPredefinedText, null);
         } catch (BadLocationException e) {
