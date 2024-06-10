@@ -11,7 +11,8 @@ import javax.swing.SwingUtilities;
 
 
 public class TextList extends JFrame {
-    public static String predefinedText;
+    public static String predefinedText = TextLoader.loadText("nadNiemnem.txt");
+;
 	String[] textsToChoose = {"Nad Niemnem", "Przykładowy"};
 	
 	public TextList(Component component) {
@@ -36,7 +37,7 @@ public class TextList extends JFrame {
 	private void switchTheme(int selectedIndex, Component component) {
 		switch (selectedIndex) {
 		case 0:
-		    predefinedText = TextLoader.loadText("SampleText.txt");
+		    predefinedText = TextLoader.loadText("nadNiemnem.txt");
 			SwingUtilities.updateComponentTreeUI(component);
 			break;
 		case 1:
@@ -57,6 +58,7 @@ public class TextList extends JFrame {
 //			SwingUtilities.updateComponentTreeUI(component);
 //			break;
 		default:
+			
 			break;
 		}
 	}

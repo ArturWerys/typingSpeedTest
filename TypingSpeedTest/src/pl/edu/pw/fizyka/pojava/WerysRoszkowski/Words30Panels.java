@@ -314,7 +314,7 @@ public class Words30Panels extends JFrame{
 			e.printStackTrace();
 		} 
         
-        String newPredefinedText = TextLoader.loadText("SampleText.txt");
+        String newPredefinedText = TextLoader.loadText("nadNiemnem.txt");
         try {
             doc.insertString(doc.getLength(), newPredefinedText, null);
         } catch (BadLocationException e) {

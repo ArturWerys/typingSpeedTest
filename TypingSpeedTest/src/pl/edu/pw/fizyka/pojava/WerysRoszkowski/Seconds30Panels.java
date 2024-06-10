@@ -46,7 +46,7 @@ public class Seconds30Panels extends JFrame {
 
     private JTextPane textPane;
     public static JButton resultsButton;
-    public static String predefinedText = TextLoader.loadText("sampleText30sec.txt");
+    public static String predefinedText = TextLoader.loadText("nadNiemnem30sec.txt");
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static boolean endOfTest = false;
