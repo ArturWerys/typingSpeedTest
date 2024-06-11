@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 
 public class TstMenuBar extends JMenuBar {
 	
-	public TstMenuBar(boolean returnToWelcomeScreen, boolean changeTheme, JFrame componentToClose, boolean chooseText) {
+	public TstMenuBar(boolean returnToWelcomeScreen, boolean changeTheme, JFrame componentToClose) {
 		JMenu mnMainMenu = new JMenu("Menu");
 		add(mnMainMenu);
 		
@@ -26,12 +26,6 @@ public class TstMenuBar extends JMenuBar {
 		
 		if(changeTheme) {
 			mnMainMenu.add(mntmThemeChooser);
-		}
-		
-		JMenuItem textChooser = new JMenuItem("Wybierz tekst");
-		
-		if(chooseText) {
-			mnMainMenu.add(textChooser);
 		}
 		
 		JMenuItem mntmExit = new JMenuItem("Zamknij program");
@@ -64,19 +58,6 @@ public class TstMenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
-			}
-		});
-		
-		textChooser.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				SwingUtilities.invokeLater(() -> {
-		            new TextList(componentToClose);
-		        });
-				
-				System.out.println("Wybierz tekst");
 			}
 		});
 		

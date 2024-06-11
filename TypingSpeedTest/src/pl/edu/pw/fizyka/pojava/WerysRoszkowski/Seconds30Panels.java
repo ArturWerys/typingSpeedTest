@@ -258,7 +258,7 @@ public class Seconds30Panels extends JFrame {
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this, true);
+        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);

@@ -100,7 +100,7 @@ public class ResultsPanels extends JFrame {
         JButton btnDiscardResults = new JButton("Odrzuć wyniki");
         buttonsPanel.add(btnDiscardResults, "cell 3 1,alignx center,aligny center,grow");
         
-        TstMenuBar menuBar = new TstMenuBar(true, true, this, true);
+        TstMenuBar menuBar = new TstMenuBar(true, true, this);
         setJMenuBar(menuBar);
         
 		addComponentListener(new ComponentListener() {
