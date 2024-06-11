@@ -25,19 +25,21 @@ public class WpmTimeChartWords30 {
         
     	ArrayList<Float> wpmByTimes = new ArrayList<Float>();
     	ArrayList<Long> fullElapsedTimes = new ArrayList<Long>();
-    	
+    	ArrayList<Float> smoothedWpmByTimes = new ArrayList<Float>();    	
     	if(WelcomeWindow.words30choosen == true) {
     		  wpmByTimes = StatsCalculationMethods.discreteWpmCalculation(Words30Panels.letterTimes);
+    		  smoothedWpmByTimes = StatsCalculationMethods.movingAverage(wpmByTimes, 10);
     		  fullElapsedTimes = Words30Panels.fullElapsedTime;
     	}
     	else {
     		wpmByTimes = StatsCalculationMethods.discreteWpmCalculation(Seconds30Panels.letterTimes);
+    		smoothedWpmByTimes = StatsCalculationMethods.movingAverage(wpmByTimes, 10);
   		  	fullElapsedTimes = Seconds30Panels.fullElapsedTime;
     	}
     	
       
 
-        int wpmSize = wpmByTimes.size();
+        int wpmSize = smoothedWpmByTimes.size();
         int timeSize = fullElapsedTimes.size();
         int numberToRemove = timeSize - wpmSize;
 
@@ -50,11 +52,11 @@ public class WpmTimeChartWords30 {
 
         // Naprawienie pętli
         for (int x = 0; x < wpmSize; x++) {
-            series.add(fullElapsedTimes.get(x), wpmByTimes.get(x));
+            series.add(fullElapsedTimes.get(x), smoothedWpmByTimes.get(x));
         }
 
         System.out.println("Time size " + Words30Panels.fullElapsedTime.size());
-        System.out.println("WPM size " + wpmByTimes.size());
+        System.out.println("WPM size " + smoothedWpmByTimes.size());
 
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);

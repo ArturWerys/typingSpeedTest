@@ -121,7 +121,58 @@ public class StatsCalculationMethods {
         return wpmByTimes;
     	
     }
+    
+    
+    public static ArrayList<Float> movingAverage(ArrayList<Float> data, int windowSize) {
+        ArrayList<Float> smoothedData = new ArrayList<>();
+        if (data.size() < windowSize) {
+            return smoothedData; // Return an empty list if the data size is less than the window size
+        }
 
-	
+        for (int i = 0; i <= data.size() - windowSize; i++) {
+            float sum = 0;
+            for (int j = i; j < i + windowSize; j++) {
+                sum += data.get(j);
+            }
+            smoothedData.add(sum / windowSize);
+        }
+
+        return smoothedData;
+    }
+
+
+    public static int calculateConstancy(ArrayList<Float> smoothedData) {
+        if (smoothedData.size() == 0) {
+            return 0;
+        }
+
+        // Calculate mean of the smoothed data
+        double mean = 0.0;
+        for (float value : smoothedData) {
+            mean += value;
+        }
+        mean /= smoothedData.size();
+
+        // Calculate the standard deviation
+        double variance = 0.0;
+        for (float value : smoothedData) {
+            variance += Math.pow(value - mean, 2);
+        }
+        variance /= smoothedData.size();
+        double standardDeviation = Math.sqrt(variance);
+
+        // Normalize the standard deviation to a percentage
+        // Assuming that the maximum possible standard deviation represents 0% constancy
+        // This normalization factor can be adjusted based on the expected range of your data
+        double maxStandardDeviation = mean; // This is a heuristic and may need adjustment
+        double constancy = 100.0 * (1 - (standardDeviation / maxStandardDeviation));
+
+        // Ensure constancy is within the range [0, 100]
+        if (constancy < 0) constancy = 0;
+        if (constancy > 100) constancy = 100;
+
+        return (int)constancy;
+    }
+
 
 }
