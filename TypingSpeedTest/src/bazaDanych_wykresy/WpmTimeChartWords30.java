@@ -53,12 +53,10 @@ public class WpmTimeChartWords30 {
             fullElapsedTimes.remove(fullElapsedTimes.size() - 1);
         }
 
-        // Wykres
         XYSeries series = new XYSeries("WPM / t");
 
-        // Naprawienie pętli
         for (int x = 0; x < wpmSize; x++) {
-            series.add(fullElapsedTimes.get(x), smoothedWpmByTimes.get(x));
+            series.add((fullElapsedTimes.get(x))/100, smoothedWpmByTimes.get(x));
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -66,7 +64,7 @@ public class WpmTimeChartWords30 {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
                 "WPM wraz z kolejnymi napisanymi słowami", 
-                "Czas", // Opis osi X
+                "Czas [s]", // Opis osi X
                 "WPM",
                 dataset, // Dane
                 PlotOrientation.VERTICAL, // Orientacja wykresu

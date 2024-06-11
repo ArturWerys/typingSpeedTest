@@ -54,9 +54,8 @@ public class ResultsPanels extends JFrame {
         JPanel graphPanel = new JPanel();
         getContentPane().add(graphPanel, "cell 1 0,grow");
         
-     // Dodanie wykresu do panelu graph1Panel
-        JFreeChart chart = WpmTimeChartWords30.displayChart(); // Tworzenie wykresu
-        ChartPanel chartPanel = new ChartPanel(chart); // Konwersja wykresu na panel
+        JFreeChart chart = WpmTimeChartWords30.displayChart(); 
+        ChartPanel chartPanel = new ChartPanel(chart); 
         
         graphPanel.setLayout(new BorderLayout());
         graphPanel.add(chartPanel, BorderLayout.CENTER);
@@ -166,9 +165,6 @@ public class ResultsPanels extends JFrame {
 		});
 		
 		
-		
-		
-   
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);

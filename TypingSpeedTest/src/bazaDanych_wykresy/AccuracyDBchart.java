@@ -24,16 +24,13 @@ public class AccuracyDBchart {
 
     public static JFreeChart displayChart() {
 
-        // Pobranie domyślnych ustawień
         UIDefaults defaults = UIManager.getDefaults();
         Color textColor = defaults.getColor("textText"); // Get the color from UIManager
 
-        // Połączenie z bazą danych
         try (Connection conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT `ID`, `CORRECT WORDS` FROM wyniki")) {
 
-            // Przetwarzanie wyników zapytania
             while (rs.next()) {
                 int idValue = rs.getInt("ID");
                 idList.add(idValue);
@@ -45,7 +42,6 @@ public class AccuracyDBchart {
             e.printStackTrace();
         }
 
-        // Tworzenie serii danych
         XYSeries series = new XYSeries("Dokładność");
         for (int x = 0; x < idList.size(); x++) {
             series.add(idList.get(x), accuracyList.get(x));
@@ -66,37 +62,31 @@ public class AccuracyDBchart {
                 false
         );
 
-        // Dostosowanie osi X
         NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
         xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
+        xAxis.setAutoRangeIncludesZero(false); 
 
-        // Dostosowanie wyglądu wykresu
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
         plot.setOutlineVisible(false);
 
-        // Usunięcie legendy
         chart.removeLegend();
 
-        // Ukrycie osi Y
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setVisible(true);
 
-        // Dostosowanie renderera
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesShapesVisible(0, true);
         renderer.setSeriesLinesVisible(0, true);
 
-        // Ustawienie kształtu i koloru punktów na wykresie
-        Double shape = new Ellipse2D.Double(-5.0, -5.0, 10.0, 10.0); // Larger circle
+ 
+        Double shape = new Ellipse2D.Double(-5.0, -5.0, 10.0, 10.0); 
         renderer.setSeriesShape(0, shape);
-        renderer.setSeriesStroke(0, new BasicStroke(5.0f)); // Set line thickness to 2.0
-        renderer.setSeriesPaint(0, defaults.getColor("textText")); // Set the color of the points
+        renderer.setSeriesStroke(0, new BasicStroke(5.0f)); 
+        renderer.setSeriesPaint(0, defaults.getColor("textText")); 
 
-        // Dostosowanie koloru tekstu i punktów na osiach X i Y oraz tytułu wykresu
         xAxis.setTickLabelPaint(textColor);
         rangeAxis.setTickLabelPaint(textColor);
         xAxis.setLabelPaint(textColor);
@@ -105,7 +95,7 @@ public class AccuracyDBchart {
 
         plot.setRenderer(renderer);
 
-        // Usunięcie tła wykresu
+
         plot.setBackgroundPaint(null);
         plot.setOutlinePaint(null);
         chart.setBackgroundPaint(null);
