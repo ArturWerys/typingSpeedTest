@@ -43,9 +43,6 @@ public class StatsCalculationMethods {
 	
 	public static int calculateAccuracy(int correctLetters, int predefinedTextLength ) {
         
-		System.out.println("przekazanie cl " +correctLetters);
-		System.out.println("przekazanie ptL " +predefinedTextLength);
-
 		float accuracy;
 		
 		if(correctLetters == 0) {
@@ -55,8 +52,6 @@ public class StatsCalculationMethods {
 			accuracy = ((float) (correctLetters) / (predefinedTextLength-1)) * 100;
 		}
 	    
-        System.out.println("Accuracy :" + accuracy);
-        
         return (int) accuracy; 
 	}
 	
