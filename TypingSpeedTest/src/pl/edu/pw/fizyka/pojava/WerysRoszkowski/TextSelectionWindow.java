@@ -1,5 +1,6 @@
 package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -59,8 +61,6 @@ public class TextSelectionWindow extends JFrame {
         panel.add(textPane, "cell 2 0,grow");
         
         textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont(12));
-
-        
         textPane.setEditable(false);
        
         JPanel panel_1 = new JPanel();
@@ -71,58 +71,64 @@ public class TextSelectionWindow extends JFrame {
         panel_1.add(btnConfirm, "cell 1 0,alignx center,aligny center,grow");
         
         btnConfirm.addActionListener(new ActionListener() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(WelcomeWindow.words30choosen == true) {
+                if (WelcomeWindow.words30choosen) {
                     new Words30Panels();
                     TextSelectionWindow.this.dispose();
-                }
-                else{
+                } else {
                     new Seconds30Panels();
                     TextSelectionWindow.this.dispose();
                 }
             }
         });
         
-        // Utwórz korzeń drzewa
+        // Create the root of the tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
-        // Dodaj pierwszą nadrzędną pozycję
+        // Add first parent node
         DefaultMutableTreeNode parent1 = new DefaultMutableTreeNode("Tekst klasyczny");
         root.add(parent1);
 
-        // Dodaj podlistę do pierwszej nadrzędnej pozycji
+        // Add children to the first parent node
         DefaultMutableTreeNode nadNiemnemNode = new DefaultMutableTreeNode("Nad Niemnem");
         parent1.add(nadNiemnemNode);
         parent1.add(new DefaultMutableTreeNode("Lalka"));
 
-        // Dodaj drugą nadrzędną pozycję
+        // Add second parent node
         DefaultMutableTreeNode parent2 = new DefaultMutableTreeNode("Tekst losowy");
         root.add(parent2);
 
-        // Dodaj podlistę do drugiej nadrzędnej pozycji
+        // Add children to the second parent node
         parent2.add(new DefaultMutableTreeNode("Child 2.1"));
         parent2.add(new DefaultMutableTreeNode("Child 2.2"));
 
-        // Utwórz model drzewa
+        // Create the tree model and tree
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         JTree tree = new JTree(treeModel);
         
-        // Ukryj korzeń drzewa
+        // Hide the root of the tree
         tree.setRootVisible(false);
         
-        // Dodaj drzewo do JScrollPane
+        // Add tree to JScrollPane
         scrollPane.setViewportView(tree);
         
-        // Ustawienie text Pane
-        textPane.setEditable(false);
-        StyledDocument doc = textPane.getStyledDocument();
+        // Set button and tree fonts
+        btnConfirm.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(windowWidth * confirmButtonScale)));
+        tree.setFont(CustomFonts.TEXT_TREE_FONT.deriveFont((float)(windowWidth * treeTextScale)));
+        
+        // Set the text pane attributes
         textPane.setCaretColor(defaults.getColor("Caret"));
-        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float)(this.getWidth() * 0.02)));
+        
+        // Create and set the style
+        Style textPaneStyle = textPane.addStyle("TextPaneStyle", null);
+        StyleConstants.setFontFamily(textPaneStyle, CustomFonts.TEXT_PANE_FONT.getFamily());
+        StyleConstants.setFontSize(textPaneStyle, (int) (windowWidth * textPaneScale));
+        StyleConstants.setForeground(textPaneStyle, defaults.getColor("textText"));
 
-        Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
-        StyleConstants.setForeground(defaultStyle, defaults.getColor("Button.disabledText"));
+        // Apply the style to the entire document
+        StyledDocument doc = textPane.getStyledDocument();
+        doc.setCharacterAttributes(0, doc.getLength(), textPaneStyle, false);
         
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
@@ -134,90 +140,11 @@ public class TextSelectionWindow extends JFrame {
                     // Clear the text pane before inserting new text
                     textPane.setText("");
                     
-                    if(WelcomeWindow.words30choosen == true) {
-                    	
-                        if (nodeText.equals("Nad Niemnem")) {
-                            textToLoad = TextLoader.loadText("nadNiemnem.txt");
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        } else if (nodeText.equals("Lalka")) {
-                            textToLoad = TextLoader.loadText("lalka30slow.txt");
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        } else if (nodeText.equals("Child 2.1")) {
-                            textToLoad = "Placeholder text for Child 2.1";
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        } else if (nodeText.equals("Child 2.2")) {
-                            textToLoad = "Placeholder text for Child 2.2";
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        }
-                    	
+                    if (WelcomeWindow.words30choosen) {
+                        loadText(textPane, nodeText, "nadNiemnem.txt", "lalka30slow.txt", doc, textPaneStyle);
+                    } else {
+                        loadText(textPane, nodeText, "nadNiemnem30sec.txt", "lalka30sec.txt", doc, textPaneStyle);
                     }
-                    
-                    else {
-                        if (nodeText.equals("Nad Niemnem")) {
-                            textToLoad = TextLoader.loadText("nadNiemnem30sec.txt");
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        } else if (nodeText.equals("Lalka")) {
-                            textToLoad = TextLoader.loadText("lalka30sec.txt");
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        } else if (nodeText.equals("Child 2.1")) {
-                            textToLoad = "Placeholder text for Child 2.1";
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        } else if (nodeText.equals("Child 2.2")) {
-                            textToLoad = "Placeholder text for Child 2.2";
-                            try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
-                            }
-                        }
-                    }
-                   
-                    
-
                 }
             }
         });
@@ -225,39 +152,57 @@ public class TextSelectionWindow extends JFrame {
         addComponentListener(new ComponentListener() {
             @Override
             public void componentShown(ComponentEvent e) {
-                int width = e.getComponent().getWidth();
-                btnConfirm.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * confirmButtonScale)));
-                tree.setFont(CustomFonts.TEXT_TREE_FONT.deriveFont((float)(width * treeTextScale)));
-                textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float)(width * textPaneScale)));
+                updateComponentSizes(e.getComponent().getWidth());
             }
             
             @Override
             public void componentResized(ComponentEvent e) {
-                int width = e.getComponent().getWidth();
-                btnConfirm.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * confirmButtonScale)));
-                tree.setFont(CustomFonts.TEXT_TREE_FONT.deriveFont((float)(width * treeTextScale)));
-                textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float)(width * textPaneScale)));
-                
-
+                updateComponentSizes(e.getComponent().getWidth());
             }
             
             @Override
             public void componentMoved(ComponentEvent e) {
-                // TODO Auto-generated method stub
+                // Do nothing
             }
             
             @Override
             public void componentHidden(ComponentEvent e) {
-                // TODO Auto-generated method stub
+                // Do nothing
+            }
+
+            private void updateComponentSizes(int width) {
+                btnConfirm.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * confirmButtonScale)));
+                tree.setFont(CustomFonts.TEXT_TREE_FONT.deriveFont((float)(width * treeTextScale)));
+                
+                int fontSize = (int) (width * textPaneScale);
+                textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) fontSize));
+                StyleConstants.setFontSize(textPaneStyle, fontSize);
+                doc.setCharacterAttributes(0, doc.getLength(), textPaneStyle, false);
+                repaint();
             }
         });
         
         setVisible(true);
     }
+    
+    private void loadText(JTextPane textPane, String nodeText, String nadNiemnemFile, String lalkaFile, StyledDocument doc, Style textPaneStyle) {
+        if (nodeText.equals("Nad Niemnem")) {
+            textToLoad = TextLoader.loadText(nadNiemnemFile);
+        } else if (nodeText.equals("Lalka")) {
+            textToLoad = TextLoader.loadText(lalkaFile);
+        } else if (nodeText.equals("Child 2.1")) {
+            textToLoad = "Placeholder text for Child 2.1";
+        } else if (nodeText.equals("Child 2.2")) {
+            textToLoad = "Placeholder text for Child 2.2";
+        }
+        
+        try {
+            doc.insertString(doc.getLength(), textToLoad, textPaneStyle);
+            textPane.setCaretPosition(0);
+            textPane.repaint();
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
 
-//    public static void main(String[] args) {
-//        FlatLightLaf.setup();
-//        UIManager.put("Button.arc", 20);
-//        new TextSelectionWindow();
-//    }
 }

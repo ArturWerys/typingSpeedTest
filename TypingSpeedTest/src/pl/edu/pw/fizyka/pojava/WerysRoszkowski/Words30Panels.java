@@ -27,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
+    private static final double textPaneScale = 0.016;
     private ResultsButton resultsButton;
     public static String predefinedText = TextSelectionWindow.textToLoad;
 //    public static String predefinedText = TextLoader.loadText("testowy.txt");
@@ -167,14 +168,10 @@ public class Words30Panels extends JFrame{
 			
 			@Override
 			public void componentShown(ComponentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void componentResized(ComponentEvent e) {
 				int width = e.getComponent().getWidth();
-		        int fontSize = (int) (width * 0.02);
+		        
+		        String fontFamily = CustomFonts.TEXT_PANE_FONT.getFamily();
+		        int fontSize = (int) (width * textPaneScale);
 		        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) fontSize));
 
 		        StyledDocument doc = textPane.getStyledDocument();
@@ -183,9 +180,34 @@ public class Words30Panels extends JFrame{
 		        for (int i = 0; i < length; i++) {
 		            SimpleAttributeSet attrs = new SimpleAttributeSet(doc.getCharacterElement(i).getAttributes());
 		            StyleConstants.setFontSize(attrs, fontSize);
+		            StyleConstants.setFontFamily(attrs, fontFamily);
 		            StyleConstants.setForeground(attrs, defaultTextColor);
 		            doc.setCharacterAttributes(i, 1, attrs, false);
 		        }
+		        
+		        repaint();
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				int width = e.getComponent().getWidth();
+		        
+		        String fontFamily = CustomFonts.TEXT_PANE_FONT.getFamily();
+		        int fontSize = (int) (width * textPaneScale);
+		        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont((float) fontSize));
+
+		        StyledDocument doc = textPane.getStyledDocument();
+		        int length = doc.getLength();
+		        Color defaultTextColor = defaults.getColor("Button.disabledText");
+		        for (int i = 0; i < length; i++) {
+		            SimpleAttributeSet attrs = new SimpleAttributeSet(doc.getCharacterElement(i).getAttributes());
+		            StyleConstants.setFontSize(attrs, fontSize);
+		            StyleConstants.setFontFamily(attrs, fontFamily);
+		            StyleConstants.setForeground(attrs, defaultTextColor);
+		            doc.setCharacterAttributes(i, 1, attrs, false);
+		        }
+		        
 		        repaint();
 				
 			}
