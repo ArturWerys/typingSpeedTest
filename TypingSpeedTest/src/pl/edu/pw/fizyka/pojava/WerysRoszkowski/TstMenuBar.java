@@ -59,6 +59,8 @@ public class TstMenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
+		
+			
 		});
 		
 	}

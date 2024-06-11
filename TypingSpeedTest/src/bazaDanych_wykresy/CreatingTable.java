@@ -37,8 +37,7 @@ public class CreatingTable{
 				conn.close();
 			}
 		}
-		
-   	
+
 		System.out.println("Utworzono tabele danych");
 
 	}

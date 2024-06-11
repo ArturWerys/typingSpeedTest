@@ -1,125 +1,115 @@
 package bazaDanych_wykresy;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
 import java.sql.*;
 import java.util.ArrayList;
-
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-
 public class AccuracyDBchart {
     
-	 static ArrayList<Integer> idList = new ArrayList<>();
-	    static ArrayList<Float> accuracyList = new ArrayList<>();
+    static ArrayList<Integer> idList = new ArrayList<>();
+    static ArrayList<Float> accuracyList = new ArrayList<>();
 
-	    public static JFreeChart displayChart() {
+    public static JFreeChart displayChart() {
 
-	    	UIDefaults defaults = UIManager.getDefaults();
-	    	
-	        Connection conn = null;
-	        Statement stmt = null;
-	        ResultSet rs = null;
+        // Pobranie domyślnych ustawień
+        UIDefaults defaults = UIManager.getDefaults();
+        Color textColor = defaults.getColor("textText"); // Get the color from UIManager
 
-	        try {
-	            // Utwórz połączenie
-	            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
+        // Połączenie z bazą danych
+        try (Connection conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT `ID`, `CORRECT WORDS` FROM wyniki")) {
 
-	            // Utwórz obiekt instrukcji
-	            stmt = conn.createStatement();
+            // Przetwarzanie wyników zapytania
+            while (rs.next()) {
+                int idValue = rs.getInt("ID");
+                idList.add(idValue);
 
-	            // Wykonaj zapytanie SQL
-	            rs = stmt.executeQuery("SELECT `ID`, `CORRECT WORDS` FROM wyniki");
+                float accuracy = rs.getFloat("CORRECT WORDS");
+                accuracyList.add(accuracy);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	            // Przetwórz wyniki zapytania
-	            while (rs.next()) {
-	                int idValue = rs.getInt("ID");
-	                idList.add(idValue);
+        // Tworzenie serii danych
+        XYSeries series = new XYSeries("Dokładność");
+        for (int x = 0; x < idList.size(); x++) {
+            series.add(idList.get(x), accuracyList.get(x));
+        }
 
-	                float accuracy = rs.getFloat("CORRECT WORDS");
-	                accuracyList.add(accuracy);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        } finally {
-	            try {
-	                if (rs != null) rs.close();
-	                if (stmt != null) stmt.close();
-	                if (conn != null) conn.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
 
-	        // Wykres
-	        XYSeries series = new XYSeries("Accuracy");
+        // Tworzenie wykresu
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "Dokładność wraz z kolejnymi testami",
+                "Kolejne testy", // Opis osi X
+                "Dokładność",
+                dataset, // Dane
+                PlotOrientation.VERTICAL, // Orientacja wykresu
+                true, // Legenda
+                true, // Tooltips
+                false
+        );
 
-	        for (int x = 0; x < idList.size(); x++) {
-	            series.add(idList.get(x), accuracyList.get(x));
-	        }
+        // Dostosowanie osi X
+        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
+        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
 
-	        XYSeriesCollection dataset = new XYSeriesCollection();
-	        dataset.addSeries(series);
+        // Dostosowanie wyglądu wykresu
+        XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.white);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+        plot.setOutlineVisible(false);
 
-	        JFreeChart chart = ChartFactory.createXYLineChart(
-	                "Accuracy wraz z kolejnymi testami",
-	                "Kolejne testy", // Opis osi X
-	                "Accuracy",
-	                dataset, // Dane
-	                PlotOrientation.VERTICAL, // Orientacja wykresu
-	                true, // Legenda
-	                true, // Tooltips
-	                false
-	        );
+        // Usunięcie legendy
+        chart.removeLegend();
 
-	        // Ustawienie osi X na liczby całkowite
-	        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
-	        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-	        xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
+        // Ukrycie osi Y
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setVisible(true);
 
-	        // ZMIANA WYGLĄDU
-	        XYPlot plot = (XYPlot) chart.getPlot();
-	        plot.setBackgroundPaint(Color.white);
-	        plot.setDomainGridlinePaint(Color.white);
-	        plot.setRangeGridlinePaint(Color.white);
-	        plot.setOutlineVisible(false);
+        // Dostosowanie renderera
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesShapesVisible(0, true);
+        renderer.setSeriesLinesVisible(0, true);
 
-	        // ZMIANA WYGLĄDU LEGENDY
-	        chart.removeLegend();
+        // Ustawienie kształtu i koloru punktów na wykresie
+        Double shape = new Ellipse2D.Double(-5.0, -5.0, 10.0, 10.0); // Larger circle
+        renderer.setSeriesShape(0, shape);
+        renderer.setSeriesStroke(0, new BasicStroke(5.0f)); // Set line thickness to 2.0
+        renderer.setSeriesPaint(0, defaults.getColor("textText")); // Set the color of the points
 
-	        // Ukrycie osi Y
-	        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-	        rangeAxis.setVisible(true);
+        // Dostosowanie koloru tekstu i punktów na osiach X i Y oraz tytułu wykresu
+        xAxis.setTickLabelPaint(textColor);
+        rangeAxis.setTickLabelPaint(textColor);
+        xAxis.setLabelPaint(textColor);
+        rangeAxis.setLabelPaint(textColor);
+        chart.getTitle().setPaint(textColor);
 
-	        // Customize the renderer
-	        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-	        renderer.setSeriesShapesVisible(0, true);
-	        renderer.setSeriesLinesVisible(0, true);
+        plot.setRenderer(renderer);
 
-	        // Create a larger shape for the points
-	        Double shape = new Ellipse2D.Double(-5.0, -5.0, 10.0, 10.0); // Larger circle
-	        renderer.setSeriesShape(0, shape);
-	        renderer.setSeriesPaint(0,  defaults.getColor("CheckBoxMenuItem.acceleratorSelectionForeground")); // Optional: set the color of the points
+        // Usunięcie tła wykresu
+        plot.setBackgroundPaint(null);
+        plot.setOutlinePaint(null);
+        chart.setBackgroundPaint(null);
 
-	        plot.setRenderer(renderer);
-	        // Remove the background color
-	        plot.setBackgroundPaint(null); // Set plot background to transparent
-	        plot.setOutlinePaint(null); // Remove plot outline
-	        chart.setBackgroundPaint(null); // Set chart background to transparent
-
-	        return chart;
+        return chart;
     }
 }

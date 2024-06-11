@@ -8,13 +8,11 @@ import java.awt.event.ComponentListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,8 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-
-import bazaDanych_wykresy.ExampleChart;
 import bazaDanych_wykresy.WpmTimeChartWords30;
 import net.miginfocom.swing.MigLayout;
 

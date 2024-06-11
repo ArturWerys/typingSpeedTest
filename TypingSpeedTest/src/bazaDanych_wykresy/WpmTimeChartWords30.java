@@ -1,19 +1,20 @@
 package bazaDanych_wykresy;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Ellipse2D.Double;
 import java.util.ArrayList;
-
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-
 import pl.edu.pw.fizyka.pojava.WerysRoszkowski.Seconds30Panels;
 import pl.edu.pw.fizyka.pojava.WerysRoszkowski.StatsCalculationMethods;
 import pl.edu.pw.fizyka.pojava.WerysRoszkowski.WelcomeWindow;
@@ -22,18 +23,24 @@ import pl.edu.pw.fizyka.pojava.WerysRoszkowski.Words30Panels;
 public class WpmTimeChartWords30 {
 
     public static JFreeChart displayChart() {
+    	
+    	UIDefaults defaults = UIManager.getDefaults();
+    	Color textColor = defaults.getColor("textText"); // Get the color from UIManager
         
     	ArrayList<Float> wpmByTimes = new ArrayList<Float>();
     	ArrayList<Long> fullElapsedTimes = new ArrayList<Long>();
-    	ArrayList<Float> smoothedWpmByTimes = new ArrayList<Float>();    	
+    	ArrayList<Float> smoothedWpmByTimes = new ArrayList<Float>();    
+    	
+    	int smoothing = 20;
+    	
     	if(WelcomeWindow.words30choosen == true) {
     		  wpmByTimes = StatsCalculationMethods.discreteWpmCalculation(Words30Panels.letterTimes);
-    		  smoothedWpmByTimes = StatsCalculationMethods.movingAverage(wpmByTimes, 10);
+    		  smoothedWpmByTimes = StatsCalculationMethods.movingAverage(wpmByTimes, smoothing);
     		  fullElapsedTimes = Words30Panels.fullElapsedTime;
     	}
     	else {
     		wpmByTimes = StatsCalculationMethods.discreteWpmCalculation(Seconds30Panels.letterTimes);
-    		smoothedWpmByTimes = StatsCalculationMethods.movingAverage(wpmByTimes, 10);
+    		smoothedWpmByTimes = StatsCalculationMethods.movingAverage(wpmByTimes, smoothing);
   		  	fullElapsedTimes = Seconds30Panels.fullElapsedTime;
     	}
     	
@@ -55,9 +62,6 @@ public class WpmTimeChartWords30 {
             series.add(fullElapsedTimes.get(x), smoothedWpmByTimes.get(x));
         }
 
-        System.out.println("Time size " + Words30Panels.fullElapsedTime.size());
-        System.out.println("WPM size " + smoothedWpmByTimes.size());
-
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
 
@@ -72,29 +76,50 @@ public class WpmTimeChartWords30 {
                 false
         );
 
-        // Ustawienie osi X na liczby całkowite
+     // Dostosowanie osi X
         NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
         xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
 
-        // ZMIANA WYGLĄDU
+        // Dostosowanie wyglądu wykresu
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
         plot.setOutlineVisible(false);
 
-        // ZMIANA WYGLĄDU LEGENDY
-        LegendTitle legend = chart.getLegend();
-        legend.setFrame(BlockBorder.NONE);
-        legend.setPadding(20.0, 20.0, 0.0, 0.0);
+        // Usunięcie legendy
+        chart.removeLegend();
 
         // Ukrycie osi Y
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        // rangeAxis.setVisible(false);
+        rangeAxis.setVisible(true);
 
-        ChartFrame frame = new ChartFrame("Wykres", chart);
-        frame.pack();
+        // Dostosowanie renderera
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesShapesVisible(0, true);
+        renderer.setSeriesLinesVisible(0, true);
+
+        // Ustawienie kształtu i koloru punktów na wykresie
+        renderer.setSeriesPaint(0, defaults.getColor("textText")); // Set the color of the points
+        renderer.setSeriesShapesVisible(0, false);
+        renderer.setSeriesStroke(0, new BasicStroke(2.0f)); // Set line thickness to 2.0
+
+
+        // Dostosowanie koloru tekstu i punktów na osiach X i Y oraz tytułu wykresu
+        xAxis.setTickLabelPaint(textColor);
+        rangeAxis.setTickLabelPaint(textColor);
+        xAxis.setLabelPaint(textColor);
+        rangeAxis.setLabelPaint(textColor);
+        chart.getTitle().setPaint(textColor);
+
+        plot.setRenderer(renderer);
+
+        // Usunięcie tła wykresu
+        plot.setBackgroundPaint(null);
+        plot.setOutlinePaint(null);
+        chart.setBackgroundPaint(null);
+
 
         return chart;
     }

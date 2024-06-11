@@ -30,6 +30,9 @@ public class WpmDBchart extends JFrame {
         Statement stmt = null;
         ResultSet rs = null;
 
+        UIDefaults defaults = UIManager.getDefaults();
+        Color textColor = defaults.getColor("textText"); // Get the color from UIManager
+        
         try {
             // Utwórz połączenie
             conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
@@ -73,7 +76,7 @@ public class WpmDBchart extends JFrame {
         JFreeChart histogram = ChartFactory.createHistogram(
                 "Histogram WPM",
                 "WPM",
-                "Frequency",
+                "Ilość testów",
                 dataset,
                 PlotOrientation.VERTICAL,
                 true,
@@ -82,30 +85,42 @@ public class WpmDBchart extends JFrame {
         );
         
         // ZMIANA WYGLĄDU LEGENDY
-       histogram.removeLegend();
+        histogram.removeLegend();
 
         
         // Customize the renderer to set a solid color for the bars
         XYPlot plot = (XYPlot) histogram.getPlot();
         XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
 
-        // Ustawienie koloru na jednolity (niebieski)
-        renderer.setSeriesPaint(0, new Color(30, 144, 255)); 
+        // Ustawienie koloru na jednolity 
+        renderer.setSeriesPaint(0, textColor); 
         
         // Wyłączenie gradientowego wypełnienia słupków
         renderer.setBarPainter(new StandardXYBarPainter());
         renderer.setMargin(0.25); // Ustawienie marginesu na 10% szerokości kategorii
+        renderer.setSeriesPaint(0, defaults.getColor("textText")); // Set the color of the points
 
+      
+        histogram.getTitle().setPaint(textColor);
         
-        // Remove the background color
-        plot.setBackgroundPaint(null); // Set plot background to transparent
-        plot.setOutlinePaint(null); // Remove plot outline
-        histogram.setBackgroundPaint(null); // Set chart background to transparent
         
-        // Display the histogram in a frame
-        ChartFrame frame = new ChartFrame("Histogram", histogram);
-        frame.pack();
+        // Usunięcie tła wykresu
+        plot.setBackgroundPaint(null);
+        plot.setOutlinePaint(null);
+        histogram.setBackgroundPaint(null);
 
+        // Ustawienie koloru tekstu dla opisu osi X
+        plot.getDomainAxis().setLabelPaint(textColor);
+
+        // Ustawienie koloru tekstu dla opisu osi Y
+        plot.getRangeAxis().setLabelPaint(textColor);
+
+        // Ustawienie koloru tekstu dla podpisów osi X
+        plot.getDomainAxis().setTickLabelPaint(textColor);
+
+        // Ustawienie koloru tekstu dla podpisów osi Y
+        plot.getRangeAxis().setTickLabelPaint(textColor);
+        
         return histogram;
     }
 
