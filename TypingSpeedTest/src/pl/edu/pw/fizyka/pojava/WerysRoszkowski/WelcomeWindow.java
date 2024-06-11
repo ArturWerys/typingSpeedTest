@@ -68,7 +68,7 @@ public class WelcomeWindow extends JFrame {
 		btnPreviousResults.setFont(CustomFonts.BUTTON_FONT.deriveFont(10f));
 		panel.add(btnPreviousResults, "cell 1 5,alignx center,aligny center,grow");
 		
-		TstMenuBar menuBar = new TstMenuBar(false, true, this, true);
+		TstMenuBar menuBar = new TstMenuBar(false, true, this);
 		setJMenuBar(menuBar);	
 		
 		addComponentListener(new ComponentListener() {
@@ -119,6 +119,7 @@ public class WelcomeWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Seconds30Panels();
+				words30choosen = false;
 				WelcomeWindow.this.dispose();
 			}
 		});
