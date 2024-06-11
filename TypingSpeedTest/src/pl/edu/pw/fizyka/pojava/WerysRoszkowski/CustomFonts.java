@@ -11,7 +11,8 @@ public class CustomFonts {
     public static Font TEXT_PANE_FONT;
     public static Font RSLTS_STATS_NAME_FONT;
     public static Font RSLTS_STATS_COUNT_FONT;
-
+    public static Font TEXT_TREE_FONT;
+    
     static {
         try {
             TITLE_FONT = CustomFontLoader.loadFont("Poppins", "Poppins-ExtraBold.ttf");
@@ -19,6 +20,7 @@ public class CustomFonts {
             TEXT_PANE_FONT = CustomFontLoader.loadFont("Poppins", "Poppins-Regular.ttf");
             RSLTS_STATS_NAME_FONT = CustomFontLoader.loadFont("Poppins", "Poppins-Regular.ttf");
             RSLTS_STATS_COUNT_FONT = CustomFontLoader.loadFont("Poppins", "Poppins-ExtraBold.ttf");
+            TEXT_TREE_FONT = CustomFontLoader.loadFont("Poppins", "Poppins-Regular.ttf");
             
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
@@ -27,6 +29,7 @@ public class CustomFonts {
             BUTTON_FONT = FALLBACK_FONT;
             RSLTS_STATS_NAME_FONT = FALLBACK_FONT;
             RSLTS_STATS_COUNT_FONT = FALLBACK_FONT;
+            TEXT_TREE_FONT = FALLBACK_FONT;
         }
     }
 }

@@ -2,8 +2,7 @@ package bazaDanych_wykresy;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Ellipse2D.Double;
+
 import java.util.ArrayList;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;

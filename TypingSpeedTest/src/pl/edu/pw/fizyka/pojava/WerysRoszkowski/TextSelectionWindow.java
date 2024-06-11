@@ -1,6 +1,10 @@
 package pl.edu.pw.fizyka.pojava.WerysRoszkowski;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
@@ -11,11 +15,15 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-
 import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.JPanel;
+import javax.swing.JButton;
 
 public class TextSelectionWindow extends JFrame {
-
+	
+	private static final double confirmButtonScale = 0.014;
+	private static final double treeTextScale = 0.012;
+	
     public TextSelectionWindow() {
         super();
         
@@ -28,12 +36,43 @@ public class TextSelectionWindow extends JFrame {
         
         TstMenuBar menuBar = new TstMenuBar(true, true, this);
         setJMenuBar(menuBar);
-        getContentPane().setLayout(new MigLayout("", "[5%][42.5%,grow][5%][42.5%,grow][5%]", "[5%][90%,grow][5%]"));
+        getContentPane().setLayout(new MigLayout("", "[2%][grow][2%]", "[2%][83%,grow][2%][10%,grow][2%]"));
+        
+        JPanel panel = new JPanel();
+        getContentPane().add(panel, "cell 1 1,grow");
+        panel.setLayout(new MigLayout("", "[45%,grow][2%][45%,grow]", "[grow]"));
         
         JScrollPane scrollPane = new JScrollPane();
-        getContentPane().add(scrollPane, "cell 1 1,grow");
+        panel.add(scrollPane, "cell 0 0,grow");
         
-        // Utwórz korzeń drzewa
+        JTextPane textPane = new JTextPane();
+        panel.add(textPane, "cell 2 0,grow");
+        textPane.setEditable(false);
+       
+        JPanel panel_1 = new JPanel();
+        getContentPane().add(panel_1, "cell 1 3,grow");
+        panel_1.setLayout(new MigLayout("", "[40%][grow][40%]", "[grow]"));
+        
+        JButton btnConfirm = new JButton("Potwierdź");
+        panel_1.add(btnConfirm, "cell 1 0,alignx center,aligny center,grow");
+        
+        btnConfirm.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(WelcomeWindow.words30choosen == true) {
+					new Words30Panels();
+					TextSelectionWindow.this.dispose();
+				}
+				else{
+					new Seconds30Panels();
+					TextSelectionWindow.this.dispose();
+
+				}
+			}
+		});
+        
+     // Utwórz korzeń drzewa
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
         // Dodaj pierwszą nadrzędną pozycję
@@ -58,13 +97,9 @@ public class TextSelectionWindow extends JFrame {
         
         // Ukryj korzeń drzewa
         tree.setRootVisible(false);
-
+        
         // Dodaj drzewo do JScrollPane
         scrollPane.setViewportView(tree);
-        
-        JTextPane textPane = new JTextPane();
-        getContentPane().add(textPane, "cell 3 1,grow");
-        
         
         tree.addTreeSelectionListener(new TreeSelectionListener() {
 			
@@ -75,12 +110,43 @@ public class TextSelectionWindow extends JFrame {
 			}
 		});
         
+        addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				int width = e.getComponent().getWidth();
+				btnConfirm.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * confirmButtonScale)));
+				tree.setFont(CustomFonts.TEXT_TREE_FONT.deriveFont((float)(width * treeTextScale)));
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				int width = e.getComponent().getWidth();
+				btnConfirm.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(width * confirmButtonScale)));
+				tree.setFont(CustomFonts.TEXT_TREE_FONT.deriveFont((float)(width * treeTextScale)));
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+        
+        ;
+        
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-		FlatLightLaf.setup();
-		UIManager.put( "Button.arc", 20 );
-        new TextSelectionWindow();
-    }
+//    public static void main(String[] args) {
+//		FlatLightLaf.setup();
+//		UIManager.put( "Button.arc", 20 );
+//        new TextSelectionWindow();
+//    }
 }
