@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -51,8 +52,11 @@ public class Seconds30Panels extends JFrame {
     public static int correctLetters = 0;
     public static boolean endOfTest = false;
     
+    public static int endIndex = 0;
+    
     Timer timer;
-    private int totalTime = 30000;
+//    private int totalTime = 30000;
+    private int totalTime = 2000;
     private int updateInterval = 10;
     
     
@@ -106,6 +110,7 @@ public class Seconds30Panels extends JFrame {
         
         textPane.addKeyListener(new KeyAdapter() {
         	private boolean firstCharacterTyped = true;
+        	
         	
             @Override
             public void keyPressed(KeyEvent e) {
@@ -194,6 +199,9 @@ public class Seconds30Panels extends JFrame {
                     endOfTest = true;
                     textPane.setCaretPosition(0);
                     resultsButton.setVisible(true);
+                    
+                    endIndex = currentIndex;
+                    System.out.print(currentIndex);
                 }
             }
         });
@@ -204,10 +212,8 @@ public class Seconds30Panels extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels(calculateSeconds30Results());
-				currentIndex = 0;
-                correctLetters = 0;
+
 				Seconds30Panels.this.dispose();
-				endOfTest = false;
 				resetTextPane();
 			}
 		});
@@ -273,9 +279,9 @@ public class Seconds30Panels extends JFrame {
 
 	    	System.out.println("Cock: " + correctLetters);
 	    	System.out.println("Text length+ "+predefinedText.length());
-	    	
+	    		    	
 	        int wpm = StatsCalculationMethods.calculateSeconds30WPM(correctLetters);
-	        int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, predefinedText.length());
+	        int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, endIndex);
 	    	    	
 	        return new int[] {(int) accuracy, (int) wpm};
 	    }
@@ -325,11 +331,11 @@ public class Seconds30Panels extends JFrame {
 	   
 		
 	    public void resetTextPane() {
-	    	
+	    		    	    	
 	    	correctLetters = 0;
 	        currentIndex = 0;
-	        correctLetters = 0;
-
+	        endOfTest = false;
+	        
 	        
 	        StyledDocument doc = textPane.getStyledDocument();
 	        try {
@@ -339,8 +345,7 @@ public class Seconds30Panels extends JFrame {
 				e.printStackTrace();
 			} 
 	        
-	        
-	        String newPredefinedText = TextLoader.loadText("nadNiemnem30sec.txt");
+	        String newPredefinedText = TextLoader.loadText("nadNiemnem.txt");
 	        try {
 	            doc.insertString(doc.getLength(), newPredefinedText, null);
 	        } catch (BadLocationException e) {
@@ -348,5 +353,11 @@ public class Seconds30Panels extends JFrame {
 	        }
 	        
 	        textPane.setCaretPosition(0); 
+	        resultsButton.setVisible(false); 
+	        
+	        letterTimes.clear();
+	        fullElapsedTime.clear();
+	        
+	        
 	    }
-	}
+}
