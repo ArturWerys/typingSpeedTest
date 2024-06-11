@@ -8,13 +8,11 @@ import java.awt.event.ComponentListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,8 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-
-import bazaDanych_wykresy.ExampleChart;
 import bazaDanych_wykresy.WpmTimeChartWords30;
 import net.miginfocom.swing.MigLayout;
 
@@ -51,14 +47,15 @@ public class ResultsPanels extends JFrame {
 			constancyCount = StatsCalculationMethods.calculateConstancy(smoothedWpmByTimes);
 		}
         
+        
+        
         getContentPane().setLayout(new MigLayout("", "[8%][grow][8%]", "[50%,grow][25%][15%,grow]"));
         
         JPanel graphPanel = new JPanel();
         getContentPane().add(graphPanel, "cell 1 0,grow");
         
-     // Dodanie wykresu do panelu graph1Panel
-        JFreeChart chart = WpmTimeChartWords30.displayChart(); // Tworzenie wykresu
-        ChartPanel chartPanel = new ChartPanel(chart); // Konwersja wykresu na panel
+        JFreeChart chart = WpmTimeChartWords30.displayChart(); 
+        ChartPanel chartPanel = new ChartPanel(chart); 
         
         graphPanel.setLayout(new BorderLayout());
         graphPanel.add(chartPanel, BorderLayout.CENTER);
@@ -168,9 +165,6 @@ public class ResultsPanels extends JFrame {
 		});
 		
 		
-		
-		
-   
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);

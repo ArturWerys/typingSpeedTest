@@ -14,22 +14,24 @@ public class CreatingTable{
 			conn = DriverManager.getConnection(	"jdbc:h2:tstData", "artur", "");
 	
 		     Statement statement = conn.createStatement();
-		     // Usuwanie tabeli - kolejne uruchomienie nie wygeneruje bledu:
 		     statement.executeUpdate("DROP TABLE IF EXISTS `wyniki`;");
 				
-			 // Tworzenie tabeli o okreslonej strukturze danych
 		     statement.executeUpdate("CREATE TABLE `wyniki` ("+
 						  "`Id` int(6) unsigned NOT NULL auto_increment,"+
 						  "`data` date default NULL,"+
-                          "`hour` VARCHAR(5) default NULL,"+ // VARCHAR dla godziny
+                          "`hour` VARCHAR(5) default NULL,"+ 
 						  "`Correct words` float default NULL,"+
                           "`WPM` float default NULL,"+
 						  "PRIMARY KEY  (`Id`)"+
 						") ;");
 				
 				// Dane poczatkowe
-				statement.executeUpdate("INSERT INTO `wyniki` VALUES (1,'2024-05-08',17.50, 88.54, 55);");
-				statement.executeUpdate("INSERT INTO `wyniki` VALUES (2,'2024-05-08',17.51, 90.54, 20);");
+				statement.executeUpdate("INSERT INTO `wyniki` VALUES (1,'2024-06-12',16.50, 88.54, 55);");
+				statement.executeUpdate("INSERT INTO `wyniki` VALUES (2,'2024-06-12',16.51, 90.54, 45);");
+				statement.executeUpdate("INSERT INTO `wyniki` VALUES (3,'2024-06-12',16.52, 20.12, 45);");
+				statement.executeUpdate("INSERT INTO `wyniki` VALUES (4,'2024-06-12',16.53, 15.4, 55);");
+				statement.executeUpdate("INSERT INTO `wyniki` VALUES (5,'2024-06-12',16.54, 66.54, 70);");
+				
 
 			
 		} finally {
@@ -37,8 +39,7 @@ public class CreatingTable{
 				conn.close();
 			}
 		}
-		
-   	
+
 		System.out.println("Utworzono tabele danych");
 
 	}

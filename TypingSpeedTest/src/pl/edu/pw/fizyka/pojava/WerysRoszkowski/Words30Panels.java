@@ -9,10 +9,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,7 +28,7 @@ import net.miginfocom.swing.MigLayout;
 public class Words30Panels extends JFrame{
     private JTextPane textPane;
     private ResultsButton resultsButton;
-    public static String predefinedText = TextList.predefinedText;
+    public static String predefinedText = TextSelectionWindow.textToLoad;
 //    public static String predefinedText = TextLoader.loadText("testowy.txt");
 
     public static int currentIndex = 0;
@@ -315,7 +312,7 @@ public class Words30Panels extends JFrame{
 			e.printStackTrace();
 		} 
         
-        String newPredefinedText = TextLoader.loadText("nadNiemnem.txt");
+        String newPredefinedText = " ";
         try {
             doc.insertString(doc.getLength(), newPredefinedText, null);
         } catch (BadLocationException e) {

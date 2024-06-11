@@ -46,26 +46,32 @@ public class ThemeList extends JFrame {
 			case 0:
 				UIManager.setLookAndFeel(new FlatLightLaf());
 				SwingUtilities.updateComponentTreeUI(component);
+				component.repaint();
 				break;
 			case 1:
 				UIManager.setLookAndFeel(new FlatDarkLaf());
 				SwingUtilities.updateComponentTreeUI(component);
+				component.repaint();
 				break;
 			case 2:
 				UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
 				SwingUtilities.updateComponentTreeUI(component);
+				component.repaint();
 				break;
 			case 3:
 				UIManager.setLookAndFeel(new FlatGruvboxDarkHardIJTheme());
 				SwingUtilities.updateComponentTreeUI(component);
+				component.repaint();
 				break;
 			case 4:
 				UIManager.setLookAndFeel(new FlatDarculaLaf());
 				SwingUtilities.updateComponentTreeUI(component);
+				component.repaint();
 				break;
 			case 5:
 				UIManager.setLookAndFeel(new FlatMoonlightIJTheme());
 				SwingUtilities.updateComponentTreeUI(component);
+				component.repaint();
 				break;
 			default:
 				break;

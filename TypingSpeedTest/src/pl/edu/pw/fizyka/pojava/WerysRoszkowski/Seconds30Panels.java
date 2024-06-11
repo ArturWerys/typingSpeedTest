@@ -47,7 +47,7 @@ public class Seconds30Panels extends JFrame {
 
     private JTextPane textPane;
     public static JButton resultsButton;
-    public static String predefinedText = TextLoader.loadText("nadNiemnem30sec.txt");
+    public static String predefinedText = TextSelectionWindow.textToLoad;
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static boolean endOfTest = false;
@@ -56,7 +56,6 @@ public class Seconds30Panels extends JFrame {
     
     Timer timer;
     private int totalTime = 30000;
-//    public static int totalTime = 2000;
     private int updateInterval = 10;
     
     
@@ -201,7 +200,6 @@ public class Seconds30Panels extends JFrame {
                     resultsButton.setVisible(true);
                     
                     endIndex = currentIndex;
-                    System.out.print(currentIndex);
                 }
             }
         });
@@ -342,7 +340,7 @@ public class Seconds30Panels extends JFrame {
 				e.printStackTrace();
 			} 
 	        
-	        String newPredefinedText = TextLoader.loadText("nadNiemnem.txt");
+	        String newPredefinedText = " ";
 	        try {
 	            doc.insertString(doc.getLength(), newPredefinedText, null);
 	        } catch (BadLocationException e) {
