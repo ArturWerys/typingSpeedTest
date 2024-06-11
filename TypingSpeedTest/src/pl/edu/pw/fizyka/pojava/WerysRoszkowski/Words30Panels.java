@@ -248,7 +248,7 @@ public class Words30Panels extends JFrame{
 			}
 		});
 
-        TstMenuBar menuBar = new TstMenuBar(true, endOfTest, this);
+        TstMenuBar menuBar = new TstMenuBar(false, endOfTest, this);
 		setJMenuBar(menuBar);	
         
 		setLocationRelativeTo(null);
