@@ -55,8 +55,8 @@ public class Seconds30Panels extends JFrame {
     public static int endIndex = 0;
     
     Timer timer;
-//    private int totalTime = 30000;
-    private int totalTime = 2000;
+    private int totalTime = 30000;
+//    public static int totalTime = 2000;
     private int updateInterval = 10;
     
     
@@ -276,9 +276,6 @@ public class Seconds30Panels extends JFrame {
     
 		
 		public static int[] calculateSeconds30Results() {
-
-	    	System.out.println("Cock: " + correctLetters);
-	    	System.out.println("Text length+ "+predefinedText.length());
 	    		    	
 	        int wpm = StatsCalculationMethods.calculateSeconds30WPM(correctLetters);
 	        int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, endIndex);
