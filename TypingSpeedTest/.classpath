@@ -12,8 +12,8 @@
 	<classpathentry kind="lib" path="lib/flatlaf-3.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/flatlaf-intellij-themes-3.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/Fonts"/>
-	<classpathentry kind="lib" path="lib/Texts"/>
 	<classpathentry kind="lib" path="com.miglayout.swing_11.3.0.jar"/>
 	<classpathentry kind="lib" path="com.miglayout.core_11.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/Texts"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
