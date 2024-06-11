@@ -1,135 +1,125 @@
 package bazaDanych_wykresy;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Ellipse2D.Double;
 import java.sql.*;
 import java.util.ArrayList;
 
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.block.BlockBorder;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-import org.jfree.chart.labels.StandardXYItemLabelGenerator;
-import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RectangleInsets;
+
 
 public class AccuracyDBchart {
     
-    static ArrayList<Integer> idList = new ArrayList<>();
-    static ArrayList<Float> accuracyList = new ArrayList<>();
-    
+	 static ArrayList<Integer> idList = new ArrayList<>();
+	    static ArrayList<Float> accuracyList = new ArrayList<>();
 
-       
-    public static JFreeChart displayChart() {
-    	
-    	Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        
+	    public static JFreeChart displayChart() {
 
-        try {
-            // Utwórz połączenie
-            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
+	    	UIDefaults defaults = UIManager.getDefaults();
+	    	
+	        Connection conn = null;
+	        Statement stmt = null;
+	        ResultSet rs = null;
 
-            // Utwórz obiekt instrukcji
-            stmt = conn.createStatement();
+	        try {
+	            // Utwórz połączenie
+	            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
 
-            // Wykonaj zapytanie SQL
-            rs = stmt.executeQuery("SELECT `ID`, `CORRECT WORDS` FROM wyniki");
+	            // Utwórz obiekt instrukcji
+	            stmt = conn.createStatement();
 
-            // Przetwórz wyniki zapytania
-            while (rs.next()) {
-                int idValue = rs.getInt("ID");
-                idList.add(idValue);
-                
-                float accuracy = rs.getFloat("CORRECT WORDS");
-                accuracyList.add(accuracy);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }    	
-    	
-        // Wykres
-    	XYSeries series = new XYSeries("Accuracy");
-        
-        for (int x=0; x < idList.size(); x++) {
-            series.add(idList.get(x),accuracyList.get(x));
+	            // Wykonaj zapytanie SQL
+	            rs = stmt.executeQuery("SELECT `ID`, `CORRECT WORDS` FROM wyniki");
 
-        }
+	            // Przetwórz wyniki zapytania
+	            while (rs.next()) {
+	                int idValue = rs.getInt("ID");
+	                idList.add(idValue);
 
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(series);
+	                float accuracy = rs.getFloat("CORRECT WORDS");
+	                accuracyList.add(accuracy);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                if (rs != null) rs.close();
+	                if (stmt != null) stmt.close();
+	                if (conn != null) conn.close();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
 
-        JFreeChart chart = ChartFactory.createXYLineChart(
-                "Accuracy wraz z kolejnymi testami", 
-                "Kolejne testy", // Opis osi X
-                "Accuracy",
-                dataset, // Dane
-                PlotOrientation.VERTICAL, // Orientacja wykresu
-                true, // Legenda
-                true, // Tooltips
-                false
-        );
-        // Ustawienie osi X na liczby całkowite
-        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
-        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
+	        // Wykres
+	        XYSeries series = new XYSeries("Accuracy");
 
-        
-        // ZMIANA WYGLĄDU
- 
-        XYPlot plot = (XYPlot) chart.getPlot();
-//        Integer width = 500;
+	        for (int x = 0; x < idList.size(); x++) {
+	            series.add(idList.get(x), accuracyList.get(x));
+	        }
 
+	        XYSeriesCollection dataset = new XYSeriesCollection();
+	        dataset.addSeries(series);
 
-//        plot.setBackgroundPaint(defaults.getColor("Button.disabledText"));
-        plot.setBackgroundPaint(Color.white);
+	        JFreeChart chart = ChartFactory.createXYLineChart(
+	                "Accuracy wraz z kolejnymi testami",
+	                "Kolejne testy", // Opis osi X
+	                "Accuracy",
+	                dataset, // Dane
+	                PlotOrientation.VERTICAL, // Orientacja wykresu
+	                true, // Legenda
+	                true, // Tooltips
+	                false
+	        );
 
-        plot.setDomainGridlinePaint(Color.white);
-        plot.setRangeGridlinePaint(Color.white);
-        plot.setOutlineVisible(false);
-        
-        
-     // ZMIANA WYGLĄDU LEGENDY
-        LegendTitle legend = chart.getLegend();
-        legend.setFrame(BlockBorder.NONE);
-//        legend.setItemLabelPadding(new RectangleInsets(5.0, 2.0, 10.0, width));
-        legend.setPadding(20.0, 20.0, 0.0, 0.0);
-        
-        // Ukrycie osi Y
-        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        rangeAxis.setVisible(false);
-        
-   
-        
-        ChartFrame frame = new ChartFrame("Wykres", chart);
-        frame.pack();
-        
-        return chart; 
+	        // Ustawienie osi X na liczby całkowite
+	        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
+	        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	        xAxis.setAutoRangeIncludesZero(false); // Ustawienie, aby oś X obejmowała 0
+
+	        // ZMIANA WYGLĄDU
+	        XYPlot plot = (XYPlot) chart.getPlot();
+	        plot.setBackgroundPaint(Color.white);
+	        plot.setDomainGridlinePaint(Color.white);
+	        plot.setRangeGridlinePaint(Color.white);
+	        plot.setOutlineVisible(false);
+
+	        // ZMIANA WYGLĄDU LEGENDY
+	        chart.removeLegend();
+
+	        // Ukrycie osi Y
+	        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+	        rangeAxis.setVisible(true);
+
+	        // Customize the renderer
+	        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+	        renderer.setSeriesShapesVisible(0, true);
+	        renderer.setSeriesLinesVisible(0, true);
+
+	        // Create a larger shape for the points
+	        Double shape = new Ellipse2D.Double(-5.0, -5.0, 10.0, 10.0); // Larger circle
+	        renderer.setSeriesShape(0, shape);
+	        renderer.setSeriesPaint(0,  defaults.getColor("CheckBoxMenuItem.acceleratorSelectionForeground")); // Optional: set the color of the points
+
+	        plot.setRenderer(renderer);
+	        // Remove the background color
+	        plot.setBackgroundPaint(null); // Set plot background to transparent
+	        plot.setOutlinePaint(null); // Remove plot outline
+	        chart.setBackgroundPaint(null); // Set chart background to transparent
+
+	        return chart;
     }
 }

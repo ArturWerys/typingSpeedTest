@@ -51,6 +51,8 @@ public class ResultsPanels extends JFrame {
 			constancyCount = StatsCalculationMethods.calculateConstancy(smoothedWpmByTimes);
 		}
         
+        
+        
         getContentPane().setLayout(new MigLayout("", "[8%][grow][8%]", "[50%,grow][25%][15%,grow]"));
         
         JPanel graphPanel = new JPanel();

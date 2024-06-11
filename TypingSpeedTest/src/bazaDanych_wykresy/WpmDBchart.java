@@ -4,10 +4,15 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYBarPainter;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
 import javax.swing.*;
+
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,7 +32,7 @@ public class WpmDBchart extends JFrame {
 
         try {
             // Utwórz połączenie
-            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", ""); 
+            conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
 
             // Utwórz obiekt instrukcji
             stmt = conn.createStatement();
@@ -61,7 +66,8 @@ public class WpmDBchart extends JFrame {
         // Tworzenie zestawu danych histogramu
         HistogramDataset dataset = new HistogramDataset();
         dataset.setType(HistogramType.FREQUENCY);
-        dataset.addSeries("Histogram", wpmArray, 10); // 10 bins for the histogram
+        
+        dataset.addSeries("Histogram", wpmArray, 40); // 10 bins for the histogram
 
         // Tworzenie histogramu
         JFreeChart histogram = ChartFactory.createHistogram(
@@ -74,11 +80,33 @@ public class WpmDBchart extends JFrame {
                 false,
                 false
         );
+        
+        // ZMIANA WYGLĄDU LEGENDY
+       histogram.removeLegend();
 
+        
+        // Customize the renderer to set a solid color for the bars
+        XYPlot plot = (XYPlot) histogram.getPlot();
+        XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
+
+        // Ustawienie koloru na jednolity (niebieski)
+        renderer.setSeriesPaint(0, new Color(30, 144, 255)); 
+        
+        // Wyłączenie gradientowego wypełnienia słupków
+        renderer.setBarPainter(new StandardXYBarPainter());
+        renderer.setMargin(0.25); // Ustawienie marginesu na 10% szerokości kategorii
+
+        
+        // Remove the background color
+        plot.setBackgroundPaint(null); // Set plot background to transparent
+        plot.setOutlinePaint(null); // Remove plot outline
+        histogram.setBackgroundPaint(null); // Set chart background to transparent
+        
         // Display the histogram in a frame
         ChartFrame frame = new ChartFrame("Histogram", histogram);
         frame.pack();
 
         return histogram;
     }
+
 }
