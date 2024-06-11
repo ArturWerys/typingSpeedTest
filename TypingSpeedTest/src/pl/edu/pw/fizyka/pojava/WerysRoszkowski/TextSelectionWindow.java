@@ -5,6 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JScrollPane;
@@ -102,8 +110,8 @@ public class TextSelectionWindow extends JFrame {
         root.add(parent2);
 
         // Dodaj podlistę do drugiej nadrzędnej pozycji
-        parent2.add(new DefaultMutableTreeNode("Child 2.1"));
-        parent2.add(new DefaultMutableTreeNode("Child 2.2"));
+        parent2.add(new DefaultMutableTreeNode("Najcześciej występujące polskie słowa"));
+        parent2.add(new DefaultMutableTreeNode("Najcześciej występujące angielskie słowa"));
 
         // Utwórz model drzewa
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
@@ -154,23 +162,49 @@ public class TextSelectionWindow extends JFrame {
                             } catch (BadLocationException ee) {
                                 ee.printStackTrace();
                             }
-                        } else if (nodeText.equals("Child 2.1")) {
-                            textToLoad = "Placeholder text for Child 2.1";
+                        } else if (nodeText.equals("Najcześciej występujące polskie słowa")) {
+                            textToLoad = TextLoader.loadText("polish1k.txt");
+
                             try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
+                                Path path = Paths.get("lib/Texts/polish1k.txt");
+                                List<String> words = Files.readAllLines(path);
+
+                                // Wybierz losowe 30 słów
+                                String randomWords = getRandomWords(words, 30);
+
+                                // Wyświetl wybrane słowa
+                                try {
+                                    doc.insertString(doc.getLength(), randomWords, defaultStyle);
+                                    textPane.setCaretPosition(0);
+                                    textPane.repaint();
+                                } catch (BadLocationException ee) {
+                                    ee.printStackTrace();
+                                }
+                                
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
                             }
-                        } else if (nodeText.equals("Child 2.2")) {
-                            textToLoad = "Placeholder text for Child 2.2";
+                        } else if (nodeText.equals("Najcześciej występujące angielskie słowa")) {
+                            textToLoad = TextLoader.loadText("english1k.txt");
+
                             try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
+                                Path path = Paths.get("lib/Texts/english1k.txt");
+                                List<String> words = Files.readAllLines(path);
+
+                                // Wybierz losowe 30 słów
+                                String randomWords = getRandomWords(words, 30);
+
+                                // Wyświetl wybrane słowa
+                                try {
+                                    doc.insertString(doc.getLength(), randomWords, defaultStyle);
+                                    textPane.setCaretPosition(0);
+                                    textPane.repaint();
+                                } catch (BadLocationException ee) {
+                                    ee.printStackTrace();
+                                }
+                                
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
                             }
                         }
                     	
@@ -195,23 +229,49 @@ public class TextSelectionWindow extends JFrame {
                             } catch (BadLocationException ee) {
                                 ee.printStackTrace();
                             }
-                        } else if (nodeText.equals("Child 2.1")) {
-                            textToLoad = "Placeholder text for Child 2.1";
+                        } else if (nodeText.equals("Najcześciej występujące polskie słowa")) {
+                        	textToLoad = TextLoader.loadText("polish1k.txt");
+
                             try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
+                                Path path = Paths.get("lib/Texts/polish1k.txt");
+                                List<String> words = Files.readAllLines(path);
+
+                                // Wybierz losowe 100 słów
+                                String randomWords = getRandomWords(words, 100);
+
+                                // Wyświetl wybrane słowa
+                                try {
+                                    doc.insertString(doc.getLength(), randomWords, defaultStyle);
+                                    textPane.setCaretPosition(0);
+                                    textPane.repaint();
+                                } catch (BadLocationException ee) {
+                                    ee.printStackTrace();
+                                }
+                                
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
                             }
-                        } else if (nodeText.equals("Child 2.2")) {
-                            textToLoad = "Placeholder text for Child 2.2";
+                        } else if (nodeText.equals("Najcześciej występujące angielskie słowa")) {
+                        	textToLoad = TextLoader.loadText("english1k.txt");
+
                             try {
-                                doc.insertString(doc.getLength(), textToLoad, defaultStyle);
-                                textPane.setCaretPosition(0);
-                                textPane.repaint();
-                            } catch (BadLocationException ee) {
-                                ee.printStackTrace();
+                                Path path = Paths.get("lib/Texts/english1k.txt");
+                                List<String> words = Files.readAllLines(path);
+
+                                // Wybierz losowe 30 słów
+                                String randomWords = getRandomWords(words, 100);
+
+                                // Wyświetl wybrane słowa
+                                try {
+                                    doc.insertString(doc.getLength(), randomWords, defaultStyle);
+                                    textPane.setCaretPosition(0);
+                                    textPane.repaint();
+                                } catch (BadLocationException ee) {
+                                    ee.printStackTrace();
+                                }
+                                
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
                             }
                         }
                     }
@@ -255,9 +315,9 @@ public class TextSelectionWindow extends JFrame {
         setVisible(true);
     }
 
-//    public static void main(String[] args) {
-//        FlatLightLaf.setup();
-//        UIManager.put("Button.arc", 20);
-//        new TextSelectionWindow();
-//    }
+    private static String getRandomWords(List<String> words, int n) {
+        List<String> randomWords = new ArrayList<>(words);
+        Collections.shuffle(randomWords);
+        return String.join(" ", randomWords.subList(0, n));
+    }
 }
