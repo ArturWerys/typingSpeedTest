@@ -223,8 +223,9 @@ public class Words30Panels extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				new ResultsPanels(calculateWords30Results());
 				Words30Panels.this.dispose();
+				
 				resetTextPane();
-					
+
 			}
 		});
 
@@ -323,6 +324,9 @@ public class Words30Panels extends JFrame{
         
         textPane.setCaretPosition(0); 
         resultsButton.setVisible(false); 
+        
+        letterTimes.clear();
+        fullElapsedTime.clear();
         
         
     }

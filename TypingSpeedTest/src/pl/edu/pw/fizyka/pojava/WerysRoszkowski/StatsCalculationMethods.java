@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
+
 public class StatsCalculationMethods {
 	
 	public StatsCalculationMethods() {
@@ -173,6 +178,6 @@ public class StatsCalculationMethods {
 
         return (int)constancy;
     }
-
+    
 
 }
