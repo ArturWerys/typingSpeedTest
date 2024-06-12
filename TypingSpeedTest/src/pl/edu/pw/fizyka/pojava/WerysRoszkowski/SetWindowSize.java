@@ -12,7 +12,7 @@ public class SetWindowSize {
 	public SetWindowSize(Container container) {
 		//PARAMETRY ROZMIARU I PROPORCJI OKNA:
 		double heightPercentage = 0.8;	//Jaką część ekranu w pionie ma zająć okno?
-		double aspectRatio = 1.8;	//Jaka ma być proporcja szerokości okna do jego wysokości?
+		double aspectRatio = 1.4;	//Jaka ma być proporcja szerokości okna do jego wysokości?
 		
 		//kod odpowiedzialny za zczytywanie rozmiaru ekranu użytkownika oraz ustawianie odpowiedniego rozmiaru okna - Mateusz
 		Toolkit toolkit = Toolkit.getDefaultToolkit();

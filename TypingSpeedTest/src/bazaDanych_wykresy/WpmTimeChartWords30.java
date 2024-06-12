@@ -24,7 +24,7 @@ public class WpmTimeChartWords30 {
     public static JFreeChart displayChart() {
     	
     	UIDefaults defaults = UIManager.getDefaults();
-    	Color textColor = defaults.getColor("textText"); // Get the color from UIManager
+    	Color textColor = defaults.getColor("textText");
         
     	ArrayList<Float> wpmByTimes = new ArrayList<Float>();
     	ArrayList<Long> fullElapsedTimes = new ArrayList<Long>();
@@ -98,9 +98,9 @@ public class WpmTimeChartWords30 {
         renderer.setSeriesLinesVisible(0, true);
 
         // Ustawienie kształtu i koloru punktów na wykresie
-        renderer.setSeriesPaint(0, defaults.getColor("textText")); // Set the color of the points
+        renderer.setSeriesPaint(0, defaults.getColor("textText")); 
         renderer.setSeriesShapesVisible(0, false);
-        renderer.setSeriesStroke(0, new BasicStroke(2.0f)); // Set line thickness to 2.0
+        renderer.setSeriesStroke(0, new BasicStroke(2.0f)); 
 
 
         // Dostosowanie koloru tekstu i punktów na osiach X i Y oraz tytułu wykresu

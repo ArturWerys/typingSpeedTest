@@ -41,7 +41,7 @@ public class TstMenuBar extends JMenuBar {
             addThemeMenuItem(mnThemeChooser, "Arc Orange", new FlatArcOrangeIJTheme(), component);
             addThemeMenuItem(mnThemeChooser, "Cobalt", new FlatCobalt2IJTheme(), component);
             addThemeMenuItem(mnThemeChooser, "Dark Purple", new FlatDarkPurpleIJTheme(), component);
-            addThemeMenuItem(mnThemeChooser, "Nature Green", new FlatNordIJTheme(), component); // Adjust the theme class as needed
+            addThemeMenuItem(mnThemeChooser, "Nature Green", new FlatNordIJTheme(), component);
             addThemeMenuItem(mnThemeChooser, "Gruvbox Dark Hard", new FlatGruvboxDarkHardIJTheme(), component);
             addThemeMenuItem(mnThemeChooser, "High Contrast", new FlatHighContrastIJTheme(), component);
         }

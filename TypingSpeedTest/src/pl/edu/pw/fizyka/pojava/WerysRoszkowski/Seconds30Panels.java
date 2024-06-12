@@ -83,13 +83,9 @@ public class Seconds30Panels extends JFrame {
         
         JPanel panel = new JPanel();
         
-        // Button do wynikow
         resultsButton = new ResultsButton();
         resultsButton.setVisible(false);
-       
-        
-        // Ustawienie text Pane
-        
+         
         textPane = new JTextPane();
         textPane.setEditable(false);
         StyledDocument doc = textPane.getStyledDocument();
