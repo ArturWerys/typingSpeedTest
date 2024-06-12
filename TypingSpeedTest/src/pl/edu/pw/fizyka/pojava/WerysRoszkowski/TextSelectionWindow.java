@@ -87,50 +87,38 @@ public class TextSelectionWindow extends JFrame {
             }
         });
         
-        // Create the root of the tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
 
-        // Add first parent node
         DefaultMutableTreeNode parent1 = new DefaultMutableTreeNode("Tekst klasyczny");
         root.add(parent1);
 
-        // Add children to the first parent node
         DefaultMutableTreeNode nadNiemnemNode = new DefaultMutableTreeNode("Nad Niemnem");
         parent1.add(nadNiemnemNode);
         parent1.add(new DefaultMutableTreeNode("Lalka"));
 
-        // Add second parent node
         DefaultMutableTreeNode parent2 = new DefaultMutableTreeNode("Tekst losowy");
         root.add(parent2);
 
-        // Dodaj podlistę do drugiej nadrzędnej pozycji
         parent2.add(new DefaultMutableTreeNode("Najcześciej występujące polskie słowa"));
         parent2.add(new DefaultMutableTreeNode("Najcześciej występujące angielskie słowa"));
 
-        // Create the tree model and tree
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         JTree tree = new JTree(treeModel);
         
-        // Hide the root of the tree
         tree.setRootVisible(false);
         
-        // Add tree to JScrollPane
         scrollPane.setViewportView(tree);
         
-        // Set button and tree fonts
         btnConfirm.setFont(CustomFonts.BUTTON_FONT.deriveFont((float)(windowWidth * confirmButtonScale)));
         tree.setFont(CustomFonts.TEXT_TREE_FONT.deriveFont((float)(windowWidth * treeTextScale)));
         
-        // Set the text pane attributes
         textPane.setCaretColor(defaults.getColor("Caret"));
         
-        // Create and set the style
         Style textPaneStyle = textPane.addStyle("TextPaneStyle", null);
         StyleConstants.setFontFamily(textPaneStyle, CustomFonts.TEXT_PANE_FONT.getFamily());
         StyleConstants.setFontSize(textPaneStyle, (int) (windowWidth * textPaneScale));
         StyleConstants.setForeground(textPaneStyle, defaults.getColor("textText"));
 
-        // Apply the style to the entire document
         StyledDocument doc = textPane.getStyledDocument();
         doc.setCharacterAttributes(0, doc.getLength(), textPaneStyle, false);
         
@@ -141,7 +129,7 @@ public class TextSelectionWindow extends JFrame {
                 if (selectedNode != null) {
                     String nodeText = selectedNode.getUserObject().toString();
                     
-                    // Clear the text pane before inserting new text
+
                     textPane.setText("");
                     
                     if(WelcomeWindow.words30choosen == true) {
@@ -171,10 +159,10 @@ public class TextSelectionWindow extends JFrame {
                                 Path path = Paths.get("lib/Texts/polish1k.txt");
                                 List<String> words = Files.readAllLines(path);
 
-                                // Wybierz losowe 30 słów
+          
                                 textToLoad = getRandomWords(words, 30);
 
-                                // Wyświetl wybrane słowa
+                                
                                 try {
                                     doc.insertString(doc.getLength(), textToLoad, textPaneStyle);
                                     textPane.setCaretPosition(0);
@@ -193,10 +181,10 @@ public class TextSelectionWindow extends JFrame {
                                 Path path = Paths.get("lib/Texts/english1k.txt");
                                 List<String> words = Files.readAllLines(path);
 
-                                // Wybierz losowe 30 słów
+                              
                                 textToLoad = getRandomWords(words, 30);
 
-                                // Wyświetl wybrane słowa
+                            
                                 try {
                                     doc.insertString(doc.getLength(), textToLoad, textPaneStyle);
                                     textPane.setCaretPosition(0);
@@ -238,10 +226,9 @@ public class TextSelectionWindow extends JFrame {
                                 Path path = Paths.get("lib/Texts/polish1k.txt");
                                 List<String> words = Files.readAllLines(path);
 
-                                // Wybierz losowe 100 słów
-                                textToLoad = getRandomWords(words, 100);
+                            
+                                textToLoad = getRandomWords(words, 120);
 
-                                // Wyświetl wybrane słowa
                                 try {
                                     doc.insertString(doc.getLength(), textToLoad, textPaneStyle);
                                     textPane.setCaretPosition(0);
@@ -260,10 +247,8 @@ public class TextSelectionWindow extends JFrame {
                                 Path path = Paths.get("lib/Texts/english1k.txt");
                                 List<String> words = Files.readAllLines(path);
 
-                                // Wybierz losowe 30 słów
-                                textToLoad = getRandomWords(words, 100);
+                                textToLoad = getRandomWords(words, 120);
 
-                                // Wyświetl wybrane słowa
                                 try {
                                     doc.insertString(doc.getLength(), textToLoad, textPaneStyle);
                                     textPane.setCaretPosition(0);
@@ -320,25 +305,6 @@ public class TextSelectionWindow extends JFrame {
         setVisible(true);
     }
     
-//    private void loadText(JTextPane textPane, String nodeText, String nadNiemnemFile, String lalkaFile, StyledDocument doc, Style textPaneStyle) {
-//        if (nodeText.equals("Nad Niemnem")) {
-//            textToLoad = TextLoader.loadText(nadNiemnemFile);
-//        } else if (nodeText.equals("Lalka")) {
-//            textToLoad = TextLoader.loadText(lalkaFile);
-//        } else if (nodeText.equals("Child 2.1")) {
-//            textToLoad = "Placeholder text for Child 2.1";
-//        } else if (nodeText.equals("Child 2.2")) {
-//            textToLoad = "Placeholder text for Child 2.2";
-//        }
-//        
-//        try {
-//            doc.insertString(doc.getLength(), textToLoad, textPaneStyle);
-//            textPane.setCaretPosition(0);
-//            textPane.repaint();
-//        } catch (BadLocationException e) {
-//            e.printStackTrace();
-//        }
-//    }
     
     private static String getRandomWords(List<String> words, int n) {
         List<String> randomWords = new ArrayList<>(words);

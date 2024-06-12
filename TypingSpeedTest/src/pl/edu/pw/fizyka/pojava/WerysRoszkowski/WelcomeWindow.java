@@ -32,9 +32,7 @@ public class WelcomeWindow extends JFrame {
 	private static final double prevResBttnScale = 0.016;
 	
 	public static boolean words30choosen = false;
-	
-	
-	
+
 	public WelcomeWindow() {
 		super();
 		
@@ -108,7 +106,7 @@ public class WelcomeWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				new Words30Panels();
+
 				new TextSelectionWindow();
 				words30choosen = true;
 				WelcomeWindow.this.dispose();
@@ -119,7 +117,7 @@ public class WelcomeWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				new Seconds30Panels();
+
 				new TextSelectionWindow();
 				words30choosen = false;
 				WelcomeWindow.this.dispose();

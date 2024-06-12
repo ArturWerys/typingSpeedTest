@@ -25,7 +25,7 @@ public class AccuracyDBchart {
     public static JFreeChart displayChart() {
 
         UIDefaults defaults = UIManager.getDefaults();
-        Color textColor = defaults.getColor("textText"); // Get the color from UIManager
+        Color textColor = defaults.getColor("textText"); 
 
         try (Connection conn = DriverManager.getConnection("jdbc:h2:tstData", "artur", "");
              Statement stmt = conn.createStatement();

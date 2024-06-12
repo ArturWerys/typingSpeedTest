@@ -30,7 +30,6 @@ public class Words30Panels extends JFrame{
     private static final double textPaneScale = 0.016;
     private ResultsButton resultsButton;
     public static String predefinedText = TextSelectionWindow.textToLoad;
-//    public static String predefinedText = TextLoader.loadText("testowy.txt");
 
     public static int currentIndex = 0;
     public static int correctLetters = 0;
@@ -46,9 +45,6 @@ public class Words30Panels extends JFrame{
     public static ArrayList<Long> fullElapsedTime = new ArrayList<>();
 
     
-    
-    // ------------------------------------------ // 
-    
 	public Words30Panels() throws HeadlessException {
 		super();
 		
@@ -63,19 +59,15 @@ public class Words30Panels extends JFrame{
         
         JPanel panel = new JPanel();
         
-        // Button do wynikow
         resultsButton = new ResultsButton();
         resultsButton.setVisible(false);
-        
-        // Ustawienie text Pane
-        
+                
         textPane = new JTextPane();
         textPane.setEditable(false);
         StyledDocument doc = textPane.getStyledDocument();
         textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont( (float)(this.getWidth()*0.02)));
         
         textPane.setCaretColor(defaults.getColor("Caret"));
-        // Add predefined text with initial coloring
         Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
         StyleConstants.setForeground(defaultStyle, defaults.getColor("Button.disabledText"));
 
@@ -125,20 +117,12 @@ public class Words30Panels extends JFrame{
                 if (currentIndex < predefinedText.length() && typedChar == predefinedText.charAt(currentIndex)) {
                     applyCharacterColor(currentIndex, defaults.getColor("textText"));
                     correctLetters++;
-                    
-                    
-                	// LOGIKA NOWEGO WYKRESU
-                	
-//                	StatsCalculationMethods.letterTimesCalculation(isFirstKeyPress, lastKeyPressTime, fullElapsedTime, letterTimes);
-
+                           	
                 	letterTimesCalculation();
-
-                                  
+                    
                                         
                 } else {
                     applyCharacterColor(currentIndex, Color.red);
-
-//                	StatsCalculationMethods.letterTimesCalculation(isFirstKeyPress, lastKeyPressTime, fullElapsedTime, letterTimes);
 
                     
                 	letterTimesCalculation();
@@ -157,8 +141,7 @@ public class Words30Panels extends JFrame{
                 if (currentIndex < predefinedText.length()) {
                     textPane.setCaretPosition(currentIndex);
                 }
-                
- 
+
                                
             }
         });
@@ -267,13 +250,7 @@ public class Words30Panels extends JFrame{
 
         int wpm = StatsCalculationMethods.calculateWords30WPM(startTime, correctLetters);
         int accuracy = StatsCalculationMethods.calculateAccuracy(correctLetters, predefinedText.length());
-    	    	    
-        for(int x = 0; x < fullElapsedTime.size(); x++) {
-            System.out.println(" Czas kolejny słów od początku testu: " + fullElapsedTime.get(x));
-
-        }
-        
-       
+    	    	       
         return new int[] {(int) accuracy, (int) wpm};
     }    
     
@@ -287,10 +264,8 @@ public class Words30Panels extends JFrame{
         long currentTime = System.currentTimeMillis();
 
         if (isFirstKeyPress) {
-            // Jeśli to pierwsze naciśnięcie klawisza, ustawiamy czas i zmieniamy flagę
             lastKeyPressTime = currentTime;
             isFirstKeyPress = false;
-            // Dodajemy 0 do fullElapsedTime jako początek
             fullElapsedTime.add(0L);
             return;
         }
@@ -299,7 +274,6 @@ public class Words30Panels extends JFrame{
         
         lastKeyPressTime = currentTime;
 
-        // Dodanie różnicy czasu do listy
         letterTimes.add(timeDifference);
         
         // LOGIKA OSI X (czasu) full elapsed time

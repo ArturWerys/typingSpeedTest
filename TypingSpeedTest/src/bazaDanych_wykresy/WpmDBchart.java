@@ -31,7 +31,7 @@ public class WpmDBchart extends JFrame {
         ResultSet rs = null;
 
         UIDefaults defaults = UIManager.getDefaults();
-        Color textColor = defaults.getColor("textText"); // Get the color from UIManager
+        Color textColor = defaults.getColor("textText"); 
         
         try {
             // Utwórz połączenie
@@ -70,7 +70,7 @@ public class WpmDBchart extends JFrame {
         HistogramDataset dataset = new HistogramDataset();
         dataset.setType(HistogramType.FREQUENCY);
         
-        dataset.addSeries("Histogram", wpmArray, 40); // 10 bins for the histogram
+        dataset.addSeries("Histogram", wpmArray, 40); 
 
         // Tworzenie histogramu
         JFreeChart histogram = ChartFactory.createHistogram(
@@ -88,7 +88,6 @@ public class WpmDBchart extends JFrame {
         histogram.removeLegend();
 
         
-        // Customize the renderer to set a solid color for the bars
         XYPlot plot = (XYPlot) histogram.getPlot();
         XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
 
@@ -97,8 +96,8 @@ public class WpmDBchart extends JFrame {
         
         // Wyłączenie gradientowego wypełnienia słupków
         renderer.setBarPainter(new StandardXYBarPainter());
-        renderer.setMargin(0.25); // Ustawienie marginesu na 10% szerokości kategorii
-        renderer.setSeriesPaint(0, defaults.getColor("textText")); // Set the color of the points
+        renderer.setMargin(0.25); 
+        renderer.setSeriesPaint(0, defaults.getColor("textText")); 
 
       
         histogram.getTitle().setPaint(textColor);
