@@ -30,11 +30,9 @@ public class Words30Panels extends JFrame{
     private static final double textPaneScale = 0.016;
     private ResultsButton resultsButton;
     public static String predefinedText = TextSelectionWindow.textToLoad;
-
     public static int currentIndex = 0;
     public static int correctLetters = 0;
     public static boolean endOfTest = false;
-    
     public static long startTime = 0;
     
  // Zmienna do przechowywania czasu ostatniego naciśnięcia klawisza
