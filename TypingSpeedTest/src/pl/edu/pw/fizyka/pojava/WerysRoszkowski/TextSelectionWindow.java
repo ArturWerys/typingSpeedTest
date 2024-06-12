@@ -50,7 +50,7 @@ public class TextSelectionWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        TstMenuBar menuBar = new TstMenuBar(true, true, this);
+        TstMenuBar menuBar = new TstMenuBar(true, false, this);
         setJMenuBar(menuBar);
         getContentPane().setLayout(new MigLayout("", "[2%][grow][2%]", "[2%][83%,grow][2%][10%,grow][2%]"));
         
@@ -63,8 +63,6 @@ public class TextSelectionWindow extends JFrame {
         
         JTextPane textPane = new JTextPane();
         panel.add(textPane, "cell 2 0,grow");
-        
-        textPane.setFont(CustomFonts.TEXT_PANE_FONT.deriveFont(12));
         textPane.setEditable(false);
        
         JPanel panel_1 = new JPanel();
